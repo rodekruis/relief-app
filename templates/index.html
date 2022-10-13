@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+  <div class="box">
+    <form action="/upload_data" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Add beneficiary data</button>
+    </form>
+    <br>
+   <form action="/view_data" method="POST">
+      <button class="button is-block is-info is-medium is-fullwidth">View beneficiary data</button>
+    </form>
+    <br>
+   <form action="/input" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Start distribution</button>
+    </form>
+    <br>
+   <form action="/missing" method="POST">
+      <button class="button is-block is-info is-medium is-fullwidth">Check who is missing</button>
+    </form>
+    <br>
+   <form action="/download_data" method="POST">
+      <button class="button is-block is-info is-medium is-fullwidth">Download beneficiary data</button>
+    </form>
+    </div>
+</div>
+{% endblock %}

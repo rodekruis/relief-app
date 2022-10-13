@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+  <div class="box">
+    {% for info_name, info_values in data.items() %}
+      <label for="" class="label is-medium">{{ info_name }}: {{ info_values }}</label>
+    {% endfor %}
+    <br>
+   <form action="/received" method="POST">
+     <div class="control" hidden><input id="codeinput" class="input" type="text" name="code" value={{ data.code }}></div>
+      <button class="button is-block is-info is-medium is-fullwidth">Mark as recipient</button>
+    </form>
+    <br>
+   <form action="/input" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Continue distribution</button>
+    </form>
+    <br>
+    <form action="/" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Go back to main menu</button>
+    </form>
+    </div>
+</div>
+{% endblock %}
