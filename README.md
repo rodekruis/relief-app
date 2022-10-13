@@ -1,9 +1,7 @@
 # relief-app
 
-web app for relief.
+Web app for relief.
 https://relief-system-webapp.azurewebsites.net/
-
-Developed because I hate MegaV.
 
 ## Description
 
