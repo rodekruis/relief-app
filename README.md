@@ -1,6 +1,6 @@
 # relief-app
 
-Web app for relief.
+A simple web app for relief.
 https://relief-system-webapp.azurewebsites.net/
 
 ## Description
