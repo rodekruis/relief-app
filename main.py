@@ -84,31 +84,34 @@ def received():
 
 def process_data(partition_key):
     raw_data_path = 'data/data_raw.xlsx'
-    df = pd.read_excel(raw_data_path)
-    df['code'] = df['code'].astype(str)
-    if df['code'].duplicated().any():  # flag duplicated codes
-        print('ERROR')  # TBI
-    df = df.drop([col for col in df.columns if col.startswith('_')], axis=1)  # drop KoBo columns
-    if 'recipient' not in df.columns:
-        df['recipient'] = 'No'
-    if 'received_when' not in df.columns:
-        df['received_when'] = None
+    try:
+        df = pd.read_excel(raw_data_path)
+        df.columns = df.columns.str.lower()
+        df['code'] = df['code'].astype(str)
+        if df['code'].duplicated().any():  # flag duplicated codes
+            return 'duplicates'  # TBI
+        df = df.drop([col for col in df.columns if col.startswith('_')], axis=1)  # drop KoBo columns
+        if 'recipient' not in df.columns:
+            df['recipient'] = 'No'
+        if 'received_when' not in df.columns:
+            df['received_when'] = None
 
-    # drop KoBo internal fields
-    df = df[[col for col in df.columns if not col.startswith('_')]]
-    print(df.columns)
+        # drop KoBo internal fields
+        df = df[[col for col in df.columns if not col.startswith('_')]]
 
-    # save to cosmos db
-    for ix, row in df.iterrows():
-        body = {}
-        body['id'] = row['code']
-        body['partitionKey'] = partition_key
-        for key in row.keys():
-            if key != 'id' and key != 'partitionKey':
-                body[key] = str(row[key])
-        cosmos_container.create_item(body=body)
-    os.remove(raw_data_path)
-    return df
+        # save to cosmos db
+        for ix, row in df.iterrows():
+            body = {}
+            body['id'] = row['code']
+            body['partitionKey'] = partition_key
+            for key in row.keys():
+                if key != 'id' and key != 'partitionKey':
+                    body[key] = str(row[key])
+            cosmos_container.create_item(body=body)
+        os.remove(raw_data_path)
+        return df
+    except:
+        return 'error'
 
 
 @main.route('/upload_data', methods=['GET'])
@@ -128,6 +131,11 @@ def uploader():
         cosmos_container.delete_item(item=item['id'], partition_key=current_user.email)
     # then upload the new one
     df = process_data(partition_key=current_user.email)
+    if type(df) == str:
+        if df == 'duplicates':
+            return render_template('duplicate_error.html')
+        elif df == 'error':
+            return render_template('upload_error.html')
     return render_template('view_data.html', tables=[df.to_html(classes='table', col_space=10)], titles=df.columns.values)
 
 
@@ -188,6 +196,12 @@ def download_data():
             worksheet.set_column(idx, idx, max_len)  # set column width
         writer.save()
         return send_file(data_path, as_attachment=True)
+
+
+@main.route("/download_template", methods=['POST'])
+@login_required
+def download_template():
+    return send_file('data/data_template.xlsx', as_attachment=True)
 
 
 @main.route('/')
