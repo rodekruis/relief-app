@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
+from sqlalchemy import exc
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
 from models import User
@@ -6,9 +7,25 @@ from flask import current_app
 db = current_app.config['SQLALCHEMY_DATABASE']
 auth = Blueprint('auth', __name__)
 
+
+@auth.errorhandler(exc.SQLAlchemyError)
+def sqlalchemy_error(error):
+    db.session.rollback()
+    flash('Server error, please try again.')
+    return redirect(url_for('auth.login'))
+
+
+@auth.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    flash('Server error, please try again.')
+    return redirect(url_for('auth.login'))
+
+
 @auth.route('/login')
 def login():
     return render_template('login.html')
+
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -16,6 +33,8 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
+
+    # check if connection still active
 
     user = User.query.filter_by(email=email).first()
 
