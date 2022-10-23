@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
-from flask import Flask, render_template, Response, jsonify, request, send_file
+from flask import Flask, render_template, Response, jsonify, request, send_file, session
 import cv2
 from PIL import Image
 import base64
@@ -18,10 +18,37 @@ cosmos_container = cosmos_db.get_container_client('Beneficiaries')
 main = Blueprint('main', __name__)
 
 
-@main.route('/input', methods=['GET', 'POST'])
+@main.route('/choose_input_method', methods=['GET', 'POST'])
+@login_required
+def choose_input_method():
+    return render_template('choose_input_method.html')
+
+
+@main.route('/save_input_method', methods=['POST'])
+@login_required
+def save_input_method():
+    if 'input_method' in request.form.keys():
+        session['input_method'] = request.form['input_method']
+        print('saving input method:', session['input_method'])
+        if session['input_method'] == 'text':
+            return render_template('input.html')
+        elif session['input_method'] == 'video':
+            return render_template('input_video.html')
+    else:
+        return render_template('choose_input_method.html')
+
+
+@main.route('/input', methods=['GET'])
 @login_required
 def get_input():
-    return render_template('input.html')
+    if 'input_method' in session.keys():
+        print('input method is:', session['input_method'])
+        if session['input_method'] == 'text':
+            return render_template('input.html')
+        elif session['input_method'] == 'video':
+            return render_template('input_video.html')
+    else:
+        return render_template('choose_input_method.html')
 
 
 def query_items_by_partition_key(container, key):
@@ -36,25 +63,33 @@ def query_items_by_partition_key(container, key):
     return items
 
 
-@main.route('/entry', methods=['POST'])
+@main.route('/entry', methods=['POST', 'GET'])
 @login_required
 def beneficiary():
     """Get beneficiary data."""
     if 'code' in request.form.keys():
         if request.form['code'].strip() == '':
             return render_template('input.html')
-        try:
-            beneficiary_data = cosmos_container.read_item(item=str(request.form['code']),
-                                                          partition_key=current_user.email)
-            beneficiary_data = {k: v for k, v in beneficiary_data.items() if not str(k).startswith('_')}
-            beneficiary_data.pop('id')
-            beneficiary_data.pop('partitionKey')
-            return render_template('entry.html',
-                                   data=beneficiary_data)
-        except exceptions.CosmosResourceNotFoundError:
-             return render_template('entry_not_found.html')
+        else:
+            code = str(request.form['code'])
+    elif 'code' in request.args.keys():
+        if request.args['code'].strip() == '':
+            return render_template('input.html')
+        else:
+            code = str(request.args['code'])
     else:
         return render_template('input.html')
+
+    try:
+        beneficiary_data = cosmos_container.read_item(item=code,
+                                                      partition_key=current_user.email)
+        beneficiary_data = {k: v for k, v in beneficiary_data.items() if not str(k).startswith('_')}
+        beneficiary_data.pop('id')
+        beneficiary_data.pop('partitionKey')
+        return render_template('entry.html',
+                               data=beneficiary_data)
+    except exceptions.CosmosResourceNotFoundError:
+         return render_template('entry_not_found.html')
 
 
 def replace_item(container, item_id, key, replace_body):
@@ -79,7 +114,7 @@ def received():
                          replace_body=replace_body)
         except exceptions.CosmosResourceNotFoundError:
              pass
-    return render_template('input.html')
+    return get_input()
 
 
 def process_data(partition_key):
@@ -157,6 +192,7 @@ def view_data():
     if data is None:
         return render_template('no_data.html')
     else:
+        data = data.drop(columns=['id'])
         return render_template('view_data.html',
                                tables=[data.to_html(classes='table', col_space=10)],
                                titles=data.columns.values)
