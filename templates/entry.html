@@ -3,10 +3,15 @@
 {% block content %}
 <div class="column is-4 is-offset-4">
   <div class="box">
-    {% for info_name, info_values in data.items() %}
-      <label for="" class="label is-medium">{{ info_name }}: {{ info_values }}</label>
-    {% endfor %}
-    <br>
+    {% if data.recipient == "No" %}
+      <div class="box" id="eligible">
+        {% else %}
+      <div class="box" id="noteligible">
+        {% endif %}
+        {% for info_name, info_values in data.items() %}
+          <label class="label is-medium" style="color: white">{{ info_name }}: {{ info_values }}</label>
+        {% endfor %}
+      </div>
    <form action="/received" method="POST">
      <div class="control" hidden><input id="codeinput" class="input" type="text" name="code" value={{ data.code }}></div>
       <button class="button is-block is-info is-medium is-fullwidth">Mark as recipient</button>

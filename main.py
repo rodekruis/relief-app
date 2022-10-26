@@ -205,6 +205,7 @@ def missing():
     if data is None:
         return render_template('no_data.html')
     else:
+        data = data.drop(columns=['id'])
         data = data[data['recipient'] == 'No']
         return render_template('view_data.html',
                                tables=[data.to_html(classes='table', col_space=10)],
