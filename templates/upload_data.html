@@ -3,7 +3,9 @@
 {% block content %}
 <div class="column is-4 is-offset-4">
   <div class="box">
-    <label class="label is-medium">Warning! The file must be an Excel Workbook (.xlsx) and have one column named "code" containing unique values</label>
+    <label class="label is-medium">Warning!</label>
+    <label class="label is-medium">1. The file must be an Excel Workbook (.xlsx) and have one column named "code" containing unique values</label>
+    <label class="label is-medium">2. Previous data will be overwritten</label>
     <br>
   <form action="/uploader" method="POST" enctype="multipart/form-data">
     <div class="field">
