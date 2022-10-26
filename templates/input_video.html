@@ -6,12 +6,21 @@
         <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
       </div>
 
+    <div class="column is-4 is-offset-4">
+      <div class="box">
+
       <div id="sourceSelectPanel" style="display:none">
-        <label for="sourceSelect">Change video source:</label>
+        <label for="sourceSelect" class="label is-small">Change video source:</label>
         <select id="sourceSelect" style="max-width:400px">
         </select>
       </div>
+            <br>
+            <label class="label is-small">Barcode and QR code formats supported: UPC-A and UPC-E, EAN-8 and EAN-13,
+              Code 39-93-128, ITF, Codabar, RSS-14 (all variants), RSS Expanded (most variants), Data Matrix,
+              Aztec ('beta' quality), PDF 417 ('alpha' quality), MaxiCode.</label>
 
+      </div>
+    </div>
       <label hidden>Result:</label>
       <pre hidden><code id="result"></code></pre>
 
