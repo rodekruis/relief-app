@@ -59,7 +59,11 @@ def create_app():
     from auth import auth as auth_blueprint
     application.register_blueprint(auth_blueprint)
 
-    # blueprint for non-auth parts of app
+    # blueprint for intra-distribution
+    from distrib import distrib as distrib_blueprint
+    application.register_blueprint(distrib_blueprint)
+
+    # blueprint for in-distribution
     from main import main as main_blueprint
     application.register_blueprint(main_blueprint)
 

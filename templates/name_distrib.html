@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+  <div class="box">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <form action="/create_distrib" method="POST">
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_name" placeholder="Distribution name" autofocus="">
+        </div>
+      </div>
+      <button class="button is-block is-info is-medium is-fullwidth">Create</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

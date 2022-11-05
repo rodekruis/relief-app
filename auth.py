@@ -8,20 +8,6 @@ db = current_app.config['SQLALCHEMY_DATABASE']
 auth = Blueprint('auth', __name__)
 
 
-@auth.errorhandler(exc.SQLAlchemyError)
-def sqlalchemy_error(error):
-    db.session.rollback()
-    flash('Server error, please try again.')
-    return redirect(url_for('auth.login'))
-
-
-@auth.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    flash('Server error, please try again.')
-    return redirect(url_for('auth.login'))
-
-
 @auth.route('/login')
 def login():
     return render_template('login.html')
@@ -47,11 +33,13 @@ def login_post():
     # if the above check passes, then we know the user has the right credentials
     login_user(user, remember=remember)
 
-    return redirect(url_for('main.index'))
+    return redirect(url_for('distrib.index_distrib'))
+
 
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
+
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
@@ -75,6 +63,7 @@ def signup_post():
     db.session.commit()
 
     return redirect(url_for('auth.login'))
+
 
 @auth.route('/logout')
 @login_required

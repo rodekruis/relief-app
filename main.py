@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
-from flask import Flask, render_template, Response, jsonify, request, send_file, session
+from flask import Flask, render_template, Response, jsonify, request, send_file, session, url_for
 import cv2
 from PIL import Image
 import base64
@@ -13,6 +13,7 @@ import pandas as pd
 import json
 from datetime import datetime
 from flask import current_app
+import logging
 cosmos_db = current_app.config['COSMOS_DATABASE']
 cosmos_container = cosmos_db.get_container_client('Beneficiaries')
 main = Blueprint('main', __name__)
@@ -29,7 +30,6 @@ def choose_input_method():
 def save_input_method():
     if 'input_method' in request.form.keys():
         session['input_method'] = request.form['input_method']
-        print('saving input method:', session['input_method'])
         if session['input_method'] == 'text':
             return render_template('input.html')
         elif session['input_method'] == 'video':
@@ -42,7 +42,6 @@ def save_input_method():
 @login_required
 def get_input():
     if 'input_method' in session.keys():
-        print('input method is:', session['input_method'])
         if session['input_method'] == 'text':
             return render_template('input.html')
         elif session['input_method'] == 'video':
@@ -52,7 +51,6 @@ def get_input():
 
 
 def query_items_by_partition_key(container, key):
-    # print('\nQuerying by Partition Key\n')
     # Including the partition key value of account_number in the WHERE filter results in a more efficient query
     items = list(container.query_items(
         query="SELECT * FROM r WHERE r.partitionKey=@key",
@@ -63,10 +61,21 @@ def query_items_by_partition_key(container, key):
     return items
 
 
+def filter_by_distribution(item_list):
+    for item in item_list[:]:
+        if 'distrib_id' in item.keys():
+            if str(item['distrib_id']) != str(session['distrib_id']):
+                item_list.remove(item)
+    return item_list
+
+
 @main.route('/entry', methods=['POST', 'GET'])
 @login_required
 def beneficiary():
     """Get beneficiary data."""
+    if 'distrib_id' not in session.keys():
+        return render_template('index_distrib.html')
+
     if 'code' in request.form.keys():
         if request.form['code'].strip() == '':
             return render_template('input.html')
@@ -81,15 +90,16 @@ def beneficiary():
         return render_template('input.html')
 
     try:
-        beneficiary_data = cosmos_container.read_item(item=code,
+        beneficiary_data = cosmos_container.read_item(item=str(session['distrib_id'])+str(code),
                                                       partition_key=current_user.email)
         beneficiary_data = {k: v for k, v in beneficiary_data.items() if not str(k).startswith('_')}
         beneficiary_data.pop('id')
+        beneficiary_data.pop('distrib_id')
         beneficiary_data.pop('partitionKey')
         return render_template('entry.html',
                                data=beneficiary_data)
     except exceptions.CosmosResourceNotFoundError:
-         return render_template('entry_not_found.html')
+        return render_template('entry_not_found.html')
 
 
 def replace_item(container, item_id, key, replace_body):
@@ -109,11 +119,11 @@ def received():
                 'received_when': datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             }
             replace_item(cosmos_container,
-                         item_id=str(request.form['code']),
+                         item_id=str(session['distrib_id'])+str(request.form['code']),
                          key=current_user.email,
                          replace_body=replace_body)
         except exceptions.CosmosResourceNotFoundError:
-             pass
+            pass
     return get_input()
 
 
@@ -136,16 +146,19 @@ def process_data(partition_key):
 
         # save to cosmos db
         for ix, row in df.iterrows():
-            body = {}
-            body['id'] = row['code']
-            body['partitionKey'] = partition_key
+            body = {
+                'id': str(session['distrib_id'])+str(row['code']),
+                'partitionKey': partition_key,
+                'distrib_id': str(session['distrib_id'])
+            }
             for key in row.keys():
                 if key != 'id' and key != 'partitionKey':
                     body[key] = str(row[key])
             cosmos_container.create_item(body=body)
         os.remove(raw_data_path)
         return df
-    except:
+    except Exception as e:
+        logging.exception(e)
         return 'error'
 
 
@@ -162,6 +175,7 @@ def uploader():
     f.save('data/data_raw.xlsx')
     # empty existing database
     item_list = query_items_by_partition_key(cosmos_container, current_user.email)
+    item_list = filter_by_distribution(item_list)
     for item in item_list:
         cosmos_container.delete_item(item=item['id'], partition_key=current_user.email)
     # then upload the new one
@@ -171,11 +185,15 @@ def uploader():
             return render_template('duplicate_error.html')
         elif df == 'error':
             return render_template('upload_error.html')
-    return render_template('view_data.html', tables=[df.to_html(classes='table', col_space=10)], titles=df.columns.values)
+    columns, rows = pandas_to_html(df)
+    return render_template('view_data.html',
+                           columns=columns,
+                           rows=rows)
 
 
 def get_data():
     item_list = query_items_by_partition_key(cosmos_container, current_user.email)
+    item_list = filter_by_distribution(item_list)
     if len(item_list) == 0:
         return None
     else:
@@ -185,6 +203,16 @@ def get_data():
         return df
 
 
+def pandas_to_html(df):
+    columns = df.columns.values
+    rows = []
+    for ix, row in df.iterrows():
+        if str(row['received_when']) == "None":
+            row['received_when'] = ""
+        rows.append(row.to_dict())
+    return columns, rows
+
+
 @main.route('/view_data', methods=['POST'])
 @login_required
 def view_data():
@@ -192,10 +220,11 @@ def view_data():
     if data is None:
         return render_template('no_data.html')
     else:
-        data = data.drop(columns=['id'])
+        data = data.drop(columns=['id', 'distrib_id'])
+        columns, rows = pandas_to_html(data)
         return render_template('view_data.html',
-                               tables=[data.to_html(classes='table', col_space=10)],
-                               titles=data.columns.values)
+                               columns=columns,
+                               rows=rows)
 
 
 @main.route('/missing', methods=['POST'])
@@ -205,11 +234,12 @@ def missing():
     if data is None:
         return render_template('no_data.html')
     else:
-        data = data.drop(columns=['id'])
+        data = data.drop(columns=['id', 'distrib_id'])
         data = data[data['recipient'] == 'No']
+        columns, rows = pandas_to_html(data)
         return render_template('view_data.html',
-                               tables=[data.to_html(classes='table', col_space=10)],
-                               titles=data.columns.values)
+                               columns=columns,
+                               rows=rows)
 
 
 @main.route("/download_data", methods=['POST'])
@@ -244,7 +274,11 @@ def download_template():
 @main.route('/')
 @login_required
 def index():
-    return render_template('index.html')
+    if 'distrib_name' not in session.keys():
+        return render_template('index_distrib.html')
+    else:
+        return render_template('index.html',
+                               distrib_name=str(session['distrib_name']))
 
 
 @main.route('/profile')

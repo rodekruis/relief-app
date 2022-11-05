@@ -3,6 +3,8 @@
 {% block content %}
 <div class="column is-4 is-offset-4">
   <div class="box">
+      <label class="label is-medium">{{ distrib_name }}</label>
+      <br>
     <form action="/upload_data" method="GET">
       <button class="button is-block is-info is-medium is-fullwidth">Add beneficiary data</button>
     </form>
@@ -22,6 +24,12 @@
    <form action="/download_data" method="POST">
       <button class="button is-block is-info is-medium is-fullwidth">Download beneficiary data</button>
     </form>
+    </div>
+
+    <div class="box">
+        <form action="/index_distrib" method="GET">
+          <button class="button is-block is-info is-medium is-fullwidth">Change distribution</button>
+        </form>
     </div>
 </div>
 {% endblock %}
