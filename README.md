@@ -17,7 +17,12 @@ To be added.
 1. [Create wireless access point](https://raspberrypi-guide.github.io/networking/create-wireless-access-point#start-up-the-wireless-access-point)
 2. Clone this repository
 ```
-$ git clone 
+$ git clone https://github.com/rodekruis/relief-app.git
+$ cd relief-app
+```
+3. Set offline mode in .env
+```
+$ echo -n "MODE=offline" > .env
 ```
 4. Run the app
 ```
