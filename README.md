@@ -31,3 +31,10 @@ $ sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
 $ pip install -r requirements.txt
 $ python app.py
 ```
+Debug connection issues (to be improved):
+```
+$ sudo systemctl stop hostapd
+$ sudo systemctl unmask hostapd
+$ sudo systemctl enable hostapd
+$ sudo systemctl start hostapd
+```
