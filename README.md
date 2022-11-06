@@ -11,7 +11,15 @@ Worflow: upload data of beneficiaries, start distribution, check if beneficiarie
 
 ## Setup
 
-To be added.
+### on Azure
+1. [Deploy the web app to Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/quickstart-python)
+3. Add necessary keys as environmental variables. From Azure Portal, App Service > Configuration > New application setting
+```
+SQL_USERNAME=...
+SQL_PASSWORD=...
+COSMOS_KEY=...
+MODE=online
+```
 
 ### on Raspberry Pi 4
 1. [Create wireless access point](https://raspberrypi-guide.github.io/networking/create-wireless-access-point#start-up-the-wireless-access-point)
@@ -30,4 +38,11 @@ $ sudo apt-get update
 $ sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
 $ pip install -r requirements.txt
 $ python app.py
+```
+Debug connection issues (to be improved):
+```
+$ sudo systemctl stop hostapd
+$ sudo systemctl unmask hostapd
+$ sudo systemctl enable hostapd
+$ sudo systemctl start hostapd
 ```
