@@ -4,10 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from models import Distribution
 from flask import current_app
-from main import query_items_by_partition_key, filter_by_distribution
+from utils import delete_beneficiary_data
 db = current_app.config['SQLALCHEMY_DATABASE']
-cosmos_db = current_app.config['COSMOS_DATABASE']
-cosmos_container = cosmos_db.get_container_client('Beneficiaries')
 distrib = Blueprint('distrib', __name__)
 
 
@@ -117,10 +115,7 @@ def delete_distrib():
     if 'distrib_id' in request.form.keys():
         session['distrib_id'] = request.form['distrib_id']
         # delete beneficiaries
-        item_list = query_items_by_partition_key(cosmos_container, current_user.email)
-        item_list = filter_by_distribution(item_list)
-        for item in item_list:
-            cosmos_container.delete_item(item=item['id'], partition_key=current_user.email)
+        delete_beneficiary_data(user_email=current_user.email, distrib_id=session['distrib_id'])
         # delete distribution
         distrib_to_delete = Distribution.query.filter_by(id=session['distrib_id']).first()
         db.session.delete(distrib_to_delete)
