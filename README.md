@@ -13,3 +13,10 @@ Worflow: upload data of beneficiaries, start distribution, check if beneficiarie
 
 To be added.
 
+### on Raspberry Pi 4
+```
+sudo apt-get update
+sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
+pip install -r requirements.txt
+flask run
+```
