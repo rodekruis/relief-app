@@ -18,5 +18,5 @@ To be added.
 $ sudo apt-get update
 $ sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
 $ pip install -r requirements.txt
-$ flask run
+$ python app.py
 ```
