@@ -14,6 +14,12 @@ Worflow: upload data of beneficiaries, start distribution, check if beneficiarie
 To be added.
 
 ### on Raspberry Pi 4
+1. [Create wireless access point](https://raspberrypi-guide.github.io/networking/create-wireless-access-point#start-up-the-wireless-access-point)
+2. Clone this repository
+```
+$ git clone 
+```
+4. Run the app
 ```
 $ sudo apt-get update
 $ sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
