@@ -1,11 +1,22 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from sqlalchemy import exc
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
+from sqlalchemy.exc import PendingRollbackError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
 from models import User
 from flask import current_app
 db = current_app.config['SQLALCHEMY_DATABASE']
 auth = Blueprint('auth', __name__)
+
+
+def check_connection():
+    check = False
+    for try_ in range(10):
+        if not check:
+            try:
+                _ = db.session.connection()
+                check = True
+            except PendingRollbackError:
+                db.session.rollback()
 
 
 @auth.route('/login')
@@ -15,14 +26,19 @@ def login():
 
 @auth.route('/login', methods=['POST'])
 def login_post():
+    check_connection()
+
     # login code goes here
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
 
     # check if connection still active
+    try:
+        user = User.query.filter_by(email=email).first()
+    except PendingRollbackError:
 
-    user = User.query.filter_by(email=email).first()
+
 
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
@@ -43,6 +59,8 @@ def signup():
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
+    check_connection()
+
     # code to validate and add user to database goes here
     email = request.form.get('email')
     name = request.form.get('name')

@@ -107,7 +107,7 @@ def save_beneficiary_data(data, distrib_id, user_email):
             'distrib_id': str(distrib_id)
         }
         for key in row.keys():
-            if key != 'id' and key != 'partitionKey' and key != 'distrib_id' and not key.startswith('_'):
+            if key != 'id' and key != 'partitionKey' and key != 'distrib_id':
                 body[key] = str(row[key])
         data_to_save.append(body)
 
