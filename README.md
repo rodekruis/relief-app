@@ -15,8 +15,8 @@ To be added.
 
 ### on Raspberry Pi 4
 ```
-sudo apt-get update
-sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
-pip install -r requirements.txt
-flask run
+$ sudo apt-get update
+$ sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
+$ pip install -r requirements.txt
+$ flask run
 ```
