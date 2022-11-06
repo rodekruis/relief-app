@@ -34,11 +34,7 @@ def login_post():
     remember = True if request.form.get('remember') else False
 
     # check if connection still active
-    try:
-        user = User.query.filter_by(email=email).first()
-    except PendingRollbackError:
-
-
+    user = User.query.filter_by(email=email).first()
 
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
