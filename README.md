@@ -24,7 +24,7 @@ $ cd relief-app
 ```
 $ echo -n "MODE=offline" > .env
 ```
-4. Run the app
+4. Install app dependencies and run it
 ```
 $ sudo apt-get update
 $ sudo apt-get install libatlas-base-dev libcblas-dev g++ unixodbc-dev
