@@ -1,18 +1,28 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
+import sys
 import azure.cosmos.cosmos_client as cosmos_client
 from flask_login import LoginManager, UserMixin
 from urllib import parse
 import os
 import secrets
+import webbrowser
+from threading import Timer
 from dotenv import load_dotenv
 load_dotenv()
-# Columns=27, Encoding=1252
+
+
+def open_browser():
+    webbrowser.open_new('http://127.0.0.1:5000/')
+
 
 def create_app():
-
-    application = Flask(__name__)
+    if getattr(sys, 'frozen', False):
+        template_folder = os.path.join(sys._MEIPASS, 'templates')
+        static_folder = os.path.join(sys._MEIPASS, 'static')
+        application = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+    else:
+        application = Flask(__name__)
 
     # connect to SQL database
     if os.getenv("MODE") == "online":
@@ -90,6 +100,7 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
+    Timer(1, open_browser).start()
     app.run(host='0.0.0.0', port=5000)
 else:
     app = create_app()
