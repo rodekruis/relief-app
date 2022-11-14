@@ -23,7 +23,7 @@ MODE=online
 
 ### build as standalone app
 ```
-pyinstaller --onefile --add-data 'templates;templates' --add-data 'static;static' --add-data 'data;data' --add-data './*.py;.' normal_flaskapp.py
+pyinstaller --onefile --add-data 'templates;templates' --add-data 'static;static' --add-data 'data;data' --add-data './*.py;.' app.py
 ```
 
 ### on Raspberry Pi 4
