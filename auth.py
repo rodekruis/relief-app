@@ -8,13 +8,14 @@ db = current_app.config['SQLALCHEMY_DATABASE']
 auth = Blueprint('auth', __name__)
 
 
-def check_connection():
+def check_login(email):
     check = False
-    for try_ in range(10):
+    for try_ in range(100):
         if not check:
             try:
-                _ = db.session.connection()
+                user = User.query.filter_by(email=email).first()
                 check = True
+                return user
             except PendingRollbackError:
                 db.session.rollback()
 
@@ -26,7 +27,6 @@ def login():
 
 @auth.route('/login', methods=['POST'])
 def login_post():
-    check_connection()
 
     # login code goes here
     email = request.form.get('email')
@@ -34,7 +34,7 @@ def login_post():
     remember = True if request.form.get('remember') else False
 
     # check if connection still active
-    user = User.query.filter_by(email=email).first()
+    user = check_login(email=email)
 
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
@@ -55,15 +55,13 @@ def signup():
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
-    check_connection()
 
     # code to validate and add user to database goes here
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
 
-    user = User.query.filter_by(
-        email=email).first()  # if this returns a user, then the email already exists in database
+    user = check_login(email=email)
 
     if user:  # if a user is found, we want to redirect back to signup page so user can try again
         flash('Email address already exists')
