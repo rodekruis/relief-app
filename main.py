@@ -144,7 +144,12 @@ def uploader():
             return render_template('duplicate_error.html')
         elif df == 'error':
             return render_template('upload_error.html')
-    columns, rows = pandas_to_html(df)
+    columns, rows = pandas_to_html(
+            df,
+            replace_values={"received_when": {"None": ""}},
+            replace_columns={"received_when": "received when"},
+            titlecase=True
+        )
     return render_template('view_data.html',
                            columns=columns,
                            rows=rows)
@@ -157,7 +162,12 @@ def view_data():
     if data is None:
         return render_template('no_data.html')
     else:
-        columns, rows = pandas_to_html(data)
+        columns, rows = pandas_to_html(
+            data,
+            replace_values={"received_when": {"None": ""}},
+            replace_columns={"received_when": "received when"},
+            titlecase=True
+        )
         return render_template('view_data.html',
                                columns=columns,
                                rows=rows)
@@ -171,7 +181,12 @@ def missing():
         return render_template('no_data.html')
     else:
         data = data[data['recipient'] == 'No']
-        columns, rows = pandas_to_html(data)
+        columns, rows = pandas_to_html(
+            data,
+            replace_values={"received_when": {"None": ""}},
+            replace_columns={"received_when": "received when"},
+            titlecase=True
+        )
         return render_template('view_data.html',
                                columns=columns,
                                rows=rows)
@@ -209,11 +224,21 @@ def download_template():
 @main.route('/')
 @login_required
 def index():
-    if 'distrib_name' not in session.keys():
+    if 'distrib_name' not in session.keys() or 'distrib_place' not in session.keys():
         return render_template('index_distrib.html')
     else:
+        data = get_beneficiary_data(user_email=current_user.email, distrib_id=session['distrib_id'])
+        number_beneficiaries, number_recipients = 0, 0
+        if data is not None:
+            number_beneficiaries = len(data)
+        if number_beneficiaries > 0 and 'recipient' in data.columns:
+            number_recipients = len(data[data['recipient'] == 'Yes'])
         return render_template('index.html',
-                               distrib_name=str(session['distrib_name']))
+                               distrib_name=str(session['distrib_name']),
+                               distrib_place=str(session['distrib_place']),
+                               distrib_date=str(session['distrib_date']),
+                               number_beneficiaries=number_beneficiaries,
+                               number_recipients=number_recipients)
 
 
 @main.route('/profile')

@@ -5,15 +5,35 @@
   <div class="box">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <div class="notification is-danger">
-            {{ messages[0] }}
-        </div>
+    <div class="notification is-danger">
+      {{ messages[0] }}
+    </div>
     {% endif %}
     {% endwith %}
     <form action="/create_distrib" method="POST">
       <div class="field">
         <div class="control">
           <input class="input is-medium" type="text" name="distrib_name" placeholder="Distribution name" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_place" placeholder="Location" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="date" name="distrib_date" placeholder="Date" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_items" placeholder="Items distributed" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_donor" placeholder="Donor" autofocus="">
         </div>
       </div>
       <button class="button is-block is-info is-medium is-fullwidth">Create</button>

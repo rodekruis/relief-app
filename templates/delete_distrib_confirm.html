@@ -7,14 +7,14 @@
     <label class="label is-medium">All beneficiary data associated with this distribution will be deleted.</label>
     <label class="label is-medium">Are you sure that you want to continue?</label>
     <br>
-  <form action="/delete_distrib" method="POST">
+    <form action="/delete_distrib" method="POST">
       <div class="control" hidden><input id="codeinput" class="input" type="text" name="distrib_id" value={{ distrib_id }}></div>
       <button class="button is-block is-info is-medium is-fullwidth">Yes</button>
     </form>
     <br>
-      <form action="/index_distrib" method="GET">
+    <form action="/index_distrib" method="GET">
       <button class="button is-block is-info is-medium is-fullwidth">No</button>
     </form>
-    </div>
+  </div>
 </div>
 {% endblock %}

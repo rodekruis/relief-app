@@ -51,6 +51,10 @@ def create_app():
         id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
         user_email = db.Column(db.String(100))
         name = db.Column(db.String(100))
+        place = db.Column(db.String(100))
+        date = db.Column(db.Date)
+        items = db.Column(db.String(100))
+        donor = db.Column(db.String(100))
 
     # connect to cosmos database
     if os.getenv("MODE") == "online":
@@ -67,6 +71,8 @@ def create_app():
         cosmos_db = client.get_database_client(settings['database_id'])
     elif os.getenv("MODE") == "offline":
         cosmos_db = 'json'
+    else:
+        cosmos_db = ''
 
     with application.app_context():
         db.create_all()

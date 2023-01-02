@@ -7,14 +7,14 @@
     <label class="label is-medium">1. The file must be an Excel Workbook (.xlsx) and have one column named "code" containing unique values</label>
     <label class="label is-medium">2. Previous beneficiary data will be overwritten</label>
     <br>
-  <form action="/uploader" method="POST" enctype="multipart/form-data">
-    <div class="field">
-      <div class="control">
-        <input class="input is-medium" type="file" name="file" />
+    <form action="/uploader" method="POST" enctype="multipart/form-data">
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="file" name="file" />
+        </div>
       </div>
-    </div>
-    <button class="button is-block is-info is-medium is-fullwidth">Upload data</button>
-  </form>
-    </div>
+      <button class="button is-block is-info is-medium is-fullwidth">Upload data</button>
+    </form>
+  </div>
 </div>
 {% endblock %}

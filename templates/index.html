@@ -3,33 +3,40 @@
 {% block content %}
 <div class="column is-4 is-offset-4">
   <div class="box">
-      <label class="label is-medium">{{ distrib_name }}</label>
-      <br>
+    <label class="label is-medium">Distribution: {{ distrib_name }}</label>
+    <label class="label is-small" style="font-size:100%">Location: {{ distrib_place }}</label>
+    <label class="label is-small" style="font-size:100%">Date: {{ distrib_date }}</label>
+    {% if number_beneficiaries > 0 %}
+    <label class="label is-small" style="font-size:100%">Beneficiaries served: {{ number_recipients }} / {{ number_beneficiaries }}</label>
+    {% else %}
+    <label class="label is-small" style="font-size:100%">No beneficiary data found</label>
+    {% endif %}
+    <br>
     <form action="/upload_data" method="GET">
       <button class="button is-block is-info is-medium is-fullwidth">Add beneficiary data</button>
     </form>
     <br>
-   <form action="/view_data" method="POST">
+    <form action="/view_data" method="POST">
       <button class="button is-block is-info is-medium is-fullwidth">View beneficiary data</button>
     </form>
     <br>
-   <form action="/choose_input_method" method="GET">
+    <form action="/choose_input_method" method="GET">
       <button class="button is-block is-info is-medium is-fullwidth">Start distribution</button>
     </form>
     <br>
-   <form action="/missing" method="POST">
+    <form action="/missing" method="POST">
       <button class="button is-block is-info is-medium is-fullwidth">Check who is missing</button>
     </form>
     <br>
-   <form action="/download_data" method="POST">
+    <form action="/download_data" method="POST">
       <button class="button is-block is-info is-medium is-fullwidth">Download beneficiary data</button>
     </form>
-    </div>
+  </div>
 
-    <div class="box">
-        <form action="/index_distrib" method="GET">
-          <button class="button is-block is-info is-medium is-fullwidth">Change distribution</button>
-        </form>
-    </div>
+  <div class="box">
+    <form action="/index_distrib" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Change distribution</button>
+    </form>
+  </div>
 </div>
 {% endblock %}

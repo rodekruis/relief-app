@@ -145,11 +145,13 @@ def filter_by_distribution(item_list, distrib_id):
     return item_list
 
 
-def pandas_to_html(df):
-    columns = df.columns.values
+def pandas_to_html(df, replace_values={}, replace_columns={}, titlecase=False):
+    df = df.replace(replace_values)
+    df = df.rename(columns=replace_columns)
+    if titlecase:
+        df.columns = [x.title() for x in df.columns]
+    columns = df.columns
     rows = []
     for ix, row in df.iterrows():
-        if str(row['received_when']) == "None":
-            row['received_when'] = ""
         rows.append(row.to_dict())
     return columns, rows

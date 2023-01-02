@@ -16,3 +16,7 @@ class Distribution(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     user_email = db.Column(db.String(100))
     name = db.Column(db.String(100))
+    place = db.Column(db.String(100))
+    date = db.Column(db.Date)
+    items = db.Column(db.String(100))
+    donor = db.Column(db.String(100))

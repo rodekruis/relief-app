@@ -1,15 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
- <div class="box">
-    {% for distrib_name, distrib_id in data.items() %}
-   <form action="/delete_distrib_confirm" method="POST">
-     <div class="control" hidden><input id="codeinput" class="input" type="text" name="distrib_id" value={{ distrib_id }}></div>
-      <button class="button is-block is-info is-medium is-fullwidth">{{ distrib_name }}</button>
-    </form>
-    <br>
+<div class="column">
+  <div class="box">
+    <div class="columns">
+      {% for column in columns %}
+      {% if column != 'Distrib_Id' %}
+      <div class="column">
+        <label class="label is-medium">{{ column }}</label>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% for row in rows %}
+    <div class="columns">
+      {% for column in columns %}
+      {% if column != 'Distrib_Id' %}
+      <div class="column">
+        {% if column == 'Name' %}
+        <form action="/delete_distrib_confirm" method="POST">
+          <div class="control" hidden>
+            <input id="select_distrib_id" class="input" type="text" name="distrib_id" value="{{ row['Distrib_Id'] }}">
+          </div>
+          <button class="button is-info is-small" style="font-size:100%">{{ row[column] }}</button>
+        </form>
+        {% else %}
+        <label class="label is-small" style="font-size:100%">{{ row[column] }}</label>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
     {% endfor %}
- </div>
+  </div>
 </div>
 {% endblock %}
