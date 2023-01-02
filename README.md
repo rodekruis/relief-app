@@ -21,6 +21,11 @@ COSMOS_KEY=...
 MODE=online
 ```
 
+### build as standalone app
+```
+pyinstaller --onefile --add-data 'templates;templates' --add-data 'static;static' --add-data 'data;data' --add-data './*.py;.' app.py
+```
+
 ### on Raspberry Pi 4
 1. [Create wireless access point](https://raspberrypi-guide.github.io/networking/create-wireless-access-point#start-up-the-wireless-access-point)
 2. Clone this repository
