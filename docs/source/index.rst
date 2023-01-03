@@ -8,11 +8,11 @@ easily available before, during and after the distribution.
 - **Easy** to use and **fast** to set up.
 - Works both **online** on multiple devices and **offline** on a single device.
 - Supports multiple, independent distributions at the same time.
-- Does **not** support deduplication of beneficiaries across distributions, i.e. does **not** check if a beneficiary is a recipient in a different distribution.
+- Does **not** support deduplication of beneficiaries across distributions, i.e. does **not** check if a beneficiary in a given distribution is a recipient in another one.
 - Does **not** support distribution of multiple, distinct items to each beneficiary.
 - Does **not** support role-based access control.
 
-Check out the :doc:`usage` section for further information, including
+Check out the :doc:`usage <usage>` section for further information, including
 how to :doc:`install <installation>` it yourself.
 
 .. note::
