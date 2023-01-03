@@ -7,11 +7,9 @@ Before the distribution
 1. **Sign up** with your email address and store your password safely.
 #. **Log in** with your credentials.
 #. Prepare the beneficiary list in `Microsoft Excel <https://www.microsoft.com/en-us/microsoft-365/excel>`_ (.xlsx). Exports from `KoboToolbox <https://www.kobotoolbox.org/>`_, a mobile data collection software, are natively supported.
-
   * The beneficiary list **must** contain a field/column named "code", which contains unique values for each beneficiary. In other words, each beneficiary must have a unique code.
 
   * The beneficiary list **can** contain any number and type of fields/columns. However, for visualization purposes, it is recommended to keep only the fields/columns needed to identify beneficiaries.
-
 #. Click **Create a new distribution** and fill in the required details.
 #. Click **Add beneficiary data** and upload your beneficiary list.
 #. Click **View beneficiary data** and verify that everything looks as expected.
