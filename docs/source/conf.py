@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'ReliefBox'
+copyright = '2023, 510 an Initiative of the Netherlands Red Cross'
+author = '510 an Initiative of the Netherlands Red Cross'
 
 release = '0.1'
 version = '0.1.0'

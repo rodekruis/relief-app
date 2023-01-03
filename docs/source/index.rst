@@ -1,21 +1,21 @@
 ReliefBox documentation
 ===================================
 
-**ReliefBox** is a tool for managing the distribution of relief items during humanitarian emergencies.
-Given a list of beneficiaries, ReliefBox tracks *who* received aid and *when*, and makes this information
+**ReliefBox** is a tool for managing the **distribution of relief items** during humanitarian emergencies.
+Given a list of beneficiaries, ReliefBox tracks **who received aid and when**, and makes this information
 easily available during and after the distribution.
 
 Main features:
-- *Easy* to use and *fast* to set up.
-- Works both *online* on multiple devices and *offline* on a single device.
-- Supports *multiple distributions* at the same time.
-- Does **not** support multiple items per beneficiary.
-- Does **not** support role-based access control.
+* **Easy** to use and **fast** to set up.
+* Works both **online** on multiple devices and **offline** on a single device.
+* Supports **multiple distributions** at the same time.
+* Does **not** support multiple items per beneficiary.
+* Does **not** support role-based access control.
 
-The intended use case is *one-off distributions*, i.e. each beneficiary receiving aid only once.
+The **intended use case** is **one-off distributions**, i.e. each beneficiary receiving aid only once.
 
 Check out the :doc:`usage` section for further information, including
-how to :doc:`install` it yourself.
+how to :doc:`installation` it yourself.
 
 .. note::
 
