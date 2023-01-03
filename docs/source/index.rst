@@ -1,17 +1,27 @@
-Welcome to Lumache's documentation!
+ReliefBox documentation
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**ReliefBox** is a tool for managing the distribution of relief items during humanitarian emergencies.
+Given a list of beneficiaries, ReliefBox tracks *who* received aid and *when*, and makes this information
+easily available during and after the distribution.
+
+Main features:
+- *Easy* to use and *fast* to set up.
+- Works both *online* on multiple devices and *offline* on a single device.
+- Supports *multiple distributions* at the same time.
+- Does **not** support multiple items per beneficiary.
+- Does **not** support role-based access control.
+
+The intended use case is *one-off distributions*, i.e. each beneficiary receiving aid only once.
 
 Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+how to :doc:`install` it yourself.
 
 .. note::
 
-   This project is under active development.
+   1. This project is under active development.
+   2. The software is provided "as is", without warranty of any kind, expressed or implied.
+   3. The developers do not guarantee support to users.
 
 Contents
 --------
@@ -19,4 +29,4 @@ Contents
 .. toctree::
 
    usage
-   api
+   installation
