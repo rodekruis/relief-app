@@ -109,7 +109,7 @@ def select_distrib():
     if 'distrib_id' in request.form.keys():
         distrib_ = Distribution.query.filter_by(
             user_email=current_user.email,
-            id=request.form['distrib_id']
+            id=int(float(request.form['distrib_id']))
         ).first()
         session[f'distrib_id'] = distrib_.id
         session[f'distrib_name'] = distrib_.name
