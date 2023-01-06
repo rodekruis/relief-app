@@ -1,12 +1,27 @@
-from flask import session, current_app
+from flask import session
 from flask_login import current_user
 import pandas as pd
 import azure.cosmos.exceptions as exceptions
 import os
+import azure.cosmos.cosmos_client as cosmos_client
 from dotenv import load_dotenv
 load_dotenv()
-cosmos_db = current_app.config['COSMOS_DATABASE']
 
+
+def get_cosmos_db():
+    settings = {
+        'host': os.environ.get('ACCOUNT_HOST', 'https://emergencycosmos.documents.azure.com:443/'),
+        'master_key': os.getenv('COSMOS_KEY'),
+        'database_id': os.environ.get('COSMOS_DATABASE', 'ReliefApp'),
+        'container_id': os.environ.get('COSMOS_CONTAINER', 'Beneficiaries'),
+    }
+    client = cosmos_client.CosmosClient(settings['host'],
+                                        {'masterKey': settings['master_key']},
+                                        user_agent="ReliefApp",
+                                        user_agent_overwrite=True)
+    return client.get_database_client(settings['database_id'])
+
+cosmos_db = get_cosmos_db()
 
 def get_local_data_path(user_email, distrib_id):
     data_dir = 'instance'

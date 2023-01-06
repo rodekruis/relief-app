@@ -1,15 +1,13 @@
 from flask import Blueprint, render_template
-from flask_login import login_required, current_user
+from flask_login import login_required, login_required, current_user
 from flask import Flask, render_template, Response, jsonify, request, send_file, session, url_for
 from utils import get_beneficiary_entry, get_beneficiary_data, save_beneficiary_data, delete_beneficiary_data, \
-    pandas_to_html, update_beneficiary_entry
-import azure.cosmos.exceptions as exceptions
+    pandas_to_html, update_beneficiary_entry, get_cosmos_db
 import os
 import pandas as pd
 from datetime import datetime
-from flask import current_app
 import logging
-cosmos_db = current_app.config['COSMOS_DATABASE']
+cosmos_db = get_cosmos_db()
 main = Blueprint('main', __name__)
 
 
@@ -225,7 +223,7 @@ def download_template():
 @login_required
 def index():
     if 'distrib_name' not in session.keys() or 'distrib_place' not in session.keys():
-        return render_template('index_distrib.html')
+        return render_template('index_distrib.html', email=current_user.email)
     else:
         data = get_beneficiary_data(user_email=current_user.email, distrib_id=session['distrib_id'])
         number_beneficiaries, number_recipients = 0, 0

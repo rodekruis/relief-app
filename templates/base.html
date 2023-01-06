@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 
+<script type="text/javascript" src="{{url_for('static', filename='navbar-burger.js')}}"></script>
+
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ReliefBox</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='bulmamin.css') }}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <style>
         #noteligible {
             background-color: #F53335 !important;
@@ -24,64 +25,50 @@
 <body>
 <section class="hero is-primary is-fullheight">
 
-  <div class="hero-head">
-    <nav class="navbar">
-      <div class="container">
-        <div id="navbarMenuHeroA" class="navbar-menu">
-          <!--                        <div class="navbar-start" hidden>-->
-          <!--                            <a class="navbar-brand"> Relief Information Management System</a>-->
-          <!--                        </div>-->
-          <div class="navbar-end" hidden>
-            <a href="{{ url_for('main.index') }}" class="navbar-item">
-              Main menu
-            </a>
-            <a href="{{ url_for('distrib.index_distrib') }}" class="navbar-item">
-              Distributions
-            </a>
-            <a href="https://reliefbox.readthedocs.io/" class="navbar-item">
-              Help
-            </a>
-            {% if not current_user.is_authenticated %}
-            <a href="{{ url_for('auth.login') }}" class="navbar-item">
-              Login
-            </a>
-            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
-              Sign Up
-            </a>
-            {% endif %}
-            {% if current_user.is_authenticated %}
-            <a href="{{ url_for('auth.logout') }}" class="navbar-item">
-              Logout
-            </a>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </nav>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+<!--    <a class="navbar-item">-->
+      <img src="{{url_for('static', filename='ReliefBox-horizontal.png')}}" width="220" height="30">
+<!--    </a>-->
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
   </div>
 
-  <div class="container has-text-centered">
-    <div class="column is-4 is-offset-4">
-      <div class="box">
-<!--        <label class="label is-large">-->
-<!--          <p>-->
-<!--          <img  width="150" height="200" src="{{url_for('static', filename='ReliefBox.PNG')}}">-->
-<!--          ReliefBox-->
-<!--          </p>-->
-<!--        </label>-->
-        <div class="columns is-mobile is-centered is-vcentered">
-          <div class="column">
-            <img src="{{url_for('static', filename='ReliefBox.PNG')}}" alt="">
-          </div>
-          <div class="column">
-            <label class="label is-large" style="font-size:200%">ReliefBox</label>
-            <label class="label is-small" style="font-size:90%">Red Cross Red Crescent toolbox for distributions</label>
-          </div>
-        </div>
-<!--        <label class="label is-small" style="font-size:100%">a Red Cross Red Crescent tool for distributions</label>-->
-      </div>
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a href="{{ url_for('main.index') }}"  class="navbar-item">
+        Home
+      </a>
+
+      <a href="{{ url_for('index_distrib') }}"  class="navbar-item">
+        Distributions
+      </a>
+
+      <a href="https://reliefbox.readthedocs.io/" class="navbar-item" target="_blank" rel="noopener noreferrer">
+        Documentation
+      </a>
+    </div>
+
+    <div class="navbar-end">
+      {% if not current_user.is_authenticated %}
+      <a href="{{ url_for('signup') }}" class="navbar-item">
+        Sign up
+      </a>
+      <a href="{{ url_for('login') }}" class="navbar-item">
+        Log in
+      </a>
+      {% else %}
+      <a href="{{ url_for('logout') }}" class="navbar-item">
+        Logout
+      </a>
+      {% endif %}
     </div>
   </div>
+</nav>
 
   <div class="hero-body">
     <div class="container has-text-centered">
@@ -96,8 +83,8 @@
         <div id="navbarMenuHeroA" class="navbar-menu">
           <div class="navbar-end" hidden>
             <div class="navbar-item">
-              Built with love by &nbsp;<a href="https://www.510.global/"> <img src="{{url_for('static', filename='logo.jpg')}}"></a>
-              &nbsp; See the project &nbsp;<a href="https://github.com/rodekruis/relief-app"> on GitHub</a>.
+              Built with love by &nbsp;<a href="https://www.510.global/"> <img src="{{url_for('static', filename='510logo.jpg')}}"></a>
+              &nbsp; <a href="https://github.com/rodekruis/relief-app"> see the project on GitHub</a>.
             </div>
           </div>
         </div>

@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container has-text-centered">
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <div class="columns is-mobile is-centered is-vcentered">
+                <div class="column">
+                    <img src="{{url_for('static', filename='ReliefBox.PNG')}}" alt="">
+                </div>
+                <div class="column">
+                    <label class="label is-large" style="font-size:200%">ReliefBox</label>
+                    <label class="label is-small" style="font-size:90%">a Red Cross Red Crescent toolbox for distributions</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="column is-4 is-offset-4">
     <div class="box">
         {% with messages = get_flashed_messages() %}
@@ -22,12 +38,12 @@
                     <input class="input is-medium" type="password" name="password" placeholder="Your Password">
                 </div>
             </div>
-            <div class="field">
-                <label class="checkbox">
-                    <input type="checkbox" name="remember">
-                    Remember me
-                </label>
-            </div>
+<!--            <div class="field">-->
+<!--                <label class="checkbox">-->
+<!--                    <input type="checkbox" name="remember">-->
+<!--                    Remember me-->
+<!--                </label>-->
+<!--            </div>-->
             <button class="button is-block is-info is-medium is-fullwidth">Login</button>
         </form>
 
