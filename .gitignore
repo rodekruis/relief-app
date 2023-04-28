@@ -10,7 +10,6 @@ __pycache__/
 *.xlsx
 *.csv
 *.pdf
-*.json
 
 # C extensions
 *.so
