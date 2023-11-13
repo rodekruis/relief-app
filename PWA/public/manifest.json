@@ -14,7 +14,7 @@
     }
   ],
   "start_url": "/index.html",
-  "scope": "relief-app/",
+  "scope": ".",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#00d1b2",
