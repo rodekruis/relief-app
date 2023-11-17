@@ -9,8 +9,7 @@ export class DeleteDistributionRequestHandler {
     async handleEvent(event) {
         try {
             const distributions = await Database.instance.readDistributions();
-            console.log(distributions);
-            return ResponseTools.replaceTemplateKeysWithValues(await fetch(RouteEvents.deleteDistribution), {
+            return ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(fetch(RouteEvents.deleteDistribution)), {
                 columns: Distribution.colums,
                 rows: distributions
             });

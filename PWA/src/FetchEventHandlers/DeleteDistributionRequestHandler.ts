@@ -12,10 +12,9 @@ export class DeleteDistributionRequestHandler implements FetchEventHandler {
 
   async handleEvent(event: FetchEvent): Promise<Response> {
     try {
-      const distributions: [Distribution] = await Database.instance.readDistributions()
-      console.log(distributions)
+      const distributions: [Distribution] = await Database.instance.readDistributions()      
       return ResponseTools.replaceTemplateKeysWithValues(
-        await fetch(RouteEvents.deleteDistribution), { 
+        await ResponseTools.wrapInHtmlTemplate(fetch(RouteEvents.deleteDistribution)), { 
         columns: Distribution.colums,
         rows: distributions
       })
