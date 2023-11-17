@@ -10,7 +10,7 @@ export class ResponseTools {
     }
     static async wrapInHtmlTemplate(routeEvent) {
         return this.replaceTemplateKeysWithValues(await this.cachedPage(RouteEvents.template), {
-            content: (await this.cachedPage(routeEvent)).text()
+            content: await (await this.cachedPage(routeEvent)).text()
         });
     }
     static async changeResponseText(oldResponse, responseTextChanger) {

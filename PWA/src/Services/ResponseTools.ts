@@ -15,7 +15,7 @@ export class ResponseTools {
 
   static async wrapInHtmlTemplate(routeEvent: RouteEvents): Promise<Response> {
     return this.replaceTemplateKeysWithValues(await this.cachedPage(RouteEvents.template) as Response, {
-      content: (await this.cachedPage(routeEvent)).text() 
+      content: await (await this.cachedPage(routeEvent)).text() 
     })
   }
 
