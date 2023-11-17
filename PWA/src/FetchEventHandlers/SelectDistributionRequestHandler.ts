@@ -17,7 +17,7 @@ export class SelectDistributionRequestHandler implements FetchEventHandler {
     const selectedDistribution = (await Database.instance.distributionsWithName(post.distrib_name))[0]
 
     return await ResponseTools.replaceTemplateKeysWithValues(
-        await fetch(RouteEvents.distributionsHome), {
+        await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
           "distrib_name": selectedDistribution.distrib_name,
           "distrib_place": selectedDistribution.distrib_place,
           "distrib_date": selectedDistribution.distrib_date,

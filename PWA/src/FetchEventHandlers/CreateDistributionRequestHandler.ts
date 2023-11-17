@@ -32,7 +32,7 @@ export class CreateDistributionRequestHandler implements FetchEventHandler {
       )
     } else {
       return await ResponseTools.replaceTemplateKeysWithValues(
-        await fetch(RouteEvents.distributionsHome), {
+        await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
           "distrib_name": distribution.distrib_name,
           "distrib_place": distribution.distrib_place,
           "distrib_date": distribution.distrib_date,

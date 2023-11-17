@@ -10,7 +10,7 @@ export class SelectDistributionRequestHandler {
     async handleEvent(event) {
         const post = await DeserialisationService.deserializeFormDataFromRequest(event.request);
         const selectedDistribution = (await Database.instance.distributionsWithName(post.distrib_name))[0];
-        return await ResponseTools.replaceTemplateKeysWithValues(await fetch(RouteEvents.distributionsHome), {
+        return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
             "distrib_name": selectedDistribution.distrib_name,
             "distrib_place": selectedDistribution.distrib_place,
             "distrib_date": selectedDistribution.distrib_date,

@@ -21,7 +21,7 @@ export class CreateDistributionRequestHandler {
             return ResponseTools.replaceTemplateKeysWithValues(await caches.match(RouteEvents.nameDistribution), { errorMessages: ["Specify the name, location and date of the distribution."] });
         }
         else {
-            return await ResponseTools.replaceTemplateKeysWithValues(await fetch(RouteEvents.distributionsHome), {
+            return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
                 "distrib_name": distribution.distrib_name,
                 "distrib_place": distribution.distrib_place,
                 "distrib_date": distribution.distrib_date,
