@@ -1,8 +1,8 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { ResponseTools } from "../Services/ResponseTools.js";
-import { Database } from "../Services/Database.js";
-import { DeserialisationService } from "../Services/DeserialisationService.js";
-import { BenificiaryInfoService } from "../Services/BenificiaryInfoService.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { ResponseTools } from "../ResponseTools.js";
+import { Database } from "../Database.js";
+import { DeserialisationService } from "../DeserialisationService.js";
+import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
 export class CreateDistributionRequestHandler {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postCreateDistribution);

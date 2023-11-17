@@ -1,11 +1,11 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { FetchEvent } from "../Interfaces/FetchEvent.js";
-import { FetchEventHandler } from "../Interfaces/FetchEventHandler.js";
-import { Distribution } from "../Models/Distribution.js";
-import { ResponseTools } from "../Services/ResponseTools.js";
-import { Database } from "../Services/Database.js";
-import { DeserialisationService } from "../Services/DeserialisationService.js";
-import { BenificiaryInfoService } from "../Services/BenificiaryInfoService.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { FetchEvent } from "../../Interfaces/FetchEvent.js";
+import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
+import { Distribution } from "../../Models/Distribution.js";
+import { ResponseTools } from "../ResponseTools.js";
+import { Database } from "../Database.js";
+import { DeserialisationService } from "../DeserialisationService.js";
+import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
 
 export class CreateDistributionRequestHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {

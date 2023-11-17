@@ -1,6 +1,6 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { Database } from "../Services/Database.js";
-import { DeserialisationService } from "../Services/DeserialisationService.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { Database } from "../Database.js";
+import { DeserialisationService } from "../DeserialisationService.js";
 export class DeleteDistributionPostHandler {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postDeleteDistribution);

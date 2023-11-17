@@ -1,9 +1,9 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { FetchEvent } from "../Interfaces/FetchEvent.js";
-import { FetchEventHandler } from "../Interfaces/FetchEventHandler.js";
-import { Database } from "../Services/Database.js";
-import { DeserialisationService } from "../Services/DeserialisationService.js";
-import { DeleteDistributionPost } from "../Models/DeleteDistributionPost.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { FetchEvent } from "../../Interfaces/FetchEvent.js";
+import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
+import { Database } from "../Database.js";
+import { DeserialisationService } from "../DeserialisationService.js";
+import { DeleteDistributionPost } from "../../Models/DeleteDistributionPost.js";
 
 export class DeleteDistributionPostHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {

@@ -1,7 +1,7 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { Distribution } from "../Models/Distribution.js";
-import { ResponseTools } from "../Services/ResponseTools.js";
-import { Database } from "../Services/Database.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { Distribution } from "../../Models/Distribution.js";
+import { ResponseTools } from "../ResponseTools.js";
+import { Database } from "../Database.js";
 export class DeleteDistributionRequestHandler {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.deleteDistribution);

@@ -1,6 +1,6 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { Database } from "../Services/Database.js";
-import { BenificiarySpreadSheetRowsDeserializationService } from "../Services/BenificiarySpreadSheetRowsDeserializationService.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { Database } from "../Database.js";
+import { BenificiarySpreadSheetRowsDeserializationService } from "../BenificiarySpreadSheetRowsDeserializationService.js";
 export class BeneficiaryDataUploadHandler {
     canHandleEvent(event) {
         return event.request.url.endsWith("/uploader");

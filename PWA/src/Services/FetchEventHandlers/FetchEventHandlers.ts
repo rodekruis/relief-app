@@ -1,5 +1,5 @@
-import { FetchEventHandler } from "../Interfaces/FetchEventHandler.js";
-import { FetchEvent } from "../Interfaces/FetchEvent.js";
+import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
+import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { CreateDistributionRequestHandler } from "./CreateDistributionRequestHandler.js";
 import { NameDistributionRequestHandler } from "./NameDistributionRequestHandler.js";
 import { ListDistributionRequestHandler } from "./ListDistributionRequestHandler.js";
@@ -8,7 +8,9 @@ import { DeleteDistributionRequestHandler } from "./DeleteDistributionRequestHan
 import { UploadDataHandler } from "./UploadDataHandler.js";
 import { BeneficiaryDataUploadHandler } from "./BeneficiaryDataUploadHandler.js"
 import { DeleteDistributionPostHandler } from "./DeleteDistributionPostHandler.js";
-import { ChooseBenificiaryCodeInputMethodHandler } from "./ChooseBenificiaryCodeInputMethodHandler.js";
+import { ChooseBenificiaryCodeInputMethodPageHandler } from "./ChooseBenificiaryCodeInputMethodPageHandler.js";
+import { SelectBenificiaryCodeInputMethodHandler } from "./SelectBenificiaryCodeInputMethodHandler.js";
+import { BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
 
 export class FetchEventHandlers implements FetchEventHandler {
   all: FetchEventHandler[] = [
@@ -20,7 +22,9 @@ export class FetchEventHandlers implements FetchEventHandler {
     new DeleteDistributionPostHandler(),
     new UploadDataHandler(),
     new BeneficiaryDataUploadHandler(),
-    new ChooseBenificiaryCodeInputMethodHandler()
+    new ChooseBenificiaryCodeInputMethodPageHandler(),
+    new SelectBenificiaryCodeInputMethodHandler(),
+    new BeneficiaryCodePostHandler()
   ];
 
   handlersForEvent(event: FetchEvent): FetchEventHandler[] {

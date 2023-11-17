@@ -1,5 +1,5 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { ResponseTools } from "../Services/ResponseTools.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { ResponseTools } from "../ResponseTools.js";
 export class NameDistributionRequestHandler {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.nameDistribution);

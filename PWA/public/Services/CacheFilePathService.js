@@ -1,12 +1,13 @@
-import { BeneficiaryDataUploadHandler } from "../FetchEventHandlers/BeneficiaryDataUploadHandler.js";
-import { ChooseBenificiaryCodeInputMethodHandler } from "../FetchEventHandlers/ChooseBenificiaryCodeInputMethodHandler.js";
-import { CreateDistributionRequestHandler } from "../FetchEventHandlers/CreateDistributionRequestHandler.js";
-import { DeleteDistributionPostHandler } from "../FetchEventHandlers/DeleteDistributionPostHandler.js";
-import { FetchEventHandlers } from "../FetchEventHandlers/FetchEventHandlers.js";
-import { ListDistributionRequestHandler } from "../FetchEventHandlers/ListDistributionRequestHandler.js";
-import { NameDistributionRequestHandler } from "../FetchEventHandlers/NameDistributionRequestHandler.js";
-import { SelectDistributionRequestHandler } from "../FetchEventHandlers/SelectDistributionRequestHandler.js";
-import { UploadDataHandler } from "../FetchEventHandlers/UploadDataHandler.js";
+import { BeneficiaryDataUploadHandler } from "./FetchEventHandlers/BeneficiaryDataUploadHandler.js";
+import { ChooseBenificiaryCodeInputMethodPageHandler } from "./FetchEventHandlers/ChooseBenificiaryCodeInputMethodPageHandler.js";
+import { CreateDistributionRequestHandler } from "./FetchEventHandlers/CreateDistributionRequestHandler.js";
+import { DeleteDistributionPostHandler } from "./FetchEventHandlers/DeleteDistributionPostHandler.js";
+import { FetchEventHandlers } from "./FetchEventHandlers/FetchEventHandlers.js";
+import { ListDistributionRequestHandler } from "./FetchEventHandlers/ListDistributionRequestHandler.js";
+import { NameDistributionRequestHandler } from "./FetchEventHandlers/NameDistributionRequestHandler.js";
+import { SelectBenificiaryCodeInputMethodHandler } from "./FetchEventHandlers/SelectBenificiaryCodeInputMethodHandler.js";
+import { SelectDistributionRequestHandler } from "./FetchEventHandlers/SelectDistributionRequestHandler.js";
+import { UploadDataHandler } from "./FetchEventHandlers/UploadDataHandler.js";
 import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
 import { DeleteDistributionPost } from "../Models/DeleteDistributionPost.js";
 import { Distribution } from "../Models/Distribution.js";
@@ -17,6 +18,8 @@ import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator.js";
 import { Database } from "./Database.js";
 import { DeserialisationService } from "./DeserialisationService.js";
 import { FormParser } from "./FormParser.js";
+import { BeneficiaryCodePostHandler } from "./FetchEventHandlers/BeneficiaryCodePostHandler.js";
+import { BeneficiaryCodeInputMethodPost } from "../Models/BeneficiaryCodeInputMethodPost.js";
 export class CacheFilePathService {
     pathsOfFilesToCache() {
         return [
@@ -41,7 +44,10 @@ export class CacheFilePathService {
             RouteEvents.deleteDistribution,
             RouteEvents.uploadData,
             RouteEvents.uploadDataError,
-            RouteEvents.chooseBenificiaryCodeInputMethodPage
+            RouteEvents.chooseBenificiaryCodeInputMethodPage,
+            RouteEvents.codeInputUsingCamera,
+            RouteEvents.codeinputUsingTextField,
+            RouteEvents.codeInputNotFound,
         ];
     }
     toplevelScriptsPaths() {
@@ -64,6 +70,7 @@ export class CacheFilePathService {
             Distribution.name,
             DeleteDistributionPost.name,
             SelectDistributionPost.name,
+            BeneficiaryCodeInputMethodPost.name
         ]);
     }
     servicePaths() {
@@ -77,7 +84,7 @@ export class CacheFilePathService {
         ]);
     }
     fetchEventHanderPaths() {
-        return this.pathsForTypesInFolder("FetchEventHandlers", [
+        return this.pathsForTypesInFolder("Services/FetchEventHandlers", [
             BeneficiaryDataUploadHandler.name,
             CreateDistributionRequestHandler.name,
             DeleteDistributionPostHandler.name,
@@ -86,7 +93,9 @@ export class CacheFilePathService {
             NameDistributionRequestHandler.name,
             SelectDistributionRequestHandler.name,
             UploadDataHandler.name,
-            ChooseBenificiaryCodeInputMethodHandler.name
+            ChooseBenificiaryCodeInputMethodPageHandler.name,
+            SelectBenificiaryCodeInputMethodHandler.name,
+            BeneficiaryCodePostHandler.name,
         ]);
     }
     interfacesPaths() {

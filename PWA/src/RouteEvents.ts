@@ -8,6 +8,9 @@ export class RouteEvents {
     static uploadDataError = "/upload_error.html"
     static template = "/template.html"
     static chooseBenificiaryCodeInputMethodPage = "/choose_input_method.html"
+    static codeInputUsingCamera = "/input_video.html"
+    static codeinputUsingTextField = "/input.html"
+    static codeInputNotFound = "/entry_not_found.html"
 
     //Non page route events
     static postCreateDistribution = "/create_distrib"
@@ -15,4 +18,6 @@ export class RouteEvents {
     static postDeleteDistribution = "/delete_distrib_confirm"
     static listDistributionsFormAction = "/distrib?"
     static chooseBenificiaryCodeInputMethod = "/choose_input_method?"
+    static selectBenificiaryCodeInputMethod = "/save_input_method"
+    static checkBenificiaryCodeInputMethod = "/entry?"
   }

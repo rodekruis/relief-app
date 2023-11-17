@@ -1,4 +1,4 @@
-import { FetchEventHandlers } from "./FetchEventHandlers/FetchEventHandlers.js";
+import { FetchEventHandlers } from "./Services/FetchEventHandlers/FetchEventHandlers.js";
 import { CacheFilePathService } from "./Services/CacheFilePathService.js";
 var CACHE_STATIC_NAME = "static-v10";
 var CACHE_DYNAMIC_NAME = "dynamic-v2";
@@ -11,6 +11,7 @@ self.addEventListener("install", function (event) {
         cache.addAll([
             "/",
             "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css",
+            "https://unpkg.com/@zxing/library@latest/umd/index.min.js",
             "/favicon.ico",
             "/manifest.json",
             "/images/ReliefBox-horizontal-nobackground.png",

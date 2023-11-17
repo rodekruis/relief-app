@@ -6,7 +6,9 @@ import { DeleteDistributionRequestHandler } from "./DeleteDistributionRequestHan
 import { UploadDataHandler } from "./UploadDataHandler.js";
 import { BeneficiaryDataUploadHandler } from "./BeneficiaryDataUploadHandler.js";
 import { DeleteDistributionPostHandler } from "./DeleteDistributionPostHandler.js";
-import { ChooseBenificiaryCodeInputMethodHandler } from "./ChooseBenificiaryCodeInputMethodHandler.js";
+import { ChooseBenificiaryCodeInputMethodPageHandler } from "./ChooseBenificiaryCodeInputMethodPageHandler.js";
+import { SelectBenificiaryCodeInputMethodHandler } from "./SelectBenificiaryCodeInputMethodHandler.js";
+import { BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
 export class FetchEventHandlers {
     constructor() {
         this.all = [
@@ -18,7 +20,9 @@ export class FetchEventHandlers {
             new DeleteDistributionPostHandler(),
             new UploadDataHandler(),
             new BeneficiaryDataUploadHandler(),
-            new ChooseBenificiaryCodeInputMethodHandler()
+            new ChooseBenificiaryCodeInputMethodPageHandler(),
+            new SelectBenificiaryCodeInputMethodHandler(),
+            new BeneficiaryCodePostHandler()
         ];
     }
     handlersForEvent(event) {

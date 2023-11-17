@@ -47,6 +47,7 @@ class Database {
     async readDistributions() {
         return this.getElement(ObjectStoreName.distribution);
     }
+    //Todo: we should be able to make this non plural because of uniquenesss
     async distributionsWithName(name) {
         const distributions = await this.readDistributions();
         return distributions.filter((distribution) => distribution.distrib_name == name);

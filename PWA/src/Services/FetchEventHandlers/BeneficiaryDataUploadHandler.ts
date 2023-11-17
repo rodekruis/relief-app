@@ -1,8 +1,8 @@
-import { RouteEvents } from "../RouteEvents.js";
-import { FetchEvent } from "../Interfaces/FetchEvent.js";
-import { FetchEventHandler } from "../Interfaces/FetchEventHandler.js";
-import { Database } from "../Services/Database.js";
-import { BenificiarySpreadSheetRowsDeserializationService } from "../Services/BenificiarySpreadSheetRowsDeserializationService.js";
+import { RouteEvents } from "../../RouteEvents.js";
+import { FetchEvent } from "../../Interfaces/FetchEvent.js";
+import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
+import { Database } from "../Database.js";
+import { BenificiarySpreadSheetRowsDeserializationService } from "../BenificiarySpreadSheetRowsDeserializationService.js";
 
 export class BeneficiaryDataUploadHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {

@@ -1,4 +1,4 @@
-import { RouteEvents } from "../RouteEvents.js";
+import { RouteEvents } from "../../RouteEvents.js";
 export class UploadDataHandler {
     canHandleEvent(event) {
         return event.request.url.endsWith("/upload_data?");
