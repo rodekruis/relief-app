@@ -1,7 +1,7 @@
 ReliefBox documentation
 ===================================
 
-**ReliefBox** is a tool for managing the **distribution of relief items** during humanitarian emergencies.
+[**ReliefBox**](https://relief-system-webapp.azurewebsites.net) is a tool for managing the **distribution of relief items** during humanitarian emergencies.
 Given a list of beneficiaries, ReliefBox tracks **who received aid and when**, and makes this information
 easily available before, during and after the distribution.
 
