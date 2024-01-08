@@ -1,5 +1,6 @@
 Usage
 =====
+Go to `ReliefBox <https://relief-system-webapp.azurewebsites.net>`_.
 
 Before the distribution
 ----------------
