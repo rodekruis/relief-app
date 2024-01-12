@@ -20,8 +20,9 @@ import { DeserialisationService } from "./DeserialisationService.js";
 import { FormParser } from "./FormParser.js";
 import { BeneficiaryCodePostHandler } from "./FetchEventHandlers/BeneficiaryCodePostHandler.js";
 import { BeneficiaryCodeInputMethodPost } from "../Models/BeneficiaryCodeInputMethodPost.js";
+import { ActiveSession } from "../SessionState/ActiveSession.js";
 
-
+// Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
   pathsOfFilesToCache(): string[] {
       return [
@@ -31,7 +32,8 @@ export class CacheFilePathService {
         this.fetchEventHanderPaths(),
         this.interfacesPaths(),
         this.externalLibrariesPaths(),
-        this.servicePaths()
+        this.servicePaths(),
+        this.sessionStatePaths()
     ].reduce((previousArray, currentValue) => {
         return previousArray.concat(currentValue)
     }, [])
@@ -89,6 +91,12 @@ export class CacheFilePathService {
         DeserialisationService.name,
         FormParser.name,
       ])
+  }
+
+  private sessionStatePaths(): string[] {
+    return this.pathsForTypesInFolder("Services", [
+      ActiveSession.name
+    ])
   }
 
   private fetchEventHanderPaths(): string[] {

@@ -16,7 +16,7 @@ export class BenificiaryJsonValidator {
         return Object.values(json);
     }
     static rowHasCodeColumn(jsonRow) {
-        return Object.keys(jsonRow)
-            .indexOf("code") > -1;
+        return jsonRow
+            .indexOf("code") != -1;
     }
 }

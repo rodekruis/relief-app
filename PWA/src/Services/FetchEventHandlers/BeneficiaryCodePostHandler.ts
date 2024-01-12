@@ -4,7 +4,7 @@ import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { Database } from "../Database.js";
 import { BenificiarySpreadSheetRowsDeserializationService } from "../BenificiarySpreadSheetRowsDeserializationService.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { ActiveSession } from "../ActiveSession.js";
+import { ActiveSession } from "../../SessionState/ActiveSession.js";
 
 /*
 @main.route('/entry', methods=['POST', 'GET'])
@@ -48,8 +48,7 @@ export class BeneficiaryCodePostHandler implements FetchEventHandler {
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
-    todo continue here
-    if(this.isBenificiaryCodePartOfCurrentDistribution(this.beneficiaryCodeFromRequest(event.request))) {
+    if(await this.isBenificiaryCodePartOfCurrentDistribution(this.beneficiaryCodeFromRequest(event.request))) {
         return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputNotFound)
     } else {
         return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputNotFound)

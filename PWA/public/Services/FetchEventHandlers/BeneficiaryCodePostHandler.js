@@ -1,7 +1,7 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { Database } from "../Database.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { ActiveSession } from "../ActiveSession.js";
+import { ActiveSession } from "../../SessionState/ActiveSession.js";
 /*
 @main.route('/entry', methods=['POST', 'GET'])
 @login_required
@@ -42,9 +42,7 @@ export class BeneficiaryCodePostHandler {
         return event.request.url.includes(RouteEvents.checkBenificiaryCodeInputMethod);
     }
     async handleEvent(event) {
-        todo;
-        continue here;
-        if (this.isBenificiaryCodePartOfCurrentDistribution(this.beneficiaryCodeFromRequest(event.request))) {
+        if (await this.isBenificiaryCodePartOfCurrentDistribution(this.beneficiaryCodeFromRequest(event.request))) {
             return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputNotFound);
         }
         else {

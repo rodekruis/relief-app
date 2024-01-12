@@ -84,6 +84,7 @@ export class Database {
   async benificiariesForDistribution(
     distribution: Distribution
   ): Promise<BenificiarySpreadSheetRow[]> {
+    // no link to distribution yet
     return this.getElement(ObjectStoreName.benificiary);
   }
 

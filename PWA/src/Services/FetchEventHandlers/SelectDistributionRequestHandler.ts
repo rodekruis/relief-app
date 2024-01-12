@@ -6,7 +6,7 @@ import { ResponseTools } from "../ResponseTools.js";
 import { Database } from "../Database.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
-import { ActiveSession } from "../ActiveSession.js";
+import { ActiveSession } from "../../SessionState/ActiveSession.js";
 
 export class SelectDistributionRequestHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {

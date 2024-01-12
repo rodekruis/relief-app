@@ -59,6 +59,7 @@ class Database {
         return this.removeElement(ObjectStoreName.distribution, await this.keyForDistributionWithName(name));
     }
     async benificiariesForDistribution(distribution) {
+        // no link to distribution yet
         return this.getElement(ObjectStoreName.benificiary);
     }
     async addBenificiary(beneficiary) {
