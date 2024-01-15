@@ -4,6 +4,10 @@ import { DeserialisationService } from "../DeserialisationService.js";
 import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
 import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 export class SelectDistributionRequestHandler extends ActiveSessionContainer {
+    constructor() {
+        super(...arguments);
+        this.benificiaryInfoService = new BenificiaryInfoService(this.activeSession.database);
+    }
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postSelectDistribution);
     }
@@ -16,7 +20,7 @@ export class SelectDistributionRequestHandler extends ActiveSessionContainer {
                 "distrib_name": selectedDistribution.distrib_name,
                 "distrib_place": selectedDistribution.distrib_place,
                 "distrib_date": selectedDistribution.distrib_date,
-                beneficiary_info: await BenificiaryInfoService.benificiaryInfoTextFromDistribution(selectedDistribution)
+                beneficiary_info: await this.benificiaryInfoService.benificiaryInfoTextFromDistribution(selectedDistribution)
             });
         }
         else {

@@ -5,10 +5,10 @@ import { indexedDB } from "fake-indexeddb"
 
 describe('BeneficiaryEligilityService', () => {
     const sut = new Database(indexedDB)
+    const distributionName = "UniqueDistributionName"
+    const distribution = new Distribution("items", "date", "location", distributionName)
 
     test("Added distribution can be retrieved", async () => {
-        const distributionName = "UniqueDistributionName"
-        const distribution = new Distribution("items", "date", "location", distributionName)
 
         await sut.addDistribution(distribution)
         const receivedDistribution: any = await sut.distributionWithName(distributionName)
@@ -16,5 +16,9 @@ describe('BeneficiaryEligilityService', () => {
         expect(
             receivedDistribution.distrib_name
         ).toEqual(distributionName)
+    })
+
+    test(`Added distributionBeneficiaries can be retrieved`, async () => {
+        // await sut.addBeneficiaryToDistribution()
     })
  });

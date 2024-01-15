@@ -1,4 +1,4 @@
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
+import { Beneficiary } from "../Models/Beneficiary.js";
 import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator.js";
 import { FormParser } from "./FormParser.js";
 import { SpreadSheetFileParser } from "./SpreadSheetFileParser.js";
@@ -12,7 +12,7 @@ export class BenificiarySpreadSheetRowsDeserializationService {
                     const rows = this.rowsFromJson(json)
                         .map((row) => this.commaSeparatedValuesFromJsonRow(row))
                         .map((commaSeparatedRowValues) => {
-                        return new BenificiarySpreadSheetRow(commaSeparatedRowValues);
+                        return new Beneficiary(commaSeparatedRowValues);
                     });
                     return resolve(rows);
                 }

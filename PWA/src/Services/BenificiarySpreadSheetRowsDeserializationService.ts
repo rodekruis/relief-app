@@ -1,4 +1,4 @@
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
+import { Beneficiary } from "../Models/Beneficiary.js";
 import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator.js";
 import { FormParser } from "./FormParser.js";
 import { SpreadSheetFileParser } from "./SpreadSheetFileParser.js";
@@ -6,18 +6,18 @@ import { SpreadSheetFileParser } from "./SpreadSheetFileParser.js";
 export class BenificiarySpreadSheetRowsDeserializationService {
   static async deserializeFormDataFromRequest(
     request: Request
-  ): Promise<BenificiarySpreadSheetRow[]> {
-    return new Promise<BenificiarySpreadSheetRow[]>(async (resolve, reject) => {
+  ): Promise<Beneficiary[]> {
+    return new Promise<Beneficiary[]>(async (resolve, reject) => {
         const possibleFile = FormParser.firstFileFromFormData(await request.formData());
           if (possibleFile instanceof File) {
             const json = await SpreadSheetFileParser.jsonFromSpreadSheetFile(
               possibleFile
             );
             if (BenificiaryJsonValidator.isValidBenificiaryJson(json)) {
-                const rows: BenificiarySpreadSheetRow[] = this.rowsFromJson(json)
+                const rows: Beneficiary[] = this.rowsFromJson(json)
                 .map((row: any) => this.commaSeparatedValuesFromJsonRow(row))
                 .map((commaSeparatedRowValues: string) => {
-                    return new BenificiarySpreadSheetRow(commaSeparatedRowValues)
+                    return new Beneficiary(commaSeparatedRowValues)
                 }
                 )
               return resolve(rows)

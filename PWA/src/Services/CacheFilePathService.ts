@@ -8,7 +8,7 @@ import { NameDistributionRequestHandler } from "./FetchEventHandlers/NameDistrib
 import { SelectBenificiaryCodeInputMethodHandler } from "./FetchEventHandlers/SelectBenificiaryCodeInputMethodHandler.js";
 import { SelectDistributionRequestHandler } from "./FetchEventHandlers/SelectDistributionRequestHandler.js";
 import { UploadDataHandler } from "./FetchEventHandlers/UploadDataHandler.js";
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
+import { Beneficiary } from "../Models/Beneficiary.js";
 import { DeleteDistributionPost } from "../Models/DeleteDistributionPost.js";
 import { Distribution } from "../Models/Distribution.js";
 import { SelectDistributionPost } from "../Models/SelectDistributionPost.js";
@@ -75,7 +75,7 @@ export class CacheFilePathService {
 
   private modelPaths(): string[] {
     return this.pathsForTypesInFolder("Models", [
-      BenificiarySpreadSheetRow.name,
+      Beneficiary.name,
       Distribution.name,
       DeleteDistributionPost.name,
       SelectDistributionPost.name,

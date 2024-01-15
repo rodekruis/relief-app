@@ -1,12 +1,17 @@
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow";
+import { Beneficiary } from "../Models/Beneficiary";
 import { Distribution } from "../Models/Distribution";
 let db;
 export var ObjectStoreName;
 (function (ObjectStoreName) {
     ObjectStoreName["distribution"] = "Distributions";
-    ObjectStoreName["benificiary"] = "Beneficiaries";
+    ObjectStoreName["benificiary"] = "Benefeciaries";
+    ObjectStoreName["distributionBeneficiaries"] = "DistributionBeneficiary";
 })(ObjectStoreName || (ObjectStoreName = {}));
-const allObjectStoreNames = [ObjectStoreName.benificiary, ObjectStoreName.distribution];
+const allObjectStoreNames = [
+    ObjectStoreName.benificiary,
+    ObjectStoreName.distribution,
+    ObjectStoreName.distributionBeneficiaries
+];
 function columnsForObjectStore(objectStore) {
     switch (objectStore) {
         case ObjectStoreName.distribution:
@@ -14,11 +19,17 @@ function columnsForObjectStore(objectStore) {
                 { name: "distrib_name", isUnique: true },
                 { name: "distrib_place", isUnique: false },
                 { name: "distrib_date", isUnique: false },
-                { name: "distrib_items", isUnique: false }
+                { name: "distrib_items", isUnique: false },
             ];
         case ObjectStoreName.benificiary:
             return [
-                { name: "comma_separated_cells", isUnique: true }
+                { name: "code", isUnique: true },
+                { name: "comma_separated_cells", isUnique: false }
+            ];
+        case ObjectStoreName.distributionBeneficiaries:
+            return [
+                { name: "distributionName", isUnique: false },
+                { name: "beneficiaryCode", isUnique: false }
             ];
     }
 }
@@ -43,7 +54,7 @@ export class Database {
         };
         //Temporarily seed for debuging purposes
         this.addDistribution(new Distribution("24", "1/2/3", "Utrecht", "Sandwhiches"));
-        this.addBenificiary(new BenificiarySpreadSheetRow("one, two, three"));
+        this.addBenificiary(new Beneficiary("123", "one, two, three"));
     }
     async readDistributions() {
         return this.getElement(ObjectStoreName.distribution);
@@ -71,6 +82,8 @@ export class Database {
     }
     async addBenificiary(beneficiary) {
         return this.addElement(ObjectStoreName.benificiary, beneficiary);
+    }
+    async addBeneficiaryToDistribution(beneficiary, distribution) {
     }
     async keyForDistributionWithName(name) {
         const distributions = await this.readDistributions();

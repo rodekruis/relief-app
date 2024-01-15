@@ -1,40 +1,51 @@
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow";
+import { Beneficiary } from "../Models/Beneficiary";
 import { Distribution } from "../Models/Distribution";
 
-let db: IDBDatabase
+let db: IDBDatabase;
 
 export enum ObjectStoreName {
-    distribution = "Distributions",
-    benificiary = "Beneficiaries"
+  distribution = "Distributions",
+  benificiary = "Benefeciaries",
+  distributionBeneficiaries = "DistributionBeneficiary",
 }
-const allObjectStoreNames = [ObjectStoreName.benificiary, ObjectStoreName.distribution]
+const allObjectStoreNames = [
+  ObjectStoreName.benificiary,
+  ObjectStoreName.distribution,
+  ObjectStoreName.distributionBeneficiaries
+];
 
 type DatabaseColumn = {
-    name: string;
-    isUnique: boolean
+  name: string;
+  isUnique: boolean;
 };
 
 function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
-    switch (objectStore) {
-        case ObjectStoreName.distribution:
-            return [
-                { name: "distrib_name", isUnique: true },
-                { name: "distrib_place", isUnique: false },
-                { name: "distrib_date", isUnique: false },
-                { name: "distrib_items", isUnique: false }
-            ]
-            case ObjectStoreName.benificiary:
-                return [
-                  { name: "comma_separated_cells", isUnique: true }
-                ]
-    }
+  switch (objectStore) {
+    case ObjectStoreName.distribution:
+      return [
+        { name: "distrib_name", isUnique: true },
+        { name: "distrib_place", isUnique: false },
+        { name: "distrib_date", isUnique: false },
+        { name: "distrib_items", isUnique: false },
+      ];
+    case ObjectStoreName.benificiary:
+      return [
+        { name: "code", isUnique: true },
+        { name: "comma_separated_cells", isUnique: false }
+      ];
+    case ObjectStoreName.distributionBeneficiaries:
+      return [
+        { name: "distributionName", isUnique: false },
+        { name: "beneficiaryCode", isUnique: false }
+      ];
+  }
 }
 
 export class Database {
-  databaseFactory: IDBFactory
+  databaseFactory: IDBFactory;
 
   constructor(databaseFactory: IDBFactory) {
-    this.databaseFactory = databaseFactory
+    this.databaseFactory = databaseFactory;
     let db!: IDBDatabase;
     const request = databaseFactory.open("data", 1);
     request.onerror = (err) =>
@@ -55,8 +66,10 @@ export class Database {
       });
     };
     //Temporarily seed for debuging purposes
-    this.addDistribution(new Distribution("24", "1/2/3", "Utrecht", "Sandwhiches"))
-    this.addBenificiary(new BenificiarySpreadSheetRow("one, two, three"))
+    this.addDistribution(
+      new Distribution("24", "1/2/3", "Utrecht", "Sandwhiches")
+    );
+    this.addBenificiary(new Beneficiary("123", "one, two, three"));
   }
 
   async readDistributions(): Promise<[Distribution]> {
@@ -64,15 +77,15 @@ export class Database {
   }
 
   //Todo: we should be able to make this non plural because of uniquenesss
-  async distributionWithName(name: string): Promise<Distribution|undefined> {
+  async distributionWithName(name: string): Promise<Distribution | undefined> {
     const distributions = await this.readDistributions();
     const foundDistributions = distributions.filter(
       (distribution) => distribution.distrib_name == name
-    )
+    );
     if (foundDistributions.length > 0) {
-      return foundDistributions[0]
+      return foundDistributions[0];
     } else {
-      return undefined
+      return undefined;
     }
   }
 
@@ -89,29 +102,33 @@ export class Database {
 
   async benificiariesForDistribution(
     distribution: Distribution
-  ): Promise<BenificiarySpreadSheetRow[]> {
+  ): Promise<Beneficiary[]> {
     // no link to distribution yet
     return this.getElement(ObjectStoreName.benificiary);
   }
 
-  async addBenificiary(beneficiary: BenificiarySpreadSheetRow): Promise<void> {
-    return this.addElement(ObjectStoreName.benificiary, beneficiary)
+  async addBenificiary(beneficiary: Beneficiary): Promise<void> {
+    return this.addElement(ObjectStoreName.benificiary, beneficiary);
+  }
+
+  async addBeneficiaryToDistribution(beneficiary: Beneficiary, distribution: Distribution): Promise<void> {
+
   }
 
   private async keyForDistributionWithName(name: string): Promise<IDBValidKey> {
     const distributions = await this.readDistributions();
     const keys: number[] = await this.performRequestForObjectStoreNamed(
-        ObjectStoreName.distribution,
-        "readonly",
-        (store: IDBObjectStore) => {
-            return store.getAllKeys()
-        }
-    )
-    let distributionIndex = 0
+      ObjectStoreName.distribution,
+      "readonly",
+      (store: IDBObjectStore) => {
+        return store.getAllKeys();
+      }
+    );
+    let distributionIndex = 0;
     for (let i = 0; i < distributions.length; i++) {
       if (distributions[i].distrib_name == name) {
-        distributionIndex = i
-        break
+        distributionIndex = i;
+        break;
       }
     }
 
@@ -131,7 +148,10 @@ export class Database {
     );
   }
 
-  private addElement(storeName: ObjectStoreName, payload: object): Promise<void> {
+  private addElement(
+    storeName: ObjectStoreName,
+    payload: object
+  ): Promise<void> {
     return this.performRequestForObjectStoreNamed(
       storeName,
       "readwrite",
@@ -142,15 +162,18 @@ export class Database {
     );
   }
 
-  private removeElement(storeName: ObjectStoreName, key: IDBValidKey | IDBKeyRange) {
+  private removeElement(
+    storeName: ObjectStoreName,
+    key: IDBValidKey | IDBKeyRange
+  ) {
     console.log("Will remove element " + key + " from store " + storeName);
     return this.performRequestForObjectStoreNamed(
-        storeName,
-        "readwrite",
-        (store: IDBObjectStore) => {
-            return key === "all" ? store.clear() : store.delete(key)
-        }
-      );
+      storeName,
+      "readwrite",
+      (store: IDBObjectStore) => {
+        return key === "all" ? store.clear() : store.delete(key);
+      }
+    );
   }
 
   private performRequestForObjectStoreNamed<T>(

@@ -8,6 +8,8 @@ import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
 import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 
 export class CreateDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
+  benificiaryInfoService = new BenificiaryInfoService(this.activeSession.database)
+
   canHandleEvent(event: FetchEvent): boolean {
     return event.request.url.endsWith(RouteEvents.postCreateDistribution);
   }
@@ -36,7 +38,7 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer imp
           "distrib_name": distribution.distrib_name,
           "distrib_place": distribution.distrib_place,
           "distrib_date": distribution.distrib_date,
-          beneficiary_info: await BenificiaryInfoService.benificiaryInfoTextFromDistribution(distribution)
+          beneficiary_info: await this.benificiaryInfoService.benificiaryInfoTextFromDistribution(distribution)
         }
       )
     }
