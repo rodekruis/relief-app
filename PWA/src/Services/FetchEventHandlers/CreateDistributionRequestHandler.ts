@@ -3,11 +3,11 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { Distribution } from "../../Models/Distribution.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { Database } from "../Database.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
+import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 
-export class CreateDistributionRequestHandler implements FetchEventHandler {
+export class CreateDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
     return event.request.url.endsWith(RouteEvents.postCreateDistribution);
   }
@@ -16,7 +16,7 @@ export class CreateDistributionRequestHandler implements FetchEventHandler {
     const distribution: Distribution = await DeserialisationService.deserializeFormDataFromRequest(event.request)
 
     try {
-      await Database.instance.addDistribution(distribution)
+      await this.activeSession.database.addDistribution(distribution)
     } catch {
       console.log("something went wrong")
     }

@@ -1,5 +1,7 @@
 import { FetchEventHandlers } from "./Services/FetchEventHandlers/FetchEventHandlers.js";
 import { CacheFilePathService } from "./Services/CacheFilePathService.js";
+import { ActiveSession } from "./SessionState/ActiveSession.js";
+import { Database } from "./Services/Database.js";
 
 var CACHE_STATIC_NAME = "static-v10";
 var CACHE_DYNAMIC_NAME = "dynamic-v2";
@@ -49,7 +51,7 @@ self.addEventListener("activate", function (event: any) {
 
 // Cache-only
 self.addEventListener("fetch", function (event: any) {
-  let customHandlers = new FetchEventHandlers();
+  let customHandlers = new FetchEventHandlers(new ActiveSession(new Database(indexedDB)));
   console.log("Handling fetch request " + event.request.url);
   if (customHandlers.canHandleEvent(event)) {
     console.log("using custom event handler");

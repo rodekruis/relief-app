@@ -1,5 +1,5 @@
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
-import { Distribution } from "../Models/Distribution.js";
+import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow";
+import { Distribution } from "../Models/Distribution";
 let db;
 export var ObjectStoreName;
 (function (ObjectStoreName) {
@@ -22,10 +22,11 @@ function columnsForObjectStore(objectStore) {
             ];
     }
 }
-class Database {
-    constructor() {
+export class Database {
+    constructor(databaseFactory) {
+        this.databaseFactory = databaseFactory;
         let db;
-        const request = indexedDB.open("data", 1);
+        const request = databaseFactory.open("data", 1);
         request.onerror = (err) => console.error(`IndexedDB error: ${request.error}`, err);
         request.onsuccess = () => (db = request.result);
         request.onupgradeneeded = () => {
@@ -48,9 +49,15 @@ class Database {
         return this.getElement(ObjectStoreName.distribution);
     }
     //Todo: we should be able to make this non plural because of uniquenesss
-    async distributionsWithName(name) {
+    async distributionWithName(name) {
         const distributions = await this.readDistributions();
-        return distributions.filter((distribution) => distribution.distrib_name == name);
+        const foundDistributions = distributions.filter((distribution) => distribution.distrib_name == name);
+        if (foundDistributions.length > 0) {
+            return foundDistributions[0];
+        }
+        else {
+            return undefined;
+        }
     }
     async addDistribution(distribution) {
         return this.addElement(ObjectStoreName.distribution, distribution);
@@ -97,7 +104,7 @@ class Database {
         });
     }
     performRequestForObjectStoreNamed(storeName, transactionMode, makeRequest) {
-        const open = indexedDB.open("data");
+        const open = this.databaseFactory.open("data");
         return new Promise((resolve, reject) => {
             open.onsuccess = () => {
                 db = open.result;
@@ -110,13 +117,13 @@ class Database {
                     transaction.oncomplete = () => db.close();
                 }
                 else {
-                    indexedDB.deleteDatabase("data");
+                    this.databaseFactory.deleteDatabase("data");
                 }
             };
         });
     }
     editElement(store, key, payload) {
-        const open = indexedDB.open("data");
+        const open = this.databaseFactory.open("data");
         return new Promise((resolve, reject) => {
             open.onsuccess = () => {
                 let request;
@@ -137,11 +144,9 @@ class Database {
                     transaction.oncomplete = () => db.close();
                 }
                 else {
-                    indexedDB.deleteDatabase("data");
+                    this.databaseFactory.deleteDatabase("data");
                 }
             };
         });
     }
 }
-Database.instance = new Database();
-export { Database };

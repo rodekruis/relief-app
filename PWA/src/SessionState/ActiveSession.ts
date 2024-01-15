@@ -1,5 +1,10 @@
+import { Database } from "../Services/Database"
+
 export class ActiveSession {
-    nameOfLastViewedDistribution?: String
+    nameOfLastViewedDistribution?: string
+    database: Database
   
-    static singleton = new ActiveSession()
+    constructor(database: Database) {
+      this.database = database
+    }
   }

@@ -10,21 +10,21 @@ import { BeneficiaryDataUploadHandler } from "./BeneficiaryDataUploadHandler.js"
 import { DeleteDistributionPostHandler } from "./DeleteDistributionPostHandler.js";
 import { ChooseBenificiaryCodeInputMethodPageHandler } from "./ChooseBenificiaryCodeInputMethodPageHandler.js";
 import { SelectBenificiaryCodeInputMethodHandler } from "./SelectBenificiaryCodeInputMethodHandler.js";
-import { BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
+import { ActiveSessionContainer, BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
 
-export class FetchEventHandlers implements FetchEventHandler {
+export class FetchEventHandlers extends ActiveSessionContainer implements FetchEventHandler {
   all: FetchEventHandler[] = [
-    new CreateDistributionRequestHandler(),
+    new CreateDistributionRequestHandler(this.activeSession),
     new NameDistributionRequestHandler(),
-    new ListDistributionRequestHandler(),
-    new SelectDistributionRequestHandler(),
-    new DeleteDistributionRequestHandler(),
-    new DeleteDistributionPostHandler(),
+    new ListDistributionRequestHandler(this.activeSession),
+    new SelectDistributionRequestHandler(this.activeSession),
+    new DeleteDistributionRequestHandler(this.activeSession),
+    new DeleteDistributionPostHandler(this.activeSession),
     new UploadDataHandler(),
-    new BeneficiaryDataUploadHandler(),
+    new BeneficiaryDataUploadHandler(this.activeSession),
     new ChooseBenificiaryCodeInputMethodPageHandler(),
     new SelectBenificiaryCodeInputMethodHandler(),
-    new BeneficiaryCodePostHandler()
+    new BeneficiaryCodePostHandler(this.activeSession)
   ];
 
   handlersForEvent(event: FetchEvent): FetchEventHandler[] {

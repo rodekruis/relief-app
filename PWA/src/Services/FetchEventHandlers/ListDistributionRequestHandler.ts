@@ -4,8 +4,9 @@ import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { Distribution } from "../../Models/Distribution.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { Database, ObjectStoreName } from "../Database.js";
+import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 
-export class ListDistributionRequestHandler implements FetchEventHandler {
+export class ListDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
     const url = event.request.url
     return url.endsWith(RouteEvents.listDistributions) || url.endsWith(RouteEvents.listDistributionsFormAction)
@@ -13,7 +14,7 @@ export class ListDistributionRequestHandler implements FetchEventHandler {
 
   async handleEvent(event: FetchEvent): Promise<Response> {
     try {
-      const distributions: [Distribution] = await Database.instance.readDistributions()
+      const distributions: [Distribution] = await this.activeSession.database.readDistributions()
       console.log(distributions)
       return ResponseTools.replaceTemplateKeysWithValues(
         await fetch(RouteEvents.listDistributions), { 

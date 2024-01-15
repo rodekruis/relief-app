@@ -1,10 +1,10 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
-import { Database } from "../Database.js";
 import { BenificiarySpreadSheetRowsDeserializationService } from "../BenificiarySpreadSheetRowsDeserializationService.js";
+import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 
-export class BeneficiaryDataUploadHandler implements FetchEventHandler {
+export class BeneficiaryDataUploadHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
     return event.request.url.endsWith("/uploader");
   }
@@ -12,7 +12,7 @@ export class BeneficiaryDataUploadHandler implements FetchEventHandler {
   async handleEvent(event: FetchEvent): Promise<Response> {
     try {
       const beneficiaries = await BenificiarySpreadSheetRowsDeserializationService.deserializeFormDataFromRequest(event.request)
-      await beneficiaries.forEach(async (benificiary) => await Database.instance.addBenificiary(benificiary))
+      await beneficiaries.forEach(async (benificiary) => await this.activeSession.database.addBenificiary(benificiary))
       ;
     } catch(error) {
       console.log("something went wrong " + error);

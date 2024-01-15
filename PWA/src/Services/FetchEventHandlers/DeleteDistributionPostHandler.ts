@@ -4,18 +4,20 @@ import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { Database } from "../Database.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { DeleteDistributionPost } from "../../Models/DeleteDistributionPost.js";
+import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 
-export class DeleteDistributionPostHandler implements FetchEventHandler {
+export class DeleteDistributionPostHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
     return event.request.url.endsWith(RouteEvents.postDeleteDistribution);
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
     const post: DeleteDistributionPost = await DeserialisationService.deserializeFormDataFromRequest(event.request)
-    const distributionToDelete = (await Database.instance.distributionsWithName(post.distrib_id))[0]
-
-    await Database.instance.deleteDistributionWithName(distributionToDelete.distrib_name)
-
+    const distributionToDelete = (await this.activeSession.database.distributionWithName(post.distrib_id))
+    if(distributionToDelete) {
+      await this.activeSession.database.deleteDistributionWithName(distributionToDelete.distrib_name)
+    }
+    
     return fetch(RouteEvents.home)
   }
 }

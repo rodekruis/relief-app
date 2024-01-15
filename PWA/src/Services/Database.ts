@@ -1,5 +1,5 @@
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
-import { Distribution } from "../Models/Distribution.js";
+import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow";
+import { Distribution } from "../Models/Distribution";
 
 let db: IDBDatabase
 
@@ -31,11 +31,12 @@ function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
 }
 
 export class Database {
-  static instance = new Database();
+  databaseFactory: IDBFactory
 
-  private constructor() {
+  constructor(databaseFactory: IDBFactory) {
+    this.databaseFactory = databaseFactory
     let db!: IDBDatabase;
-    const request = indexedDB.open("data", 1);
+    const request = databaseFactory.open("data", 1);
     request.onerror = (err) =>
       console.error(`IndexedDB error: ${request.error}`, err);
     request.onsuccess = () => (db = request.result);
@@ -63,11 +64,16 @@ export class Database {
   }
 
   //Todo: we should be able to make this non plural because of uniquenesss
-  async distributionsWithName(name: string): Promise<Distribution[]> {
+  async distributionWithName(name: string): Promise<Distribution|undefined> {
     const distributions = await this.readDistributions();
-    return distributions.filter(
+    const foundDistributions = distributions.filter(
       (distribution) => distribution.distrib_name == name
-    );
+    )
+    if (foundDistributions.length > 0) {
+      return foundDistributions[0]
+    } else {
+      return undefined
+    }
   }
 
   async addDistribution(distribution: Distribution): Promise<void> {
@@ -152,7 +158,7 @@ export class Database {
     transactionMode: IDBTransactionMode,
     makeRequest: (store: IDBObjectStore) => IDBRequest
   ): Promise<T> {
-    const open = indexedDB.open("data");
+    const open = this.databaseFactory.open("data");
     return new Promise<T>((resolve, reject) => {
       open.onsuccess = () => {
         db = open.result;
@@ -164,7 +170,7 @@ export class Database {
           request.onsuccess = () => resolve(request.result);
           transaction.oncomplete = () => db.close();
         } else {
-          indexedDB.deleteDatabase("data");
+          this.databaseFactory.deleteDatabase("data");
         }
       };
     });
@@ -175,7 +181,7 @@ export class Database {
     key: IDBValidKey | IDBKeyRange,
     payload: object
   ): Promise<T> {
-    const open = indexedDB.open("data");
+    const open = this.databaseFactory.open("data");
     return new Promise<T>((resolve, reject) => {
       open.onsuccess = () => {
         let request: IDBRequest;
@@ -193,7 +199,7 @@ export class Database {
           };
           transaction.oncomplete = () => db.close();
         } else {
-          indexedDB.deleteDatabase("data");
+          this.databaseFactory.deleteDatabase("data");
         }
       };
     });

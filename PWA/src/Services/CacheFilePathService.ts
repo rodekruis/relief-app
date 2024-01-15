@@ -21,6 +21,7 @@ import { FormParser } from "./FormParser.js";
 import { BeneficiaryCodePostHandler } from "./FetchEventHandlers/BeneficiaryCodePostHandler.js";
 import { BeneficiaryCodeInputMethodPost } from "../Models/BeneficiaryCodeInputMethodPost.js";
 import { ActiveSession } from "../SessionState/ActiveSession.js";
+import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
@@ -90,6 +91,7 @@ export class CacheFilePathService {
         Database.name,
         DeserialisationService.name,
         FormParser.name,
+        BeneficiaryEligilityService.name
       ])
   }
 
