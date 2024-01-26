@@ -2,17 +2,21 @@ import { describe, test, expect } from '@jest/globals';
 import { Database } from "./Database";
 import { Distribution } from '../Models/Distribution';
 import { indexedDB } from "fake-indexeddb";
-describe('BeneficiaryEligilityService', () => {
+import { Beneficiary } from '../Models/Beneficiary';
+describe('Database', () => {
     const sut = new Database(indexedDB);
     const distributionName = "UniqueDistributionName";
     const distribution = new Distribution("items", "date", "location", distributionName);
-    test("Added distribution can be retrieved", async () => {
+    const beneficiary = new Beneficiary("123", ["code"], ["123"]);
+    test("When adding distribution, it can be retrieved", async () => {
         await sut.addDistribution(distribution);
         const receivedDistribution = await sut.distributionWithName(distributionName);
-        console.log(receivedDistribution);
         expect(receivedDistribution.distrib_name).toEqual(distributionName);
     });
-    test(`Added distributionBeneficiaries can be retrieved`, async () => {
-        // await sut.addBeneficiaryToDistribution()
+    test("When adding beneficiary to distribution, it can be retrieved", async () => {
+        await sut.addDistribution(distribution);
+        await sut.addBeneficiaryToDistribution(beneficiary, distribution);
+        const receivedDistribution = await sut.distributionWithName(distributionName);
+        expect(sut.benificiariesForDistribution(distribution)).toStrictEqual([beneficiary]);
     });
 });

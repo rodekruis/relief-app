@@ -5,11 +5,11 @@ let db: IDBDatabase;
 
 export enum ObjectStoreName {
   distribution = "Distributions",
-  benificiary = "Benefeciaries",
+  beneficiary = "Benefeciaries",
   distributionBeneficiaries = "DistributionBeneficiary",
 }
 const allObjectStoreNames = [
-  ObjectStoreName.benificiary,
+  ObjectStoreName.beneficiary,
   ObjectStoreName.distribution,
   ObjectStoreName.distributionBeneficiaries
 ];
@@ -28,7 +28,7 @@ function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
         { name: "distrib_date", isUnique: false },
         { name: "distrib_items", isUnique: false },
       ];
-    case ObjectStoreName.benificiary:
+    case ObjectStoreName.beneficiary:
       return [
         { name: "code", isUnique: true },
         { name: "columns", isUnique: false },
@@ -105,11 +105,13 @@ export class Database {
     distribution: Distribution
   ): Promise<Beneficiary[]> {
     // no link to distribution yet
-    return this.getElement(ObjectStoreName.benificiary);
+    return [new Beneficiary(
+      "code", [], []
+    )]
   }
 
   async addBenificiary(beneficiary: Beneficiary): Promise<void> {
-    return this.addElement(ObjectStoreName.benificiary, beneficiary);
+    return this.addElement(ObjectStoreName.beneficiary, beneficiary);
   }
 
   async addBeneficiaryToDistribution(beneficiary: Beneficiary, distribution: Distribution): Promise<void> {

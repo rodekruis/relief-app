@@ -14,7 +14,6 @@ import { Distribution } from "../Models/Distribution.js";
 import { SelectDistributionPost } from "../Models/SelectDistributionPost.js";
 import { RouteEvents } from "../RouteEvents.js";
 import { BenificiaryInfoService } from "./BenificiaryInfoService.js";
-import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator.js";
 import { Database } from "./Database.js";
 import { DeserialisationService } from "./DeserialisationService.js";
 import { FormParser } from "./FormParser.js";
@@ -80,7 +79,6 @@ export class CacheFilePathService {
     servicePaths() {
         return this.pathsForTypesInFolder("Services", [
             BenificiaryInfoService.name,
-            BenificiaryJsonValidator.name,
             CacheFilePathService.name,
             Database.name,
             DeserialisationService.name,

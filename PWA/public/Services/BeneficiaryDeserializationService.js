@@ -1,5 +1,4 @@
 import { Beneficiary } from "../Models/Beneficiary";
-import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator";
 import { FormParser } from "./FormParser";
 import { SpreadSheetFileParser } from "./SpreadSheetFileParser";
 export class BeneficiaryDeserializationService {
@@ -8,11 +7,11 @@ export class BeneficiaryDeserializationService {
             const possibleFile = FormParser.firstFileFromFormData(await request.formData());
             if (possibleFile instanceof File) {
                 const json = await SpreadSheetFileParser.jsonFromSpreadSheetFile(possibleFile);
-                if (BenificiaryJsonValidator.isValidBenificiaryJson(json)) {
+                try {
                     return resolve(this.deserializeJson(json));
                 }
-                else {
-                    return reject("Invalid format for beneficiary rows");
+                catch (error) {
+                    return reject(error);
                 }
             }
             else {
@@ -21,8 +20,6 @@ export class BeneficiaryDeserializationService {
         });
     }
     deserializeJson(json) {
-        console.log("deserializing json:");
-        console.log(json);
         return this.rowsFromJson(json)
             .map((row) => {
             return new Beneficiary(this.codeFromJsonRow(row), this.columnsFromJsonRow(row), this.valuesFromJsonRow(row));
@@ -32,7 +29,13 @@ export class BeneficiaryDeserializationService {
         return Object.values(json);
     }
     codeFromJsonRow(jsonRow) {
-        return jsonRow["code"];
+        const code = jsonRow["code"];
+        if (code) {
+            return code;
+        }
+        else {
+            throw Error("Expected beneficiary code");
+        }
     }
     columnsFromJsonRow(jsonRow) {
         return Object.keys(jsonRow);

@@ -1,5 +1,4 @@
 import { Beneficiary } from "../Models/Beneficiary";
-import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator";
 import { FormParser } from "./FormParser";
 import { SpreadSheetFileParser } from "./SpreadSheetFileParser";
 
@@ -13,10 +12,10 @@ export class BeneficiaryDeserializationService {
             const json = await SpreadSheetFileParser.jsonFromSpreadSheetFile(
               possibleFile
             );
-            if (BenificiaryJsonValidator.isValidBenificiaryJson(json)) {
+            try {
               return resolve(this.deserializeJson(json))
-            } else {
-              return reject("Invalid format for beneficiary rows");
+            } catch(error) {
+              return reject(error);
             }
           } else {
             return reject("Expected upload item of file type")
@@ -25,8 +24,6 @@ export class BeneficiaryDeserializationService {
   }
 
   deserializeJson(json: any): Beneficiary[] {
-    console.log("deserializing json:")
-    console.log(json)
     return this.rowsFromJson(json)
                 .map((row: any) => {
                     return new Beneficiary(
@@ -42,7 +39,12 @@ export class BeneficiaryDeserializationService {
   }
 
   private codeFromJsonRow(jsonRow: any): string {
-    return jsonRow["code"]
+    const code = jsonRow["code"]
+    if(code) {
+      return code
+    } else {
+      throw Error("Expected beneficiary code")
+    }
   }
 
   private columnsFromJsonRow(jsonRow: any): string[] {
