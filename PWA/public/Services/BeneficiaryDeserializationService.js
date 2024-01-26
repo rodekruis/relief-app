@@ -1,7 +1,7 @@
-import { Beneficiary } from "../Models/Beneficiary.js";
-import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator.js";
-import { FormParser } from "./FormParser.js";
-import { SpreadSheetFileParser } from "./SpreadSheetFileParser.js";
+import { Beneficiary } from "../Models/Beneficiary";
+import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator";
+import { FormParser } from "./FormParser";
+import { SpreadSheetFileParser } from "./SpreadSheetFileParser";
 export class BeneficiaryDeserializationService {
     async deserializeFormDataFromRequest(request) {
         return new Promise(async (resolve, reject) => {
@@ -24,21 +24,20 @@ export class BeneficiaryDeserializationService {
         console.log("deserializing json:");
         console.log(json);
         return this.rowsFromJson(json)
-            .map((row) => this.commaSeparatedValuesFromJsonRow(row))
-            .map((commaSeparatedRowValues) => {
-            return new Beneficiary("code", commaSeparatedRowValues);
+            .map((row) => {
+            return new Beneficiary(this.codeFromJsonRow(row), this.columnsFromJsonRow(row), this.valuesFromJsonRow(row));
         });
     }
     rowsFromJson(json) {
         return Object.values(json);
     }
-    commaSeparatedValuesFromJsonRow(json) {
-        return Object.keys(json)
-            .map((key) => {
-            return json[key];
-        })
-            .reduce((previousValue, currentValue, currentIndex, array) => {
-            return previousValue + "," + currentValue;
-        });
+    codeFromJsonRow(jsonRow) {
+        return jsonRow["code"];
+    }
+    columnsFromJsonRow(jsonRow) {
+        return Object.keys(jsonRow);
+    }
+    valuesFromJsonRow(jsonRow) {
+        return Object.values(jsonRow);
     }
 }

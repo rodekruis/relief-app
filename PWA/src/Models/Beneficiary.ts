@@ -1,12 +1,15 @@
 export class Beneficiary {
     code: string
-    comma_separated_cells: string
+    columns: string[]
+    values: string[]
 
     constructor(
         code: string,
-        comma_separated_cells: string
+        columns: string[],
+        values: string[]
       ) {
         this.code = code
-        this.comma_separated_cells = comma_separated_cells
+        this.columns = columns
+        this.values = values
       }
 }

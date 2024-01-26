@@ -31,7 +31,8 @@ function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
     case ObjectStoreName.benificiary:
       return [
         { name: "code", isUnique: true },
-        { name: "comma_separated_cells", isUnique: false }
+        { name: "columns", isUnique: false },
+        { name: "values", isUnique: false }
       ];
     case ObjectStoreName.distributionBeneficiaries:
       return [
@@ -69,7 +70,7 @@ export class Database {
     this.addDistribution(
       new Distribution("24", "1/2/3", "Utrecht", "Sandwhiches")
     );
-    this.addBenificiary(new Beneficiary("123", "one, two, three"));
+    this.addBenificiary(new Beneficiary("code", ["code", "name"], ["123", "henry"]));
   }
 
   async readDistributions(): Promise<[Distribution]> {

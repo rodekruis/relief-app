@@ -1,6 +1,7 @@
 export class Beneficiary {
-    constructor(code, comma_separated_cells) {
+    constructor(code, columns, values) {
         this.code = code;
-        this.comma_separated_cells = comma_separated_cells;
+        this.columns = columns;
+        this.values = values;
     }
 }

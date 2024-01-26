@@ -1,5 +1,7 @@
 export class BenificiaryJsonValidator {
     static isValidBenificiaryJson(json) {
+        console.log("validating json:");
+        console.log(json);
         const rows = this.rowsFromJson(json);
         if (rows.length == 0) {
             console.log("Expected more than zero rows of data");
