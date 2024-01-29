@@ -7,7 +7,8 @@ describe('Database', () => {
     const sut = new Database(indexedDB);
     const distributionName = "UniqueDistributionName";
     const distribution = new Distribution("items", "date", "location", distributionName);
-    const beneficiary = new Beneficiary("123", ["code"], ["123"]);
+    const beneficiaryCode = "123";
+    const beneficiary = new Beneficiary(beneficiaryCode, ["code"], [beneficiaryCode]);
     test("When adding distribution, it can be retrieved", async () => {
         await sut.addDistribution(distribution);
         const receivedDistribution = await sut.distributionWithName(distributionName);
@@ -21,6 +22,11 @@ describe('Database', () => {
         catch (error) {
             expect(error.name).toEqual("ConstraintError");
         }
+    });
+    test("When adding a beneficiary, it can be retrieved", async () => {
+        await sut.addBenificiary(beneficiary);
+        const receivedBeneficiary = await sut.beneficiaryWithCode(beneficiaryCode);
+        expect(receivedBeneficiary.code).toEqual(beneficiaryCode);
     });
     // test("When adding beneficiary to distribution, it can be retrieved", async () => {
     //     await sut.addDistribution(distribution)

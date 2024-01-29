@@ -77,7 +77,11 @@ export class Database {
     return this.getElement(ObjectStoreName.distribution);
   }
 
-  //Todo: we should be able to make this non plural because of uniquenesss
+
+  async readBeneficiariess(): Promise<[Beneficiary]> {
+    return this.getElement(ObjectStoreName.beneficiary);
+  }
+
   async distributionWithName(name: string): Promise<Distribution | undefined> {
     const distributions = await this.readDistributions();
     const foundDistributions = distributions.filter(
@@ -85,6 +89,18 @@ export class Database {
     );
     if (foundDistributions.length > 0) {
       return foundDistributions[0];
+    } else {
+      return undefined;
+    }
+  }
+
+  async beneficiaryWithCode(code: string): Promise<Beneficiary | undefined> {
+    const beneficiary = await this.readBeneficiariess();
+    const foundBeneficiaries = beneficiary.filter(
+      (beneficiary) => beneficiary.code == code
+    );
+    if (foundBeneficiaries.length > 0) {
+      return foundBeneficiaries[0];
     } else {
       return undefined;
     }

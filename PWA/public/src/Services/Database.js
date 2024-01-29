@@ -60,12 +60,24 @@ export class Database {
     async readDistributions() {
         return this.getElement(ObjectStoreName.distribution);
     }
-    //Todo: we should be able to make this non plural because of uniquenesss
+    async readBeneficiariess() {
+        return this.getElement(ObjectStoreName.beneficiary);
+    }
     async distributionWithName(name) {
         const distributions = await this.readDistributions();
         const foundDistributions = distributions.filter((distribution) => distribution.distrib_name == name);
         if (foundDistributions.length > 0) {
             return foundDistributions[0];
+        }
+        else {
+            return undefined;
+        }
+    }
+    async beneficiaryWithCode(code) {
+        const beneficiary = await this.readBeneficiariess();
+        const foundBeneficiaries = beneficiary.filter((beneficiary) => beneficiary.code == code);
+        if (foundBeneficiaries.length > 0) {
+            return foundBeneficiaries[0];
         }
         else {
             return undefined;
