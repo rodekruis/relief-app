@@ -19,12 +19,13 @@ import { DeserialisationService } from "./DeserialisationService.js";
 import { FormParser } from "./FormParser.js";
 import { BeneficiaryCodePostHandler } from "./FetchEventHandlers/BeneficiaryCodePostHandler.js";
 import { BeneficiaryCodeInputMethodPost } from "../Models/BeneficiaryCodeInputMethodPost.js";
-import { ActiveSession } from "../SessionState/ActiveSession.js";
+import { ActiveSession } from "./ActiveSession.js";
 import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
     pathsOfFilesToCache() {
         return [
+            this.imagesPaths(),
             this.pagePaths(),
             this.modelPaths(),
             this.toplevelScriptsPaths(),
@@ -32,7 +33,7 @@ export class CacheFilePathService {
             this.interfacesPaths(),
             this.externalLibrariesPaths(),
             this.servicePaths(),
-            this.sessionStatePaths()
+            this.sessionStatePaths(),
         ].reduce((previousArray, currentValue) => {
             return previousArray.concat(currentValue);
         }, []);
@@ -58,14 +59,25 @@ export class CacheFilePathService {
             "app",
             "sw",
             "navbar-burger",
-            RouteEvents.name
+            RouteEvents.name,
         ]);
     }
     externalLibrariesPaths() {
         return this.pathsForTypesInFolder("ExternalLibraries", [
             "mustache",
-            "xlsx.full.min"
+            "xlsx.full.min",
+        ]).concat([
+            "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css",
+            "https://unpkg.com/@zxing/library@latest/umd/index.min.js",
         ]);
+    }
+    imagesPaths() {
+        return this.pathsForTypesInFolder("images", [
+            "ReliefBox-horizontal-nobackground.png",
+            "510logo.jpg",
+            "ReliefBox-horizontal.png",
+            "ReliefBox.PNG",
+        ], "");
     }
     modelPaths() {
         return this.pathsForTypesInFolder("Models", [
@@ -73,7 +85,7 @@ export class CacheFilePathService {
             Distribution.name,
             DeleteDistributionPost.name,
             SelectDistributionPost.name,
-            BeneficiaryCodeInputMethodPost.name
+            BeneficiaryCodeInputMethodPost.name,
         ]);
     }
     servicePaths() {
@@ -83,13 +95,12 @@ export class CacheFilePathService {
             Database.name,
             DeserialisationService.name,
             FormParser.name,
-            BeneficiaryEligilityService.name
+            BeneficiaryEligilityService.name,
+            ActiveSession.name
         ]);
     }
     sessionStatePaths() {
-        return this.pathsForTypesInFolder("Services", [
-            ActiveSession.name
-        ]);
+        return this.pathsForTypesInFolder("Services", [ActiveSession.name]);
     }
     fetchEventHanderPaths() {
         return this.pathsForTypesInFolder("Services/FetchEventHandlers", [
@@ -109,7 +120,7 @@ export class CacheFilePathService {
     interfacesPaths() {
         return this.pathsForTypesInFolder("Interfaces", [
             "FetchEvent",
-            "FetchEventHandler"
+            "FetchEventHandler",
         ]);
     }
     pathsForTypesInFolder(folder, typeNames, extension = ".js") {

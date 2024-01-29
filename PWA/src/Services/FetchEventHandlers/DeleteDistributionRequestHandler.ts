@@ -13,7 +13,7 @@ export class DeleteDistributionRequestHandler extends ActiveSessionContainer imp
 
   async handleEvent(event: FetchEvent): Promise<Response> {
     try {
-      const distributions: [Distribution] = await this.activeSession.database.readDistributions()      
+      const distributions: Distribution[] = await this.activeSession.database.readDistributions()      
       return ResponseTools.replaceTemplateKeysWithValues(
         await ResponseTools.wrapInHtmlTemplate(fetch(RouteEvents.deleteDistribution)), { 
         columns: Distribution.colums,

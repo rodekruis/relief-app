@@ -1,5 +1,6 @@
-import { Beneficiary } from "../Models/Beneficiary";
-import { Distribution } from "../Models/Distribution";
+import { Beneficiary } from "../Models/Beneficiary.js";
+import { Distribution } from "../Models/Distribution.js";
+import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js";
 let db;
 export var ObjectStoreName;
 (function (ObjectStoreName) {
@@ -60,12 +61,27 @@ export class Database {
     async readDistributions() {
         return this.getElement(ObjectStoreName.distribution);
     }
-    //Todo: we should be able to make this non plural because of uniquenesss
+    async readBeneficiaries() {
+        return this.getElement(ObjectStoreName.beneficiary);
+    }
+    async readDistributionBeneficiaries() {
+        return this.getElement(ObjectStoreName.distributionBeneficiaries);
+    }
     async distributionWithName(name) {
         const distributions = await this.readDistributions();
         const foundDistributions = distributions.filter((distribution) => distribution.distrib_name == name);
         if (foundDistributions.length > 0) {
             return foundDistributions[0];
+        }
+        else {
+            return undefined;
+        }
+    }
+    async beneficiaryWithCode(code) {
+        const beneficiaries = await this.readBeneficiaries();
+        const foundBeneficiaries = beneficiaries.filter((beneficiary) => beneficiary.code == code);
+        if (foundBeneficiaries.length > 0) {
+            return foundBeneficiaries[0];
         }
         else {
             return undefined;
@@ -78,13 +94,20 @@ export class Database {
         return this.removeElement(ObjectStoreName.distribution, await this.keyForDistributionWithName(name));
     }
     async benificiariesForDistribution(distribution) {
-        // no link to distribution yet
-        return [new Beneficiary("code", [], [])];
+        const distributionBeneficiaries = await this.readDistributionBeneficiaries();
+        return distributionBeneficiaries.filter((distributionBeneficiary) => distributionBeneficiary.distributionName == distribution.distrib_name);
     }
     async addBenificiary(beneficiary) {
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
     }
     async addBeneficiaryToDistribution(beneficiary, distribution) {
+        const existing = await this.readDistributionBeneficiaries();
+        existing.forEach((curent) => {
+            if (curent.beneficiaryCode === beneficiary.code && curent.distributionName === distribution.distrib_name) {
+                throw Error("Beneficiary was already added to distribution");
+            }
+        });
+        return this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiary.code, distribution.distrib_name));
     }
     async keyForDistributionWithName(name) {
         const distributions = await this.readDistributions();

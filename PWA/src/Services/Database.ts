@@ -1,5 +1,6 @@
-import { Beneficiary } from "../Models/Beneficiary";
-import { Distribution } from "../Models/Distribution";
+import { Beneficiary } from "../Models/Beneficiary.js";
+import { Distribution } from "../Models/Distribution.js";
+import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js";
 
 let db: IDBDatabase;
 
@@ -73,13 +74,16 @@ export class Database {
     this.addBenificiary(new Beneficiary("code", ["code", "name"], ["123", "henry"]));
   }
 
-  async readDistributions(): Promise<[Distribution]> {
+  async readDistributions(): Promise<Distribution[]> {
     return this.getElement(ObjectStoreName.distribution);
   }
 
-
-  async readBeneficiariess(): Promise<[Beneficiary]> {
+  async readBeneficiaries(): Promise<Beneficiary[]> {
     return this.getElement(ObjectStoreName.beneficiary);
+  }
+
+  async readDistributionBeneficiaries(): Promise<DistributionBeneficiary[]> {
+    return this.getElement(ObjectStoreName.distributionBeneficiaries);
   }
 
   async distributionWithName(name: string): Promise<Distribution | undefined> {
@@ -95,8 +99,8 @@ export class Database {
   }
 
   async beneficiaryWithCode(code: string): Promise<Beneficiary | undefined> {
-    const beneficiary = await this.readBeneficiariess();
-    const foundBeneficiaries = beneficiary.filter(
+    const beneficiaries = await this.readBeneficiaries();
+    const foundBeneficiaries = beneficiaries.filter(
       (beneficiary) => beneficiary.code == code
     );
     if (foundBeneficiaries.length > 0) {
@@ -119,11 +123,11 @@ export class Database {
 
   async benificiariesForDistribution(
     distribution: Distribution
-  ): Promise<Beneficiary[]> {
-    // no link to distribution yet
-    return [new Beneficiary(
-      "code", [], []
-    )]
+  ): Promise<DistributionBeneficiary[]> {
+    const distributionBeneficiaries = await this.readDistributionBeneficiaries();
+    return distributionBeneficiaries.filter(
+        (distributionBeneficiary) => distributionBeneficiary.distributionName == distribution.distrib_name
+      )
   }
 
   async addBenificiary(beneficiary: Beneficiary): Promise<void> {
@@ -131,7 +135,14 @@ export class Database {
   }
 
   async addBeneficiaryToDistribution(beneficiary: Beneficiary, distribution: Distribution): Promise<void> {
+    const existing = await this.readDistributionBeneficiaries()
+    existing.forEach( (curent) => {
+      if(curent.beneficiaryCode === beneficiary.code && curent.distributionName === distribution.distrib_name) {
+        throw Error("Beneficiary was already added to distribution")
+      }
+    })
 
+    return this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiary.code, distribution.distrib_name))
   }
 
   private async keyForDistributionWithName(name: string): Promise<IDBValidKey> {

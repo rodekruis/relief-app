@@ -1,4 +1,5 @@
-class ActiveSession {
+export class ActiveSession {
+    constructor(database) {
+        this.database = database;
+    }
 }
-ActiveSession.singleton = new ActiveSession();
-export { ActiveSession };

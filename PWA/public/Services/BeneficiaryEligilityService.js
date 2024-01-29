@@ -42,10 +42,9 @@ export class BeneficiaryEligilityService {
         if (nameOfActiveDistribution) {
             const distribution = await this.activeSession.database.distributionWithName(nameOfActiveDistribution);
             if (distribution) {
-                const beneficiaries = await this.activeSession.database.benificiariesForDistribution(distribution);
-                console.log(beneficiaries);
-                const matchedBeneficiaries = beneficiaries.filter((beneficiary) => {
-                    beneficiary.code == beneficiaryCode;
+                const distributionBeneficiaries = await this.activeSession.database.benificiariesForDistribution(distribution);
+                const matchedBeneficiaries = distributionBeneficiaries.filter((beneficiary) => {
+                    return beneficiary.beneficiaryCode === beneficiaryCode;
                 });
                 if (matchedBeneficiaries.length == 1) {
                     return true;

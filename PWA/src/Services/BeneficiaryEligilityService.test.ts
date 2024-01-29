@@ -2,12 +2,12 @@ import {describe, test, expect, it} from '@jest/globals';
 import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService";
 import { Database } from "./Database";
 import { indexedDB } from "fake-indexeddb"
-import { ActiveSession } from '../SessionState/ActiveSession';
+import { ActiveSession } from './ActiveSession';
 import { Distribution } from '../Models/Distribution';
 import { Beneficiary } from '../Models/Beneficiary';
 import { fail } from 'assert';
 
-const activeEligibleBeneficiaryCode = "1234"
+const activeEligibleBeneficiaryCode = "1234AA"
 const inActiveEligibleBeneficiaryCode = "5432"
 const eligibleActiveDistributionBeneficiary = new Beneficiary(activeEligibleBeneficiaryCode, ["code", "name"], [activeEligibleBeneficiaryCode, "henry"])
 const eligibleInactiveDistributionBeneficiary = new Beneficiary(activeEligibleBeneficiaryCode, ["code", "name"], [inActiveEligibleBeneficiaryCode, "tedd"])
@@ -34,7 +34,6 @@ describe('BeneficiaryEligilityService during active distribution', () => {
     activeSession.nameOfLastViewedDistribution = activeDistribution.distrib_name
     const sut = new BeneficiaryEligilityService(activeSession)
     test("When checking elible code from active distribution", async () => {
-        //fails expectedly since implementation isn't complete yet
         expect(await sut.isBenificiaryEligibleForCurrentDistribution(activeEligibleBeneficiaryCode)).toEqual(true)
     })
  });

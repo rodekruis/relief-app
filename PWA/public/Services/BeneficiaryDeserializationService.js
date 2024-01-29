@@ -1,6 +1,6 @@
-import { Beneficiary } from "../Models/Beneficiary";
-import { FormParser } from "./FormParser";
-import { SpreadSheetFileParser } from "./SpreadSheetFileParser";
+import { Beneficiary } from "../Models/Beneficiary.js";
+import { FormParser } from "./FormParser.js";
+import { SpreadSheetFileParser } from "./SpreadSheetFileParser.js";
 export class BeneficiaryDeserializationService {
     async deserializeFormDataFromRequest(request) {
         return new Promise(async (resolve, reject) => {

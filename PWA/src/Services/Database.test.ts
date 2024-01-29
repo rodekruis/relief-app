@@ -3,6 +3,7 @@ import { Database } from "./Database";
 import { Distribution } from '../Models/Distribution';
 import { indexedDB } from "fake-indexeddb"
 import { Beneficiary } from '../Models/Beneficiary';
+import { DistributionBeneficiary } from '../Models/DistributionBeneficiary';
 
 describe('Database', () => {
     const sut = new Database(indexedDB)
@@ -38,12 +39,28 @@ describe('Database', () => {
         ).toEqual(beneficiaryCode)
     })
 
-    // test("When adding beneficiary to distribution, it can be retrieved", async () => {
-    //     await sut.addDistribution(distribution)
-    //     await sut.addBeneficiaryToDistribution(beneficiary, distribution)
-    //     const receivedDistribution: any = await sut.distributionWithName(distributionName)
-    //     expect(
-    //         sut.benificiariesForDistribution(distribution)
-    //     ).toStrictEqual([beneficiary])
-    // })
+    test("When adding beneficiary to distribution, it can be retrieved", async () => {
+        await sut.addBeneficiaryToDistribution(beneficiary, distribution)
+        const receivedBeneficiaries: DistributionBeneficiary[] = await sut.benificiariesForDistribution(distribution)
+        expect(
+            receivedBeneficiaries.length
+        ).toEqual(1)
+
+        expect(
+            receivedBeneficiaries[0].beneficiaryCode
+        ).toEqual(beneficiary.code)
+
+        expect(
+            receivedBeneficiaries[0].distributionName
+        ).toEqual(distribution.distrib_name)
+    })
+
+    test("When adding beneficiary to distribution twice, an error is thown", async () => {
+        try {
+            await sut.addBeneficiaryToDistribution(beneficiary, distribution)
+            throw Error("expected error to be thown at this point")
+        } catch(error: any) {
+            expect(error.message).toBe("Beneficiary was already added to distribution")
+        }
+    })
  });

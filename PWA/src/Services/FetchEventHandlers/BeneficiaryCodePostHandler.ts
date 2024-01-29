@@ -3,7 +3,7 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { BeneficiaryEligilityService } from "../BeneficiaryEligilityService.js";
-import { ActiveSession } from "../../SessionState/ActiveSession.js";
+import { ActiveSession } from "../ActiveSession.js";
 
 export class ActiveSessionContainer {
     activeSession: ActiveSession;

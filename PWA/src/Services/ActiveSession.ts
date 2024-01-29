@@ -1,4 +1,4 @@
-import { Database } from "../Services/Database"
+import { Database } from "./Database.js"
 
 export class ActiveSession {
     nameOfLastViewedDistribution?: string

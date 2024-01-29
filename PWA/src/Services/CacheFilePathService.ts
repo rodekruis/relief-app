@@ -19,58 +19,76 @@ import { DeserialisationService } from "./DeserialisationService.js";
 import { FormParser } from "./FormParser.js";
 import { BeneficiaryCodePostHandler } from "./FetchEventHandlers/BeneficiaryCodePostHandler.js";
 import { BeneficiaryCodeInputMethodPost } from "../Models/BeneficiaryCodeInputMethodPost.js";
-import { ActiveSession } from "../SessionState/ActiveSession.js";
+import { ActiveSession } from "./ActiveSession.js";
 import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
   pathsOfFilesToCache(): string[] {
-      return [
-        this.pagePaths(),
-        this.modelPaths(),
-        this.toplevelScriptsPaths(),
-        this.fetchEventHanderPaths(),
-        this.interfacesPaths(),
-        this.externalLibrariesPaths(),
-        this.servicePaths(),
-        this.sessionStatePaths()
+    return [
+      this.imagesPaths(),
+      this.pagePaths(),
+      this.modelPaths(),
+      this.toplevelScriptsPaths(),
+      this.fetchEventHanderPaths(),
+      this.interfacesPaths(),
+      this.externalLibrariesPaths(),
+      this.servicePaths(),
+      this.sessionStatePaths(),
     ].reduce((previousArray, currentValue) => {
-        return previousArray.concat(currentValue)
-    }, [])
+      return previousArray.concat(currentValue);
+    }, []);
   }
 
   private pagePaths(): string[] {
     return [
-        RouteEvents.template,
-        RouteEvents.home, 
-        RouteEvents.distributionsHome, 
-        RouteEvents.nameDistribution, 
-        RouteEvents.listDistributions,
-        RouteEvents.deleteDistribution, 
-        RouteEvents.uploadData, 
-        RouteEvents.uploadDataError,
-        RouteEvents.chooseBenificiaryCodeInputMethodPage,
-        RouteEvents.codeInputUsingCamera,
-        RouteEvents.codeinputUsingTextField,
-        RouteEvents.codeInputNotFound,
-      ]
-  } 
+      RouteEvents.template,
+      RouteEvents.home,
+      RouteEvents.distributionsHome,
+      RouteEvents.nameDistribution,
+      RouteEvents.listDistributions,
+      RouteEvents.deleteDistribution,
+      RouteEvents.uploadData,
+      RouteEvents.uploadDataError,
+      RouteEvents.chooseBenificiaryCodeInputMethodPage,
+      RouteEvents.codeInputUsingCamera,
+      RouteEvents.codeinputUsingTextField,
+      RouteEvents.codeInputNotFound,
+    ];
+  }
 
   private toplevelScriptsPaths(): string[] {
-    return this.pathsForTypesInFolder("", [ 
+    return this.pathsForTypesInFolder("", [
       "app",
       "sw",
       "navbar-burger",
-      RouteEvents.name
+      RouteEvents.name,
     ]);
   }
 
   private externalLibrariesPaths(): string[] {
     return this.pathsForTypesInFolder("ExternalLibraries", [
       "mustache",
-      "xlsx.full.min"
-    ]);
-  } 
+      "xlsx.full.min",
+    ]).concat(
+      [
+        "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css",
+        "https://unpkg.com/@zxing/library@latest/umd/index.min.js",
+      ]
+    )
+  }
+
+  private imagesPaths(): string[] {
+    return this.pathsForTypesInFolder(
+      "images", [
+      "ReliefBox-horizontal-nobackground.png",
+      "510logo.jpg",
+      "ReliefBox-horizontal.png",
+      "ReliefBox.PNG",
+    ], 
+    ""
+    );
+  }
 
   private modelPaths(): string[] {
     return this.pathsForTypesInFolder("Models", [
@@ -78,61 +96,70 @@ export class CacheFilePathService {
       Distribution.name,
       DeleteDistributionPost.name,
       SelectDistributionPost.name,
-      BeneficiaryCodeInputMethodPost.name
+      BeneficiaryCodeInputMethodPost.name,
     ]);
   }
 
   private servicePaths(): string[] {
     return this.pathsForTypesInFolder("Services", [
-        BenificiaryInfoService.name,
-        CacheFilePathService.name,
-        Database.name,
-        DeserialisationService.name,
-        FormParser.name,
-        BeneficiaryEligilityService.name
-      ])
+      BenificiaryInfoService.name,
+      CacheFilePathService.name,
+      Database.name,
+      DeserialisationService.name,
+      FormParser.name,
+      BeneficiaryEligilityService.name,
+      ActiveSession.name
+    ]);
   }
 
   private sessionStatePaths(): string[] {
-    return this.pathsForTypesInFolder("Services", [
-      ActiveSession.name
-    ])
+    return this.pathsForTypesInFolder("Services", [ActiveSession.name]);
   }
 
   private fetchEventHanderPaths(): string[] {
     return this.pathsForTypesInFolder("Services/FetchEventHandlers", [
-        BeneficiaryDataUploadHandler.name,
-        CreateDistributionRequestHandler.name,
-        DeleteDistributionPostHandler.name,
-        FetchEventHandlers.name,
-        ListDistributionRequestHandler.name,
-        NameDistributionRequestHandler.name,
-        SelectDistributionRequestHandler.name,
-        UploadDataHandler.name,
-        ChooseBenificiaryCodeInputMethodPageHandler.name,
-        SelectBenificiaryCodeInputMethodHandler.name,
-        BeneficiaryCodePostHandler.name,
-    ])
+      BeneficiaryDataUploadHandler.name,
+      CreateDistributionRequestHandler.name,
+      DeleteDistributionPostHandler.name,
+      FetchEventHandlers.name,
+      ListDistributionRequestHandler.name,
+      NameDistributionRequestHandler.name,
+      SelectDistributionRequestHandler.name,
+      UploadDataHandler.name,
+      ChooseBenificiaryCodeInputMethodPageHandler.name,
+      SelectBenificiaryCodeInputMethodHandler.name,
+      BeneficiaryCodePostHandler.name,
+    ]);
   }
 
   private interfacesPaths(): string[] {
     return this.pathsForTypesInFolder("Interfaces", [
-        "FetchEvent",
-        "FetchEventHandler"
-    ])
+      "FetchEvent",
+      "FetchEventHandler",
+    ]);
   }
 
-  private pathsForTypesInFolder(folder: string, typeNames: String[], extension: string = ".js"): string[] {
-    return typeNames.map((name) => this.pathForTypeInFolder(name, folder, extension));
+  private pathsForTypesInFolder(
+    folder: string,
+    typeNames: String[],
+    extension: string = ".js"
+  ): string[] {
+    return typeNames.map((name) =>
+      this.pathForTypeInFolder(name, folder, extension)
+    );
   }
 
-  private pathForTypeInFolder(typeName: String, folder: string, extension: string = ".js"): string {
-    let path = "/"
-    if(folder.length > 0) {
-        path += folder + "/"
+  private pathForTypeInFolder(
+    typeName: String,
+    folder: string,
+    extension: string = ".js"
+  ): string {
+    let path = "/";
+    if (folder.length > 0) {
+      path += folder + "/";
     }
-    path += typeName + extension
+    path += typeName + extension;
 
-    return path
+    return path;
   }
 }

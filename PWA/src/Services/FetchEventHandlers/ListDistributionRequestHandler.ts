@@ -14,7 +14,7 @@ export class ListDistributionRequestHandler extends ActiveSessionContainer imple
 
   async handleEvent(event: FetchEvent): Promise<Response> {
     try {
-      const distributions: [Distribution] = await this.activeSession.database.readDistributions()
+      const distributions: Distribution[] = await this.activeSession.database.readDistributions()
       console.log(distributions)
       return ResponseTools.replaceTemplateKeysWithValues(
         await fetch(RouteEvents.listDistributions), { 

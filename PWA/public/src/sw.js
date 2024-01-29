@@ -12,14 +12,8 @@ self.addEventListener("install", function (event) {
         console.log("[Service Worker] Precaching App Shell");
         cache.addAll([
             "/",
-            "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css",
-            "https://unpkg.com/@zxing/library@latest/umd/index.min.js",
             "/favicon.ico",
             "/manifest.json",
-            "/images/ReliefBox-horizontal-nobackground.png",
-            "/images/510logo.jpg",
-            "/images/ReliefBox-horizontal.png",
-            "/images/ReliefBox.PNG",
             "/apple-touch-icon.png",
             "/apple-touch-icon-precomposed.png"
         ]
