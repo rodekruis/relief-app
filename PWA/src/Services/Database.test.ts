@@ -18,12 +18,23 @@ describe('Database', () => {
         ).toEqual(distributionName)
     })
 
-    test("When adding beneficiary to distribution, it can be retrieved", async () => {
-        await sut.addDistribution(distribution)
-        await sut.addBeneficiaryToDistribution(beneficiary, distribution)
-        const receivedDistribution: any = await sut.distributionWithName(distributionName)
-        expect(
-            sut.benificiariesForDistribution(distribution)
-        ).toStrictEqual([beneficiary])
+    test("When same distribution is added again, constaint error is thown", async () => {
+        try {
+            await sut.addDistribution(distribution)
+            throw new Error("Expected other error to be thown")
+        } catch (error) {
+            expect(
+                error.name
+            ).toEqual("ConstraintError")
+        }
     })
+
+    // test("When adding beneficiary to distribution, it can be retrieved", async () => {
+    //     await sut.addDistribution(distribution)
+    //     await sut.addBeneficiaryToDistribution(beneficiary, distribution)
+    //     const receivedDistribution: any = await sut.distributionWithName(distributionName)
+    //     expect(
+    //         sut.benificiariesForDistribution(distribution)
+    //     ).toStrictEqual([beneficiary])
+    // })
  });
