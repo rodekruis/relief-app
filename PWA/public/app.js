@@ -4,9 +4,9 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
         .register('/sw.js', { type: 'module' })
         .then(function () {
-        console.log('Service worker registered!');
+        console.info('Service worker registered!');
     });
 }
 else {
-    console.log('Service worker not supported in this browser..');
+    console.error('Service worker not supported in this browser..');
 }

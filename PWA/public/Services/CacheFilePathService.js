@@ -1,32 +1,40 @@
-import { BeneficiaryDataUploadHandler } from "../FetchEventHandlers/BeneficiaryDataUploadHandler.js";
-import { ChooseBenificiaryCodeInputMethodHandler } from "../FetchEventHandlers/ChooseBenificiaryCodeInputMethodHandler.js";
-import { CreateDistributionRequestHandler } from "../FetchEventHandlers/CreateDistributionRequestHandler.js";
-import { DeleteDistributionPostHandler } from "../FetchEventHandlers/DeleteDistributionPostHandler.js";
-import { FetchEventHandlers } from "../FetchEventHandlers/FetchEventHandlers.js";
-import { ListDistributionRequestHandler } from "../FetchEventHandlers/ListDistributionRequestHandler.js";
-import { NameDistributionRequestHandler } from "../FetchEventHandlers/NameDistributionRequestHandler.js";
-import { SelectDistributionRequestHandler } from "../FetchEventHandlers/SelectDistributionRequestHandler.js";
-import { UploadDataHandler } from "../FetchEventHandlers/UploadDataHandler.js";
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
+import { BeneficiaryDataUploadHandler } from "./FetchEventHandlers/BeneficiaryDataUploadHandler.js";
+import { ChooseBenificiaryCodeInputMethodPageHandler } from "./FetchEventHandlers/ChooseBenificiaryCodeInputMethodPageHandler.js";
+import { CreateDistributionRequestHandler } from "./FetchEventHandlers/CreateDistributionRequestHandler.js";
+import { DeleteDistributionPostHandler } from "./FetchEventHandlers/DeleteDistributionPostHandler.js";
+import { FetchEventHandlers } from "./FetchEventHandlers/FetchEventHandlers.js";
+import { ListDistributionRequestHandler } from "./FetchEventHandlers/ListDistributionRequestHandler.js";
+import { NameDistributionRequestHandler } from "./FetchEventHandlers/NameDistributionRequestHandler.js";
+import { SelectBenificiaryCodeInputMethodHandler } from "./FetchEventHandlers/SelectBenificiaryCodeInputMethodHandler.js";
+import { SelectDistributionRequestHandler } from "./FetchEventHandlers/SelectDistributionRequestHandler.js";
+import { UploadDataHandler } from "./FetchEventHandlers/UploadDataHandler.js";
+import { Beneficiary } from "../Models/Beneficiary.js";
 import { DeleteDistributionPost } from "../Models/DeleteDistributionPost.js";
 import { Distribution } from "../Models/Distribution.js";
 import { SelectDistributionPost } from "../Models/SelectDistributionPost.js";
 import { RouteEvents } from "../RouteEvents.js";
 import { BenificiaryInfoService } from "./BenificiaryInfoService.js";
-import { BenificiaryJsonValidator } from "./BenificiaryJsonValidator.js";
 import { Database } from "./Database.js";
 import { DeserialisationService } from "./DeserialisationService.js";
 import { FormParser } from "./FormParser.js";
+import { BeneficiaryCodePostHandler } from "./FetchEventHandlers/BeneficiaryCodePostHandler.js";
+import { BeneficiaryCodeInputMethodPost } from "../Models/BeneficiaryCodeInputMethodPost.js";
+import { ActiveSession } from "./ActiveSession.js";
+import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
+import { ViewDistributionDataHandler } from "./FetchEventHandlers/ViewDistributionDataHandler.js";
+import { BeneficiariesService } from "./BeneficiariesService.js";
+// Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
     pathsOfFilesToCache() {
         return [
+            this.imagesPaths(),
             this.pagePaths(),
             this.modelPaths(),
             this.toplevelScriptsPaths(),
             this.fetchEventHanderPaths(),
             this.interfacesPaths(),
             this.externalLibrariesPaths(),
-            this.servicePaths()
+            this.servicePaths(),
         ].reduce((previousArray, currentValue) => {
             return previousArray.concat(currentValue);
         }, []);
@@ -38,10 +46,16 @@ export class CacheFilePathService {
             RouteEvents.distributionsHome,
             RouteEvents.nameDistribution,
             RouteEvents.listDistributions,
+            RouteEvents.listDistributionsEmptyState,
             RouteEvents.deleteDistribution,
             RouteEvents.uploadData,
             RouteEvents.uploadDataError,
-            RouteEvents.chooseBenificiaryCodeInputMethodPage
+            RouteEvents.chooseBenificiaryCodeInputMethodPage,
+            RouteEvents.codeInputUsingCamera,
+            RouteEvents.codeinputUsingTextField,
+            RouteEvents.codeInputFound,
+            RouteEvents.codeInputNotFound,
+            RouteEvents.viewData
         ];
     }
     toplevelScriptsPaths() {
@@ -49,35 +63,49 @@ export class CacheFilePathService {
             "app",
             "sw",
             "navbar-burger",
-            RouteEvents.name
+            RouteEvents.name,
         ]);
     }
     externalLibrariesPaths() {
         return this.pathsForTypesInFolder("ExternalLibraries", [
             "mustache",
-            "xlsx.full.min"
+            "xlsx.full.min",
+        ]).concat([
+            "/ExternalLibraries/bulma.css",
+            "/ExternalLibraries/zxing.js",
         ]);
+    }
+    imagesPaths() {
+        return this.pathsForTypesInFolder("images", [
+            "ReliefBox-horizontal-nobackground.png",
+            "510logo.jpg",
+            "ReliefBox-horizontal.png",
+            "ReliefBox.PNG",
+        ], "");
     }
     modelPaths() {
         return this.pathsForTypesInFolder("Models", [
-            BenificiarySpreadSheetRow.name,
+            Beneficiary.name,
             Distribution.name,
             DeleteDistributionPost.name,
             SelectDistributionPost.name,
+            BeneficiaryCodeInputMethodPost.name,
         ]);
     }
     servicePaths() {
         return this.pathsForTypesInFolder("Services", [
             BenificiaryInfoService.name,
-            BenificiaryJsonValidator.name,
             CacheFilePathService.name,
             Database.name,
             DeserialisationService.name,
             FormParser.name,
+            BeneficiaryEligilityService.name,
+            ActiveSession.name,
+            BeneficiariesService.name
         ]);
     }
     fetchEventHanderPaths() {
-        return this.pathsForTypesInFolder("FetchEventHandlers", [
+        return this.pathsForTypesInFolder("Services/FetchEventHandlers", [
             BeneficiaryDataUploadHandler.name,
             CreateDistributionRequestHandler.name,
             DeleteDistributionPostHandler.name,
@@ -86,13 +114,16 @@ export class CacheFilePathService {
             NameDistributionRequestHandler.name,
             SelectDistributionRequestHandler.name,
             UploadDataHandler.name,
-            ChooseBenificiaryCodeInputMethodHandler.name
+            ChooseBenificiaryCodeInputMethodPageHandler.name,
+            SelectBenificiaryCodeInputMethodHandler.name,
+            BeneficiaryCodePostHandler.name,
+            ViewDistributionDataHandler.name
         ]);
     }
     interfacesPaths() {
         return this.pathsForTypesInFolder("Interfaces", [
             "FetchEvent",
-            "FetchEventHandler"
+            "FetchEventHandler",
         ]);
     }
     pathsForTypesInFolder(folder, typeNames, extension = ".js") {

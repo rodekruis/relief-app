@@ -1,12 +1,16 @@
-import { BenificiarySpreadSheetRow } from "../Models/BenificiarySpreadSheetRow.js";
-import { Distribution } from "../Models/Distribution.js";
+import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js";
 let db;
 export var ObjectStoreName;
 (function (ObjectStoreName) {
     ObjectStoreName["distribution"] = "Distributions";
-    ObjectStoreName["benificiary"] = "Beneficiaries";
+    ObjectStoreName["beneficiary"] = "Benefeciaries";
+    ObjectStoreName["distributionBeneficiaries"] = "DistributionBeneficiary";
 })(ObjectStoreName || (ObjectStoreName = {}));
-const allObjectStoreNames = [ObjectStoreName.benificiary, ObjectStoreName.distribution];
+const allObjectStoreNames = [
+    ObjectStoreName.beneficiary,
+    ObjectStoreName.distribution,
+    ObjectStoreName.distributionBeneficiaries
+];
 function columnsForObjectStore(objectStore) {
     switch (objectStore) {
         case ObjectStoreName.distribution:
@@ -14,18 +18,27 @@ function columnsForObjectStore(objectStore) {
                 { name: "distrib_name", isUnique: true },
                 { name: "distrib_place", isUnique: false },
                 { name: "distrib_date", isUnique: false },
-                { name: "distrib_items", isUnique: false }
+                { name: "distrib_items", isUnique: false },
             ];
-        case ObjectStoreName.benificiary:
+        case ObjectStoreName.beneficiary:
             return [
-                { name: "comma_separated_cells", isUnique: true }
+                { name: "code", isUnique: true },
+                { name: "columns", isUnique: false },
+                { name: "values", isUnique: false }
+            ];
+        case ObjectStoreName.distributionBeneficiaries:
+            return [
+                { name: "distributionName", isUnique: false },
+                { name: "beneficiaryCode", isUnique: false }
             ];
     }
 }
-class Database {
-    constructor() {
+export class Database {
+    constructor(databaseFactory) {
+        console.info("ℹ️ Constructing DataBase, should only happen once ");
+        this.databaseFactory = databaseFactory;
         let db;
-        const request = indexedDB.open("data", 1);
+        const request = databaseFactory.open("data", 1);
         request.onerror = (err) => console.error(`IndexedDB error: ${request.error}`, err);
         request.onsuccess = () => (db = request.result);
         request.onupgradeneeded = () => {
@@ -40,16 +53,37 @@ class Database {
                 }));
             });
         };
-        //Temporarily seed for debuging purposes
-        this.addDistribution(new Distribution("24", "1/2/3", "Utrecht", "Sandwhiches"));
-        this.addBenificiary(new BenificiarySpreadSheetRow("one, two, three"));
     }
     async readDistributions() {
         return this.getElement(ObjectStoreName.distribution);
     }
-    async distributionsWithName(name) {
+    async readBeneficiaries() {
+        return this.getElement(ObjectStoreName.beneficiary);
+    }
+    async readDistributionBeneficiaries() {
+        return this.getElement(ObjectStoreName.distributionBeneficiaries);
+    }
+    async distributionWithName(name) {
         const distributions = await this.readDistributions();
-        return distributions.filter((distribution) => distribution.distrib_name == name);
+        console.log("known distributions:");
+        console.log(distributions);
+        const foundDistributions = distributions.filter((distribution) => distribution.distrib_name == name);
+        if (foundDistributions.length > 0) {
+            return foundDistributions[0];
+        }
+        else {
+            return undefined;
+        }
+    }
+    async beneficiaryWithCode(code) {
+        const beneficiaries = await this.readBeneficiaries();
+        const foundBeneficiaries = beneficiaries.filter((beneficiary) => beneficiary.code == code);
+        if (foundBeneficiaries.length > 0) {
+            return foundBeneficiaries[0];
+        }
+        else {
+            return undefined;
+        }
     }
     async addDistribution(distribution) {
         return this.addElement(ObjectStoreName.distribution, distribution);
@@ -58,10 +92,26 @@ class Database {
         return this.removeElement(ObjectStoreName.distribution, await this.keyForDistributionWithName(name));
     }
     async benificiariesForDistribution(distribution) {
-        return this.getElement(ObjectStoreName.benificiary);
+        const distributionBeneficiaries = await this.readDistributionBeneficiaries();
+        console.log("distribution benefeciaries:");
+        console.log(distributionBeneficiaries);
+        return distributionBeneficiaries.filter((distributionBeneficiary) => distributionBeneficiary.distributionName == distribution.distrib_name);
     }
     async addBenificiary(beneficiary) {
-        return this.addElement(ObjectStoreName.benificiary, beneficiary);
+        return this.addElement(ObjectStoreName.beneficiary, beneficiary);
+    }
+    async addBeneficiaryToDistribution(beneficiary, distribution) {
+        const existing = await this.readDistributionBeneficiaries();
+        existing.forEach((curent) => {
+            if (curent.beneficiaryCode === beneficiary.code && curent.distributionName === distribution.distrib_name) {
+                throw Error("Beneficiary was already added to distribution");
+            }
+        });
+        const existingBeneficiary = await this.beneficiaryWithCode(beneficiary.code);
+        if (!existingBeneficiary) {
+            this.addBenificiary(beneficiary);
+        }
+        return this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiary.code, distribution.distrib_name));
     }
     async keyForDistributionWithName(name) {
         const distributions = await this.readDistributions();
@@ -83,6 +133,8 @@ class Database {
         });
     }
     addElement(storeName, payload) {
+        console.info("ℹ️ " + storeName + " will add:");
+        console.debug(payload);
         return this.performRequestForObjectStoreNamed(storeName, "readwrite", (store) => {
             const serialized = JSON.parse(JSON.stringify(payload));
             return store.add(serialized);
@@ -95,7 +147,7 @@ class Database {
         });
     }
     performRequestForObjectStoreNamed(storeName, transactionMode, makeRequest) {
-        const open = indexedDB.open("data");
+        const open = this.databaseFactory.open("data");
         return new Promise((resolve, reject) => {
             open.onsuccess = () => {
                 db = open.result;
@@ -108,13 +160,13 @@ class Database {
                     transaction.oncomplete = () => db.close();
                 }
                 else {
-                    indexedDB.deleteDatabase("data");
+                    this.databaseFactory.deleteDatabase("data");
                 }
             };
         });
     }
     editElement(store, key, payload) {
-        const open = indexedDB.open("data");
+        const open = this.databaseFactory.open("data");
         return new Promise((resolve, reject) => {
             open.onsuccess = () => {
                 let request;
@@ -135,11 +187,9 @@ class Database {
                     transaction.oncomplete = () => db.close();
                 }
                 else {
-                    indexedDB.deleteDatabase("data");
+                    this.databaseFactory.deleteDatabase("data");
                 }
             };
         });
     }
 }
-Database.instance = new Database();
-export { Database };
