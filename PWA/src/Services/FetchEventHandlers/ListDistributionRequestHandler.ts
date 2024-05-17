@@ -3,7 +3,6 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { Distribution } from "../../Models/Distribution.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { Database, ObjectStoreName } from "../Database.js";
 import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 
 export class ListDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
