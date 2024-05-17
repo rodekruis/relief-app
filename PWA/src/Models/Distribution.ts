@@ -23,4 +23,8 @@ export class Distribution {
     "Items Distributed",
     "Donor",
   ]
+
+  public equals(obj: Distribution) : boolean { 
+    return this.distrib_name == obj.distrib_name;
+} 
 }

@@ -5,6 +5,9 @@ class Distribution {
         this.distrib_place = distrib_place;
         this.distrib_name = distrib_name;
     }
+    equals(obj) {
+        return this.distrib_name == obj.distrib_name;
+    }
 }
 Distribution.colums = [
     "Name",

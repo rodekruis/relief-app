@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@types/node": "^20.5.9",
+    "fake-indexeddb": "^5.0.2",
     "typescript": "^5.0.4"
   },
   "type": "module"
