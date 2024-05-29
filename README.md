@@ -7,3 +7,10 @@ A simple web app for relief.
 * Progressive web app code can be found in /PWA folder
 
 both folders have their own readme.md
+
+## Progressive web app
+### During development
+Run:
+`npm start` to launch the local server
+`tsc --watch` to make sure typescript files get compiled as you code
+`npm run test -- --watch` to make sure run as you code
