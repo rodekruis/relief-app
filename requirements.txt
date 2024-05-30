@@ -1,6 +1,6 @@
 azure-core==1.26.0
 azure-cosmos==4.3.0
-dnspython==2.2.1
+dnspython==2.6.1
 et-xmlfile==1.1.0
 Flask==2.3.2
 Flask-Cors==3.0.10
