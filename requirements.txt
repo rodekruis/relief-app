@@ -15,7 +15,7 @@ python-dateutil==2.8.2
 python-dotenv==0.19.2
 openpyxl==3.0.9
 pdfkit==1.0.0
-azure-identity==1.10.0
+azure-identity==1.16.1
 azure-keyvault==4.2.0
 pyodbc==4.0.34
 pyzbar==0.1.9
