@@ -1,3 +1,4 @@
+import { error } from "console";
 import { Beneficiary } from "../Models/Beneficiary.js";
 import { Distribution } from "../Models/Distribution.js";
 import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js";
@@ -8,11 +9,13 @@ export enum ObjectStoreName {
   distribution = "Distributions",
   beneficiary = "Benefeciaries",
   distributionBeneficiaries = "DistributionBeneficiary",
+  activeDistribution = "activeDistribution",
 }
 const allObjectStoreNames = [
   ObjectStoreName.beneficiary,
   ObjectStoreName.distribution,
-  ObjectStoreName.distributionBeneficiaries
+  ObjectStoreName.distributionBeneficiaries,
+  ObjectStoreName.activeDistribution,
 ];
 
 type DatabaseColumn = {
@@ -33,12 +36,19 @@ function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
       return [
         { name: "code", isUnique: true },
         { name: "columns", isUnique: false },
-        { name: "values", isUnique: false }
+        { name: "values", isUnique: false },
       ];
     case ObjectStoreName.distributionBeneficiaries:
       return [
         { name: "distributionName", isUnique: false },
-        { name: "beneficiaryCode", isUnique: false }
+        { name: "beneficiaryCode", isUnique: false },
+      ];
+    case ObjectStoreName.activeDistribution:
+      return [
+        { name: "distrib_name", isUnique: false },
+        { name: "distrib_place", isUnique: false },
+        { name: "distrib_date", isUnique: false },
+        { name: "distrib_items", isUnique: false },
       ];
   }
 }
@@ -47,7 +57,7 @@ export class Database {
   databaseFactory: IDBFactory;
 
   constructor(databaseFactory: IDBFactory) {
-    console.info("ℹ️ Constructing DataBase, should only happen once ")
+    console.info("ℹ️ Constructing DataBase, should only happen once ");
     this.databaseFactory = databaseFactory;
     let db!: IDBDatabase;
     const request = databaseFactory.open("data", 1);
@@ -84,8 +94,8 @@ export class Database {
 
   async distributionWithName(name: string): Promise<Distribution | undefined> {
     const distributions = await this.readDistributions();
-    console.log("known distributions:")
-    console.log(distributions)
+    console.log("known distributions:");
+    console.log(distributions);
     const foundDistributions = distributions.filter(
       (distribution) => distribution.distrib_name == name
     );
@@ -122,32 +132,62 @@ export class Database {
   async benificiariesForDistribution(
     distribution: Distribution
   ): Promise<DistributionBeneficiary[]> {
-    const distributionBeneficiaries = await this.readDistributionBeneficiaries();
-    console.log("distribution benefeciaries:")
-    console.log(distributionBeneficiaries)
+    const distributionBeneficiaries =
+      await this.readDistributionBeneficiaries();
+    console.log("distribution benefeciaries:");
+    console.log(distributionBeneficiaries);
     return distributionBeneficiaries.filter(
-        (distributionBeneficiary) => distributionBeneficiary.distributionName == distribution.distrib_name
-      )
+      (distributionBeneficiary) =>
+        distributionBeneficiary.distributionName == distribution.distrib_name
+    );
   }
 
   async addBenificiary(beneficiary: Beneficiary): Promise<void> {
     return this.addElement(ObjectStoreName.beneficiary, beneficiary);
   }
 
-  async addBeneficiaryToDistribution(beneficiary: Beneficiary, distribution: Distribution): Promise<void> {
-    const existing = await this.readDistributionBeneficiaries()
-    existing.forEach( (curent) => {
-      if(curent.beneficiaryCode === beneficiary.code && curent.distributionName === distribution.distrib_name) {
-        throw Error("Beneficiary was already added to distribution")
-      }
-    })
+  async setActiveDistribution(activeDistribution: Distribution): Promise<void> {
+    return this.addElement(ObjectStoreName.activeDistribution, activeDistribution);
+  }
 
-    const existingBeneficiary = await this.beneficiaryWithCode(beneficiary.code)
-    if(!existingBeneficiary) {
-      this.addBenificiary(beneficiary)
+  async getActiveDistributions(): Promise<Distribution[]> {
+    return this.getElement(ObjectStoreName.activeDistribution)
+  }
+
+  async getActiveDistribution(): Promise<Distribution> {
+    const distributions = await this.getActiveDistributions()
+    if(distributions.length > 0) {
+      return distributions[distributions.length - 1]
+    } else {
+      throw Error("No active distribution found")
+    }
+  }
+
+  async addBeneficiaryToDistribution(
+    beneficiary: Beneficiary,
+    distribution: Distribution
+  ): Promise<void> {
+    const existing = await this.readDistributionBeneficiaries();
+    existing.forEach((curent) => {
+      if (
+        curent.beneficiaryCode === beneficiary.code &&
+        curent.distributionName === distribution.distrib_name
+      ) {
+        throw Error("Beneficiary was already added to distribution");
+      }
+    });
+
+    const existingBeneficiary = await this.beneficiaryWithCode(
+      beneficiary.code
+    );
+    if (!existingBeneficiary) {
+      this.addBenificiary(beneficiary);
     }
 
-    return this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiary.code, distribution.distrib_name))
+    return this.addElement(
+      ObjectStoreName.distributionBeneficiaries,
+      new DistributionBeneficiary(beneficiary.code, distribution.distrib_name)
+    );
   }
 
   private async keyForDistributionWithName(name: string): Promise<IDBValidKey> {
@@ -187,8 +227,8 @@ export class Database {
     storeName: ObjectStoreName,
     payload: object
   ): Promise<void> {
-    console.info("ℹ️ " + storeName + " will add:")
-    console.debug(payload)
+    console.info("ℹ️ " + storeName + " will add:");
+    console.debug(payload);
     return this.performRequestForObjectStoreNamed(
       storeName,
       "readwrite",
