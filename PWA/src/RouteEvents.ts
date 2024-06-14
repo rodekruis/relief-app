@@ -22,5 +22,5 @@ export class RouteEvents {
     static listDistributionsFormAction = "/distrib?"
     static chooseBenificiaryCodeInputMethod = "/choose_input_method?"
     static selectBenificiaryCodeInputMethod = "/save_input_method"
-    static checkBenificiaryCodeInputMethod = "/entry?"
+    static checkBenificiaryCodeInputMethod = "/entry"
   }

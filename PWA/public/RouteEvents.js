@@ -22,5 +22,5 @@ RouteEvents.postDeleteDistribution = "/delete_distrib_confirm";
 RouteEvents.listDistributionsFormAction = "/distrib?";
 RouteEvents.chooseBenificiaryCodeInputMethod = "/choose_input_method?";
 RouteEvents.selectBenificiaryCodeInputMethod = "/save_input_method";
-RouteEvents.checkBenificiaryCodeInputMethod = "/entry?";
+RouteEvents.checkBenificiaryCodeInputMethod = "/entry";
 export { RouteEvents };
