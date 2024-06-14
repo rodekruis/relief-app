@@ -5,11 +5,13 @@ export var ObjectStoreName;
     ObjectStoreName["distribution"] = "Distributions";
     ObjectStoreName["beneficiary"] = "Benefeciaries";
     ObjectStoreName["distributionBeneficiaries"] = "DistributionBeneficiary";
+    ObjectStoreName["activeDistribution"] = "activeDistribution";
 })(ObjectStoreName || (ObjectStoreName = {}));
 const allObjectStoreNames = [
     ObjectStoreName.beneficiary,
     ObjectStoreName.distribution,
-    ObjectStoreName.distributionBeneficiaries
+    ObjectStoreName.distributionBeneficiaries,
+    ObjectStoreName.activeDistribution,
 ];
 function columnsForObjectStore(objectStore) {
     switch (objectStore) {
@@ -24,12 +26,19 @@ function columnsForObjectStore(objectStore) {
             return [
                 { name: "code", isUnique: true },
                 { name: "columns", isUnique: false },
-                { name: "values", isUnique: false }
+                { name: "values", isUnique: false },
             ];
         case ObjectStoreName.distributionBeneficiaries:
             return [
                 { name: "distributionName", isUnique: false },
-                { name: "beneficiaryCode", isUnique: false }
+                { name: "beneficiaryCode", isUnique: false },
+            ];
+        case ObjectStoreName.activeDistribution:
+            return [
+                { name: "distrib_name", isUnique: false },
+                { name: "distrib_place", isUnique: false },
+                { name: "distrib_date", isUnique: false },
+                { name: "distrib_items", isUnique: false },
             ];
     }
 }
@@ -100,10 +109,26 @@ export class Database {
     async addBenificiary(beneficiary) {
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
     }
+    async setActiveDistribution(activeDistribution) {
+        return this.addElement(ObjectStoreName.activeDistribution, activeDistribution);
+    }
+    async getActiveDistributions() {
+        return this.getElement(ObjectStoreName.activeDistribution);
+    }
+    async getActiveDistribution() {
+        const distributions = await this.getActiveDistributions();
+        if (distributions.length > 0) {
+            return distributions[distributions.length - 1];
+        }
+        else {
+            throw Error("No active distribution found");
+        }
+    }
     async addBeneficiaryToDistribution(beneficiary, distribution) {
         const existing = await this.readDistributionBeneficiaries();
         existing.forEach((curent) => {
-            if (curent.beneficiaryCode === beneficiary.code && curent.distributionName === distribution.distrib_name) {
+            if (curent.beneficiaryCode === beneficiary.code &&
+                curent.distributionName === distribution.distrib_name) {
                 throw Error("Beneficiary was already added to distribution");
             }
         });
