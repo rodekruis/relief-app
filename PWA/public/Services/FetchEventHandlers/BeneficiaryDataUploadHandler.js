@@ -1,6 +1,8 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { BeneficiaryDeserializationService } from "../BeneficiaryDeserializationService.js";
 import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
+import { ResponseTools } from "../ResponseTools.js";
+import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
 export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.endsWith("/uploader");
@@ -15,6 +17,14 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
                 if (distribution) {
                     await beneficiaries.forEach(async (beneficiary) => await database.addBenificiary(beneficiary));
                     await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiaryToDistribution(beneficiary, distribution));
+                    this.activeSession.nameOfLastViewedDistribution = distributionName;
+                    const benificiaryInfoService = new BenificiaryInfoService(this.activeSession.database);
+                    return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
+                        "distrib_name": distribution.distrib_name,
+                        "distrib_place": distribution.distrib_place,
+                        "distrib_date": distribution.distrib_date,
+                        beneficiary_info: await benificiaryInfoService.benificiaryInfoTextFromDistribution(distribution)
+                    });
                 }
                 else {
                     throw "Expeced distribution named " + distributionName;
@@ -28,6 +38,5 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
             console.error(error);
             return fetch(RouteEvents.home);
         }
-        return fetch(RouteEvents.home);
     }
 }
