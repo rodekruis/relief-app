@@ -2,6 +2,7 @@ import { error } from "console";
 import { Beneficiary } from "../Models/Beneficiary.js";
 import { Distribution } from "../Models/Distribution.js";
 import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js";
+import { cursorTo } from "readline";
 
 let db: IDBDatabase;
 
@@ -42,6 +43,7 @@ function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
       return [
         { name: "distributionName", isUnique: false },
         { name: "beneficiaryCode", isUnique: false },
+        { name: "hasBeenMarkedAsReceived", isUnique: false }
       ];
     case ObjectStoreName.activeDistribution:
       return [
@@ -173,7 +175,7 @@ export class Database {
         curent.beneficiaryCode === beneficiary.code &&
         curent.distributionName === distribution.distrib_name
       ) {
-        throw Error("Beneficiary was already added to distribution");
+        throw Error("Beneficiary with code " + curent.beneficiaryCode + " was already added to distribution named " + curent.distributionName);
       }
     });
 
@@ -188,6 +190,25 @@ export class Database {
       ObjectStoreName.distributionBeneficiaries,
       new DistributionBeneficiary(beneficiary.code, distribution.distrib_name)
     );
+  }
+
+  async markBeneficiaryAsReceived(beneficiaryCode: string, distributionName: string): Promise<void> {
+    const key = await this.keyForDistributionBeneficiary(beneficiaryCode, distributionName)
+
+    await this.removeElement(ObjectStoreName.distributionBeneficiaries, key)
+    await this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiaryCode, distributionName, true))
+  }
+
+  private async keyForDistributionBeneficiary(beneficiaryCode: string, distributionName: string): Promise<IDBValidKey> {
+    const distributionBeneficiaries = await this.readDistributionBeneficiaries();
+    for (let i = 0; i < distributionBeneficiaries.length; i++) {
+      const currentBenificiary = distributionBeneficiaries[i]
+      if (currentBenificiary.distributionName == distributionName && currentBenificiary.beneficiaryCode == beneficiaryCode) {
+        return i + 1;
+      }
+    }
+
+    throw Error("Not found")
   }
 
   private async keyForDistributionWithName(name: string): Promise<IDBValidKey> {

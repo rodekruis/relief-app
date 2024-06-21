@@ -23,6 +23,7 @@ import { ActiveSession } from "./ActiveSession.js";
 import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 import { ViewDistributionDataHandler } from "./FetchEventHandlers/ViewDistributionDataHandler.js";
 import { BeneficiariesService } from "./BeneficiariesService.js";
+import { CheckWhosMissingPageHandler } from "./FetchEventHandlers/CheckWhosMissingPagehandler.js";
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
     pathsOfFilesToCache() {
@@ -117,7 +118,8 @@ export class CacheFilePathService {
             ChooseBenificiaryCodeInputMethodPageHandler.name,
             SelectBenificiaryCodeInputMethodHandler.name,
             BeneficiaryCodePostHandler.name,
-            ViewDistributionDataHandler.name
+            ViewDistributionDataHandler.name,
+            CheckWhosMissingPageHandler.name
         ]);
     }
     interfacesPaths() {

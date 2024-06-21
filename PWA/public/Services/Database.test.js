@@ -8,7 +8,9 @@ describe('Database', () => {
     const distributionName = "UniqueDistributionName";
     const distribution = new Distribution("items", "date", "location", distributionName);
     const beneficiaryCode = "123";
+    const beneficiary2Code = "1234";
     const beneficiary = new Beneficiary(beneficiaryCode, ["code"], [beneficiaryCode]);
+    const beneficiary2 = new Beneficiary(beneficiary2Code, ["code"], [beneficiaryCode]);
     test("When adding distribution, it can be retrieved", async () => {
         await sut.addDistribution(distribution);
         const receivedDistribution = await sut.distributionWithName(distributionName);
@@ -41,8 +43,23 @@ describe('Database', () => {
             throw Error("expected error to be thown at this point");
         }
         catch (error) {
-            expect(error.message).toBe("Beneficiary was already added to distribution");
+            expect(error.message).toBe("Beneficiary with code 123 was already added to distribution named UniqueDistributionName");
         }
+    });
+    test("When marking a benefificiary as marked, it shows as marked", async () => {
+        await sut.addBeneficiaryToDistribution(beneficiary2, distribution);
+        var receivedBeneficiaries = await sut.benificiariesForDistribution(distribution);
+        expect(receivedBeneficiaries.length).toEqual(2);
+        expect(receivedBeneficiaries[1].hasBeenMarkedAsReceived).toEqual(false);
+        await sut.markBeneficiaryAsReceived(beneficiary2.code, distribution.distrib_name);
+        var receivedBeneficiaries = await sut.benificiariesForDistribution(distribution);
+        expect(receivedBeneficiaries[0].hasBeenMarkedAsReceived).toEqual(false);
+        expect(receivedBeneficiaries[1].hasBeenMarkedAsReceived).toEqual(true);
+        await sut.markBeneficiaryAsReceived(beneficiary.code, distribution.distrib_name);
+        var receivedBeneficiaries = await sut.benificiariesForDistribution(distribution);
+        console.log(receivedBeneficiaries);
+        expect(receivedBeneficiaries[0].hasBeenMarkedAsReceived).toEqual(true);
+        expect(receivedBeneficiaries[1].hasBeenMarkedAsReceived).toEqual(true);
     });
     test("When setting an active distribution, they can be retrieved", async () => {
         const distribution = new Distribution("12", "123", "Arnhem", "Name");
