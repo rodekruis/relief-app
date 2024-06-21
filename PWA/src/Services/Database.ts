@@ -7,7 +7,7 @@ let db: IDBDatabase;
 
 export enum ObjectStoreName {
   distribution = "Distributions",
-  beneficiary = "Benefeciaries",
+  beneficiary = "Beneficiaries",
   distributionBeneficiaries = "DistributionBeneficiary",
   activeDistribution = "activeDistribution",
 }
