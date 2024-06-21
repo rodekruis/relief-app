@@ -3,7 +3,7 @@ let db;
 export var ObjectStoreName;
 (function (ObjectStoreName) {
     ObjectStoreName["distribution"] = "Distributions";
-    ObjectStoreName["beneficiary"] = "Benefeciaries";
+    ObjectStoreName["beneficiary"] = "Beneficiaries";
     ObjectStoreName["distributionBeneficiaries"] = "DistributionBeneficiary";
     ObjectStoreName["activeDistribution"] = "activeDistribution";
 })(ObjectStoreName || (ObjectStoreName = {}));
