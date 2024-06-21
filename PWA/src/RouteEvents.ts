@@ -23,4 +23,6 @@ export class RouteEvents {
     static chooseBenificiaryCodeInputMethod = "/choose_input_method?"
     static selectBenificiaryCodeInputMethod = "/save_input_method"
     static checkBenificiaryCodeInputMethod = "/entry"
+    static checkWhosMissing = "/missing"
+    static received = "/received"
   }

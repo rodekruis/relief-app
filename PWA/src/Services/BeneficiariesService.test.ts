@@ -57,11 +57,44 @@ describe('BeneficiariesService', () => {
         const distributions = await database.readDistributions()
         console.log(distributions)
         await database.addDistribution(existingDistribution)
+        await database.addBenificiary(beneficiary1)
+        await database.addBenificiary(beneficiary2)
         await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution)
         await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution)
         const beneficiaries = await sut.beneficiariesForActiveDistribution()
         expect(beneficiaries.length).toEqual(2)
         expect(beneficiaries[0].code).toEqual(beneficiaryCode1)
         expect(beneficiaries[1].code).toEqual(beneficiaryCode2)
+    })
+
+    test("When none of eligible beneficiaries of active distribution have been marked as recieved Then all of them are provided as eligible", async () => {
+        activeSesion.nameOfLastViewedDistribution = existingDistributionName
+        const distributions = await database.readDistributions()
+        console.log(distributions)
+        await database.addDistribution(existingDistribution)
+        await database.addBenificiary(beneficiary1)
+        await database.addBenificiary(beneficiary2)
+        await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution)
+        await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution)
+        const eligibleBeneficiaries = await sut.eligibleBeneficiariesForActiveDistribution()
+        
+        expect(eligibleBeneficiaries.length).toEqual(2)
+    })
+
+    test("When an eligible beneficiary of active distribution has been marked as recieved Then it is not provided as eligible anymore", async () => {
+        activeSesion.nameOfLastViewedDistribution = existingDistributionName
+        const distributions = await database.readDistributions()
+        console.log(distributions)
+        await database.addDistribution(existingDistribution)
+        await database.addBenificiary(beneficiary1)
+        await database.addBenificiary(beneficiary2)
+        await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution)
+        await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution)
+
+        await database.markBeneficiaryAsReceived(beneficiary1.code, existingDistributionName)
+
+        const eligibleBeneficiaries = await sut.eligibleBeneficiariesForActiveDistribution()
+        
+        expect(eligibleBeneficiaries.length).toEqual(1)
     })
  });
