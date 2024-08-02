@@ -11,10 +11,15 @@ export class CheckWhosMissingPageHandler extends ActiveSessionContainer {
         const beneficiaries = await beneficiariesService.eligibleBeneficiariesForActiveDistribution();
         console.log("Will display:");
         console.log(beneficiaries);
-        return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.viewData, {
-            columns: this.columnsFromBeneficiaries(beneficiaries),
-            beneficiaries: beneficiaries,
-        });
+        if (beneficiaries.length > 0) {
+            return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.viewData, {
+                columns: this.columnsFromBeneficiaries(beneficiaries),
+                beneficiaries: beneficiaries,
+            });
+        }
+        else {
+            return await ResponseTools.wrapInHtmlTemplate(RouteEvents.noBeneficiariesFound);
+        }
     }
     columnsFromBeneficiaries(beneficiaries) {
         if (beneficiaries.length > 0) {
