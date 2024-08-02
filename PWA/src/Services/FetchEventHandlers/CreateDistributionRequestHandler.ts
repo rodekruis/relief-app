@@ -22,8 +22,8 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer imp
       !this.isFilled(distribution.distrib_place) ||
       !this.isFilled(distribution.distrib_date)
     ) {
-      return ResponseTools.replaceTemplateKeysWithValues(
-        await caches.match(RouteEvents.nameDistribution) as Response,
+      return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(
+        RouteEvents.nameDistribution, 
         { errorMessages: ["Specify the name, location and date of the distribution."] }
       )
     } else {
