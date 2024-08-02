@@ -6,6 +6,7 @@ import { ResponseTools } from "../ResponseTools.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
+import { DateService } from "../DateService.js";
 
 export class CreateDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
   benificiaryInfoService = new BenificiaryInfoService(this.activeSession.database)
@@ -24,7 +25,10 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer imp
     ) {
       return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(
         RouteEvents.nameDistribution, 
-        { errorMessages: ["Specify the name, location and date of the distribution."] }
+        { 
+          errorMessages: ["Specify the name, location and date of the distribution."],
+          todaysDateString: DateService.todaysDateString()
+        }
       )
     } else {
       try {

@@ -26,6 +26,7 @@ import { BeneficiariesService } from "./BeneficiariesService.js";
 import { CheckWhosMissingPageHandler } from "./FetchEventHandlers/CheckWhosMissingPagehandler.js";
 import { MarkAsReceivedPostHandler } from "./FetchEventHandlers/MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./FetchEventHandlers/HomepageHandler.js";
+import { DateService } from "./DateService.js";
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
     pathsOfFilesToCache() {
@@ -105,7 +106,8 @@ export class CacheFilePathService {
             FormParser.name,
             BeneficiaryEligilityService.name,
             ActiveSession.name,
-            BeneficiariesService.name
+            BeneficiariesService.name,
+            DateService.name
         ]);
     }
     fetchEventHanderPaths() {
