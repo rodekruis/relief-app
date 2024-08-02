@@ -1,138 +1,44 @@
-<!DOCTYPE html>
-<html>
-
-<script type="text/javascript" src="/navbar-burger.js"></script>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ReliefBox</title>
-  <link rel="stylesheet" href="/ExternalLibraries/bulma.css">
-  <style>
-    #noteligible {
-        background-color: #F53335 !important;
-    }
-    #eligible {
-        background-color: #03e03e !important;
-    }
-    .label[style*="color: white"] {
-        color: white !important;
-        font-weight: normal !important;
-    }
-  </style>
-  <script type="text/javascript">
-      function checkCookiesStats() {
-         if(navigator.cookieEnabled) {
-            document.getElementById("check-cookies").innerHTML="";
-         } else {
-            document.getElementById("check-cookies").innerHTML="You must enable cookies in your browser to use ReliefBox";
-         }
-      }
-   </script>
-</head>
-
-<body onload="checkCookiesStats()">
-<section class="hero is-primary is-fullheight">
-
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <!--    <a class="navbar-item">-->
-      <img src="images/ReliefBox-horizontal-nobackground.png" width="220" height="30">
-      <!--    </a>-->
-
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
+<div class="column is-4 is-offset-4">
+  <div class="box">
+    {{#errorMessages }}
+    <div class="notification is-danger">
+      {{ . }}
     </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <a href="/index.html"  class="navbar-item">
-          Home
-        </a>
-
-        <a href="https://reliefbox.readthedocs.io/" class="navbar-item" target="_blank" rel="noopener noreferrer">
-          Documentation
-        </a>
+    {{/errorMessages }}
+    <form action="/create_distrib" method="POST">
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_name" placeholder="Distribution name" autofocus="">
+        </div>
       </div>
-    </div>
-  </nav>
-
-  <div class="hero-body">
-    <div class="container has-text-centered">
-
-        <div class="column is-4 is-offset-4">
-<!--          <div class="box">-->
-<!--            <div class="notification is-danger">-->
-                <label id="check-cookies" class="label is-medium" style="color:red; background-color:white"></label>
-<!--            </div>-->
-<!--          </div>-->
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_place" placeholder="Location" autofocus="">
         </div>
-
-        <div class="column is-4 is-offset-4">
-          <div class="box">
-            {{#errorMessages }}
-            <div class="notification is-danger">
-              {{ . }}
-            </div>
-            {{/errorMessages }}
-            <form action="/create_distrib" method="POST">
-              <div class="field">
-                <div class="control">
-                  <input class="input is-medium" type="text" name="distrib_name" placeholder="Distribution name" autofocus="">
-                </div>
-              </div>
-              <div class="field">
-                <div class="control">
-                  <input class="input is-medium" type="text" name="distrib_place" placeholder="Location" autofocus="">
-                </div>
-              </div>
-              <div class="columns is-mobile is-centered is-vcentered">
-                <div class="column is-one-fifth">
-                  <div class="content is-medium" style="color:rgba(54,54,54,.3)">Date</div>
-                </div>
-                <div class="column is-four-fifths">
-                  <div class="field">
-                    <div class="control">
-                      <input class="input is-medium" type="date" name="distrib_date" placeholder="Date" autofocus="">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="field">
-                <div class="control">
-                  <input class="input is-medium" type="text" name="distrib_items" placeholder="Items distributed" autofocus="">
-                </div>
-              </div>
-              <div class="field">
-                <div class="control">
-                  <input class="input is-medium" type="text" name="distrib_donor" placeholder="Donor" autofocus="">
-                </div>
-              </div>
-              <button class="button is-block is-info is-medium is-fullwidth">Create</button>
-            </form>
-          </div>
+      </div>
+      <div class="columns is-mobile is-centered is-vcentered">
+        <div class="column is-one-fifth">
+          <div class="content is-medium" style="color:rgba(54,54,54,.3)">Date</div>
         </div>
-    </div>
-  </div>
-
-  <div class="hero-foot">
-    <nav class="navbar">
-      <div class="container">
-        <div id="navbarMenuHeroA" class="navbar-menu">
-          <div class="navbar-end" hidden>
-            <div class="navbar-item">
-              Built with love by &nbsp;<a href="https://www.510.global/"> <img src="/images/510logo.jpg"></a>
-              &nbsp; <a href="https://github.com/rodekruis/relief-app"> see the project on GitHub</a>.
+        <div class="column is-four-fifths">
+          <div class="field">
+            <div class="control">
+              <input class="input is-medium" type="date" name="distrib_date" placeholder="Date" autofocus="">
             </div>
           </div>
         </div>
       </div>
-    </nav>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_items" placeholder="Items distributed" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_donor" placeholder="Donor" autofocus="">
+        </div>
+      </div>
+      <button class="button is-block is-info is-medium is-fullwidth">Create</button>
+    </form>
   </div>
-</section>
-</body>
-<script src="/app.js"></script>
-</html>
+</div>

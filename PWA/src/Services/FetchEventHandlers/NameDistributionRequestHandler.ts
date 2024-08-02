@@ -5,17 +5,10 @@ import { ResponseTools } from "../ResponseTools.js";
 
 export class NameDistributionRequestHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
-    return event.request.url
-      .replace("?", "")
-      .endsWith(RouteEvents.nameDistribution);
+    return event.request.url.includes(RouteEvents.nameDistribution)
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
-    return ResponseTools
-    .replaceTemplateKeysWithValues(
-      await caches
-      .match(event.request) as Response,
-      { errorMessages: [] }
-    )
+    return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.nameDistribution, { errorMessages: [] })
   }
 }
