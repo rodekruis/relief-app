@@ -29,8 +29,8 @@ export class MarkAsReceivedPostHandler extends ActiveSessionContainer {
         else {
             console.error("Expected benificiarycode");
         }
-        //TODO check to what place we actually have to go to
-        return ResponseTools.wrapInHtmlTemplate(RouteEvents.home);
+        //TODO should be non camera when coming from non camera
+        return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputUsingCamera);
     }
     beneficiaryCodeFromRequest(request) {
         var _a;

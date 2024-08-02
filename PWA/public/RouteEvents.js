@@ -8,6 +8,7 @@ RouteEvents.listDistributionsEmptyState = "no_distrib.html";
 RouteEvents.deleteDistribution = "/list_distrib_delete.html";
 RouteEvents.uploadData = "/upload_data.html";
 RouteEvents.viewData = "/view_data.html";
+RouteEvents.noBeneficiariesFound = "no_data.html";
 RouteEvents.uploadDataError = "/upload_error.html";
 RouteEvents.template = "/template.html";
 RouteEvents.chooseBenificiaryCodeInputMethodPage = "/choose_input_method.html";
