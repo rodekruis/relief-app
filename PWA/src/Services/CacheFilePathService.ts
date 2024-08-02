@@ -24,6 +24,8 @@ import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 import { ViewDistributionDataHandler } from "./FetchEventHandlers/ViewDistributionDataHandler.js";
 import { BeneficiariesService } from "./BeneficiariesService.js";
 import { CheckWhosMissingPageHandler } from "./FetchEventHandlers/CheckWhosMissingPagehandler.js";
+import { MarkAsReceivedPostHandler } from "./FetchEventHandlers/MarkAsReceivedPostHandler.js";
+import { HomepageHandler } from "./FetchEventHandlers/HomepageHandler.js";
 
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
@@ -58,7 +60,8 @@ export class CacheFilePathService {
       RouteEvents.codeinputUsingTextField,
       RouteEvents.codeInputFound,
       RouteEvents.codeInputNotFound,
-      RouteEvents.viewData
+      RouteEvents.viewData,
+      RouteEvents.noBeneficiariesFound
     ];
   }
 
@@ -132,7 +135,9 @@ export class CacheFilePathService {
       SelectBenificiaryCodeInputMethodHandler.name,
       BeneficiaryCodePostHandler.name,
       ViewDistributionDataHandler.name,
-      CheckWhosMissingPageHandler.name
+      CheckWhosMissingPageHandler.name,
+      MarkAsReceivedPostHandler.name,
+      HomepageHandler.name
     ]);
   }
 

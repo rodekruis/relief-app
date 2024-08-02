@@ -7,6 +7,7 @@ export class RouteEvents {
     static deleteDistribution = "/list_distrib_delete.html"
     static uploadData = "/upload_data.html"
     static viewData = "/view_data.html"
+    static noBeneficiariesFound = "no_data.html"
     static uploadDataError = "/upload_error.html"
     static template = "/template.html"
     static chooseBenificiaryCodeInputMethodPage = "/choose_input_method.html"
