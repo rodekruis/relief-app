@@ -27,6 +27,7 @@ import { CheckWhosMissingPageHandler } from "./FetchEventHandlers/CheckWhosMissi
 import { MarkAsReceivedPostHandler } from "./FetchEventHandlers/MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./FetchEventHandlers/HomepageHandler.js";
 import { DateService } from "./DateService.js";
+import { ContinueDistributionHandler } from "./FetchEventHandlers/ContinueDistributionHandler.js";
 
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
@@ -139,7 +140,8 @@ export class CacheFilePathService {
       ViewDistributionDataHandler.name,
       CheckWhosMissingPageHandler.name,
       MarkAsReceivedPostHandler.name,
-      HomepageHandler.name
+      HomepageHandler.name,
+      ContinueDistributionHandler.name
     ]);
   }
 

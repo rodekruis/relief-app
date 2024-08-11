@@ -16,6 +16,7 @@ import { BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
 import { CheckWhosMissingPageHandler } from "./CheckWhosMissingPagehandler.js";
 import { MarkAsReceivedPostHandler } from "./MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./HomepageHandler.js";
+import { ContinueDistributionHandler } from "./ContinueDistributionHandler.js";
 
 export class FetchEventHandlers extends ActiveSessionContainer implements FetchEventHandler {
   all: FetchEventHandler[] = [
@@ -33,7 +34,8 @@ export class FetchEventHandlers extends ActiveSessionContainer implements FetchE
     new ViewDistributionDataHandler(this.activeSession),
     new CheckWhosMissingPageHandler(this.activeSession),
     new MarkAsReceivedPostHandler(this.activeSession),
-    new HomepageHandler()
+    new HomepageHandler(),
+    new ContinueDistributionHandler()
   ];
 
   handlersForEvent(event: FetchEvent): FetchEventHandler[] {
