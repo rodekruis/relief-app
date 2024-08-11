@@ -26,4 +26,5 @@ export class RouteEvents {
     static checkBenificiaryCodeInputMethod = "/entry"
     static checkWhosMissing = "/missing"
     static received = "/received"
+    static continueDistribution = "/continueDistribution"
   }

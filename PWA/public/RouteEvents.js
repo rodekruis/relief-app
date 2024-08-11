@@ -26,4 +26,5 @@ RouteEvents.selectBenificiaryCodeInputMethod = "/save_input_method";
 RouteEvents.checkBenificiaryCodeInputMethod = "/entry";
 RouteEvents.checkWhosMissing = "/missing";
 RouteEvents.received = "/received";
+RouteEvents.continueDistribution = "/continueDistribution";
 export { RouteEvents };
