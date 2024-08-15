@@ -27,4 +27,5 @@ export class RouteEvents {
     static checkWhosMissing = "/missing"
     static received = "/received"
     static continueDistribution = "/continueDistribution"
+    static downloadData = "/download_data"
   }

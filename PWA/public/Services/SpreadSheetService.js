@@ -8,7 +8,10 @@ export class SpreadSheetService {
         const ws = utils.json_to_sheet(json);
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, 'Sheet1');
-        return write(wb, { bookType: 'xlsx', type: 'blob' });
+        const file = write(wb, { bookType: 'xlsx', type: 'binary' });
+        return new Blob([this.stringToArrayBuffer(file)], {
+            type: 'application/octet-stream'
+        });
     }
     static async firstSheetFromSpreadSheetFile(spreadSheetFile) {
         const workBook = read(await spreadSheetFile.arrayBuffer(), {
@@ -17,5 +20,12 @@ export class SpreadSheetService {
         const spreadSheetNames = workBook.SheetNames;
         const firstSheet = workBook.Sheets[spreadSheetNames[0]];
         return firstSheet;
+    }
+    static stringToArrayBuffer(string) {
+        const buffer = new ArrayBuffer(string.length);
+        const view = new Uint8Array(buffer);
+        for (let i = 0; i < string.length; i++)
+            view[i] = string.charCodeAt(i) & 0xff;
+        return buffer;
     }
 }

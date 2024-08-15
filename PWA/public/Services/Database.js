@@ -32,7 +32,8 @@ function columnsForObjectStore(objectStore) {
             return [
                 { name: "distributionName", isUnique: false },
                 { name: "beneficiaryCode", isUnique: false },
-                { name: "hasBeenMarkedAsReceived", isUnique: false }
+                { name: "hasBeenMarkedAsReceived", isUnique: false },
+                { name: "dateReceived", isUnique: false }
             ];
         case ObjectStoreName.activeDistribution:
             return [
@@ -107,6 +108,17 @@ export class Database {
         console.log(distributionBeneficiaries);
         return distributionBeneficiaries.filter((distributionBeneficiary) => distributionBeneficiary.distributionName == distribution.distrib_name);
     }
+    async distributionBeneficiary(distribution, beneficiary) {
+        let distributionBeneficiaries = await this.benificiariesForDistribution(distribution);
+        let filteredDistributionBeneficiaries = distributionBeneficiaries
+            .filter((distributionBeneficiary) => distributionBeneficiary.beneficiaryCode == beneficiary.code);
+        if (filteredDistributionBeneficiaries.length > 0) {
+            return filteredDistributionBeneficiaries[0];
+        }
+        else {
+            return undefined;
+        }
+    }
     async addBenificiary(beneficiary) {
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
     }
@@ -142,7 +154,7 @@ export class Database {
     async markBeneficiaryAsReceived(beneficiaryCode, distributionName) {
         const key = await this.keyForDistributionBeneficiary(beneficiaryCode, distributionName);
         await this.removeElement(ObjectStoreName.distributionBeneficiaries, key);
-        await this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiaryCode, distributionName, true));
+        await this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiaryCode, distributionName, true, (new Date()).toUTCString()));
     }
     async keyForDistributionBeneficiary(beneficiaryCode, distributionName) {
         const distributionBeneficiaries = await this.readDistributionBeneficiaries();
