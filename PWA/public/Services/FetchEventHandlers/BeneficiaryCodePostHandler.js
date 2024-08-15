@@ -65,6 +65,7 @@ export class BeneficiaryCodePostHandler extends ActiveSessionContainer {
             }
         }
         else {
+            console.error("Failed to retrieve code from URL");
             return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputNotFound);
         }
     }
