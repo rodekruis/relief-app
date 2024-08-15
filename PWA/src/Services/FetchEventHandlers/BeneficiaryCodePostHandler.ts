@@ -70,10 +70,11 @@ export class BeneficiaryCodePostHandler extends ActiveSessionContainer implement
             eligibility_info_values: beneficiary.values,
           }
         )
+      } else {
+          return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputNotFound)
+      }
     } else {
-        return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputNotFound)
-    }
-    } else {
+      console.error("Failed to retrieve code from URL")
       return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputNotFound)
     }
   }
