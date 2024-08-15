@@ -1,4 +1,4 @@
-class RouteEvents {
+export class RouteEvents {
 }
 RouteEvents.home = "/index.html";
 RouteEvents.distributionsHome = "/distrib.html";
@@ -27,4 +27,3 @@ RouteEvents.checkBenificiaryCodeInputMethod = "/entry";
 RouteEvents.checkWhosMissing = "/missing";
 RouteEvents.received = "/received";
 RouteEvents.continueDistribution = "/continueDistribution";
-export { RouteEvents };

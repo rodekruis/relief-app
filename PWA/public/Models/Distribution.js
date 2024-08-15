@@ -1,4 +1,4 @@
-class Distribution {
+export class Distribution {
     constructor(distrib_items, distrib_date, distrib_place, distrib_name) {
         this.distrib_date = distrib_date;
         this.distrib_items = distrib_items;
@@ -16,4 +16,3 @@ Distribution.colums = [
     "Items Distributed",
     "Donor",
 ];
-export { Distribution };
