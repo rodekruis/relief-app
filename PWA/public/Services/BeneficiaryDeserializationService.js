@@ -1,12 +1,12 @@
 import { Beneficiary } from "../Models/Beneficiary.js";
 import { FormParser } from "./FormParser.js";
-import { SpreadSheetFileParser } from "./SpreadSheetFileParser.js";
+import { SpreadSheetService } from "./SpreadSheetService.js";
 export class BeneficiaryDeserializationService {
     async deserializeFormDataFromRequest(request) {
         return new Promise(async (resolve, reject) => {
             const possibleFile = FormParser.firstFileFromFormData(await request.formData());
             if (possibleFile instanceof File) {
-                const json = await SpreadSheetFileParser.jsonFromSpreadSheetFile(possibleFile);
+                const json = await SpreadSheetService.jsonFromSpreadSheetFile(possibleFile);
                 try {
                     return resolve(this.deserializeJson(json));
                 }

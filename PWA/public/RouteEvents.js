@@ -27,3 +27,4 @@ RouteEvents.checkBenificiaryCodeInputMethod = "/entry";
 RouteEvents.checkWhosMissing = "/missing";
 RouteEvents.received = "/received";
 RouteEvents.continueDistribution = "/continueDistribution";
+RouteEvents.downloadData = "/download_data";

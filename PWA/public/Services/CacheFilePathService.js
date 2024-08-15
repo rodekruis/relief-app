@@ -28,6 +28,8 @@ import { MarkAsReceivedPostHandler } from "./FetchEventHandlers/MarkAsReceivedPo
 import { HomepageHandler } from "./FetchEventHandlers/HomepageHandler.js";
 import { DateService } from "./DateService.js";
 import { ContinueDistributionHandler } from "./FetchEventHandlers/ContinueDistributionHandler.js";
+import { DownloadDataHandler } from "./FetchEventHandlers/DownloadDataHandler.js";
+import { BeneficiaryStatusService } from "./BeneficiaryStatusService.js";
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
     pathsOfFilesToCache() {
@@ -108,7 +110,8 @@ export class CacheFilePathService {
             BeneficiaryEligilityService.name,
             ActiveSession.name,
             BeneficiariesService.name,
-            DateService.name
+            DateService.name,
+            BeneficiaryStatusService.name
         ]);
     }
     fetchEventHanderPaths() {
@@ -128,7 +131,8 @@ export class CacheFilePathService {
             CheckWhosMissingPageHandler.name,
             MarkAsReceivedPostHandler.name,
             HomepageHandler.name,
-            ContinueDistributionHandler.name
+            ContinueDistributionHandler.name,
+            DownloadDataHandler.name
         ]);
     }
     interfacesPaths() {
