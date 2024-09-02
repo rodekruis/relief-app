@@ -3,7 +3,7 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { BeneficiaryDeserializationService } from "../BeneficiaryDeserializationService.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
+import { BeneficiaryInfoService } from "../BeneficiaryInfoService.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 
 export class BeneficiaryDataUploadHandler extends ActiveSessionContainer implements FetchEventHandler {
@@ -22,13 +22,13 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer impleme
         await beneficiaries.forEach(async (beneficiary) => await database.addBenificiary(beneficiary))
         await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiaryToDistribution(beneficiary, distribution))
         this.activeSession.nameOfLastViewedDistribution = distributionName
-        const benificiaryInfoService = new BenificiaryInfoService(this.activeSession.database)
+        const benificiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
 
         return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
           "distrib_name": distribution.distrib_name,
           "distrib_place": distribution.distrib_place,
           "distrib_date": distribution.distrib_date,
-          beneficiary_info: await benificiaryInfoService.benificiaryInfoTextFromDistribution(distribution)
+          beneficiary_info: await benificiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
       });
       } else {
         throw "Expeced distribution named " + distributionName

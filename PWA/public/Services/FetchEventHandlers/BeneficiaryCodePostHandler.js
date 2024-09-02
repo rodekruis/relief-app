@@ -43,7 +43,7 @@ export class BeneficiaryCodePostHandler extends ActiveSessionContainer {
         this.eligebilityService = new BeneficiaryEligilityService(this.activeSession);
     }
     canHandleEvent(event) {
-        return event.request.url.includes(RouteEvents.checkBenificiaryCodeInputMethod);
+        return event.request.url.includes(RouteEvents.checkBeneficiaryCodeInputMethod);
     }
     async handleEvent(event) {
         const beneficiaryCode = this.beneficiaryCodeFromRequest(event.request);

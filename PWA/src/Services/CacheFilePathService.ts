@@ -13,7 +13,7 @@ import { DeleteDistributionPost } from "../Models/DeleteDistributionPost.js";
 import { Distribution } from "../Models/Distribution.js";
 import { SelectDistributionPost } from "../Models/SelectDistributionPost.js";
 import { RouteEvents } from "../RouteEvents.js";
-import { BenificiaryInfoService } from "./BenificiaryInfoService.js";
+import { BeneficiaryInfoService } from "./BeneficiaryInfoService.js";
 import { Database } from "./Database.js";
 import { DeserialisationService } from "./DeserialisationService.js";
 import { FormParser } from "./FormParser.js";
@@ -59,7 +59,7 @@ export class CacheFilePathService {
       RouteEvents.deleteDistribution,
       RouteEvents.uploadData,
       RouteEvents.uploadDataError,
-      RouteEvents.chooseBenificiaryCodeInputMethodPage,
+      RouteEvents.chooseBeneficiaryCodeInputMethodPage,
       RouteEvents.codeInputUsingCamera,
       RouteEvents.codeinputUsingTextField,
       RouteEvents.codeInputFound,
@@ -114,7 +114,7 @@ export class CacheFilePathService {
 
   private servicePaths(): string[] {
     return this.pathsForTypesInFolder("Services", [
-      BenificiaryInfoService.name,
+      BeneficiaryInfoService.name,
       CacheFilePathService.name,
       Database.name,
       DeserialisationService.name,

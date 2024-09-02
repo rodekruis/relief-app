@@ -4,7 +4,7 @@ import { DeserialisationService } from "../DeserialisationService.js";
 import { ResponseTools } from "../ResponseTools.js";
 export class SelectBenificiaryCodeInputMethodHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
-        return event.request.url.endsWith(RouteEvents.selectBenificiaryCodeInputMethod);
+        return event.request.url.endsWith(RouteEvents.selectBeneficiaryCodeInputMethod);
     }
     async handleEvent(event) {
         try {

@@ -5,10 +5,10 @@ import { ResponseTools } from "../ResponseTools.js";
 
 export class ChooseBenificiaryCodeInputMethodPageHandler implements FetchEventHandler {
     canHandleEvent(event: FetchEvent): boolean {
-      return event.request.url.endsWith(RouteEvents.chooseBenificiaryCodeInputMethod);
+      return event.request.url.endsWith(RouteEvents.chooseBeneficiaryCodeInputMethod);
     }
   
     async handleEvent(event: FetchEvent): Promise<Response> {
-        return ResponseTools.wrapInHtmlTemplate(RouteEvents.chooseBenificiaryCodeInputMethodPage)
+        return ResponseTools.wrapInHtmlTemplate(RouteEvents.chooseBeneficiaryCodeInputMethodPage)
     }
   }

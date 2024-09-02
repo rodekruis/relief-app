@@ -8,7 +8,7 @@ import { ResponseTools } from "../ResponseTools.js";
 
 export class SelectBenificiaryCodeInputMethodHandler extends ActiveSessionContainer implements FetchEventHandler {
     canHandleEvent(event: FetchEvent): boolean {
-      return event.request.url.endsWith(RouteEvents.selectBenificiaryCodeInputMethod);
+      return event.request.url.endsWith(RouteEvents.selectBeneficiaryCodeInputMethod);
     }
   
     async handleEvent(event: FetchEvent): Promise<Response> {
