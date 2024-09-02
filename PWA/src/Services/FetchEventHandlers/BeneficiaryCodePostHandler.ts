@@ -65,7 +65,7 @@ export class BeneficiaryCodePostHandler extends ActiveSessionContainer implement
       if(beneficiary) {
         return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(
           RouteEvents.codeInputFound, {
-            eligibility_info_box_id: await this.eligebilityService.isBenificiaryEligibleForCurrentDistribution(beneficiaryCode) ? "eligible" : "ineligible",
+            eligibility_info_box_id: await this.eligebilityService.isBenificiaryEligibleForCurrentDistribution(beneficiaryCode) ? "eligible" : "noteligible",
             eligibility_info_name: beneficiary.code,
             eligibility_info_values: beneficiary.values,
           }

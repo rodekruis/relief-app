@@ -14,18 +14,19 @@ export class BeneficiaryEligilityService {
             const distribution = await this.activeSession.database.distributionWithName(nameOfActiveDistribution)
             if(distribution) {
                 const distributionBeneficiaries = await this.activeSession.database.benificiariesForDistribution(distribution)
-                console.log("🦆 there is a distribution")
+                console.log("There is a distribution")
                 console.log(distributionBeneficiaries)
                 const matchedBeneficiaries = distributionBeneficiaries.filter((beneficiary) => {
                     return beneficiary.beneficiaryCode === beneficiaryCode
                 })
                 if(matchedBeneficiaries.length == 1) {
-                    return true
+                    const beneficiary = matchedBeneficiaries[0]
+                    return !beneficiary.hasBeenMarkedAsReceived
                 } else {
                     return false
                 }
             } else {
-                console.error("Active distrution named " + nameOfActiveDistribution + " not found in database")
+                console.error("Active distributedion named \"" + nameOfActiveDistribution + "\" not found in database")
                 return false
             }
         } else {
