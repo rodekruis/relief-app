@@ -52,11 +52,16 @@ self.addEventListener("activate", function (event: any) {
 self.addEventListener("fetch", function (event: any) {
   let customHandlers = new FetchEventHandlers(activeSession);
   console.info("ℹ️ Handling fetch request " + event.request.url);
-  if (customHandlers.canHandleEvent(event)) {
-    console.log("using custom event handler");
-    event.respondWith(customHandlers.handleEvent(event))
-  } else {
-    console.log("using custom cache");
-    event.respondWith(caches.match(event.request));
-  }
+  try {
+    if (customHandlers.canHandleEvent(event)) {
+      console.log("using custom event handler");
+      event.respondWith(customHandlers.handleEvent(event))
+    } else {
+      console.log("using custom cache");
+      event.respondWith(caches.match(event.request));
+    }
+  } catch (error) {
+    console.error("Failed with error:")
+    console.error(error)
+  }  
 });

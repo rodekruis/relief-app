@@ -1,7 +1,8 @@
 import { RouteEvents } from "../../RouteEvents.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { ResponseTools } from "../ResponseTools.js";
-export class SelectBenificiaryCodeInputMethodHandler {
+export class SelectBenificiaryCodeInputMethodHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.selectBenificiaryCodeInputMethod);
     }
@@ -16,10 +17,13 @@ export class SelectBenificiaryCodeInputMethodHandler {
         }
     }
     templatepageForInputMethod(inputMethod) {
+        this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod;
         if (inputMethod == "video") {
+            this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod;
             return RouteEvents.codeInputUsingCamera;
         }
         else if (inputMethod == "text") {
+            this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod;
             return RouteEvents.codeinputUsingTextField;
         }
         else {

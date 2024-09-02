@@ -30,13 +30,13 @@ export class FetchEventHandlers extends ActiveSessionContainer implements FetchE
     new UploadDataHandler(),
     new BeneficiaryDataUploadHandler(this.activeSession),
     new ChooseBenificiaryCodeInputMethodPageHandler(),
-    new SelectBenificiaryCodeInputMethodHandler(),
+    new SelectBenificiaryCodeInputMethodHandler(this.activeSession),
     new BeneficiaryCodePostHandler(this.activeSession),
     new ViewDistributionDataHandler(this.activeSession),
     new CheckWhosMissingPageHandler(this.activeSession),
     new MarkAsReceivedPostHandler(this.activeSession),
     new HomepageHandler(),
-    new ContinueDistributionHandler(),
+    new ContinueDistributionHandler(this.activeSession),
     new DownloadDataHandler(this.activeSession)
   ];
 
