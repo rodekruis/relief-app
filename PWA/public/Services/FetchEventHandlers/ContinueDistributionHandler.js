@@ -1,12 +1,17 @@
 import { RouteEvents } from "../../RouteEvents.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 import { ResponseTools } from "../ResponseTools.js";
-export class ContinueDistributionHandler {
+export class ContinueDistributionHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.includes(RouteEvents.continueDistribution);
     }
     async handleEvent(event) {
-        //TODO this should be context aware
-        return await ResponseTools.wrapInHtmlTemplate(this.templatepageForInputMethod("text"));
+        if (this.activeSession.nameOfLastUsedDistributionInputMethod) {
+            return await ResponseTools.wrapInHtmlTemplate(this.templatepageForInputMethod(this.activeSession.nameOfLastUsedDistributionInputMethod));
+        }
+        else {
+            throw "Expected nameOfLastUsedDistributionInputMethod";
+        }
     }
     templatepageForInputMethod(inputMethod) {
         if (inputMethod == "video") {

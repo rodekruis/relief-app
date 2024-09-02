@@ -32,13 +32,19 @@ export class MarkAsReceivedPostHandler extends ActiveSessionContainer implements
           console.error(error)
         }
       } else {
-        console.error("Expected active distribution")
+        return Promise.reject(new Error("Expected active distribution"))
       }
     } else {
-      console.error("Expected benificiarycode")
+      return Promise.reject(new Error("Expected benificiarycode"))
     }
-    //TODO should be non camera when coming from non camera
-    return ResponseTools.wrapInHtmlTemplate(RouteEvents.codeInputUsingCamera)
+
+    if(this.activeSession.nameOfLastUsedDistributionInputMethod) {
+      return ResponseTools.wrapInHtmlTemplate(
+        this.templatepageForInputMethod(this.activeSession.nameOfLastUsedDistributionInputMethod)
+      )
+    } else {
+      return Promise.reject(new Error("Expected nameOfLastUsedDistributionInputMethod"))
+    }
   }
 
   private beneficiaryCodeFromRequest(request: Request): string | undefined {
@@ -46,5 +52,18 @@ export class MarkAsReceivedPostHandler extends ActiveSessionContainer implements
     const searchParams = url.searchParams
     console.log(searchParams)
     return url.searchParams.get('code') ?? undefined
+  }
+
+  private templatepageForInputMethod(inputMethod: string): string {
+    this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod
+    if(inputMethod == "video") {
+      this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod
+      return RouteEvents.codeInputUsingCamera
+    } else if(inputMethod == "text") {
+      this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod
+      return RouteEvents.codeinputUsingTextField
+    } else {
+      throw "Unexpected input method: " + inputMethod
+    }
   }
 }

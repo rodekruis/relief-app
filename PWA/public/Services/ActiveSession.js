@@ -11,6 +11,14 @@ export class ActiveSession {
         console.log(value);
         this._nameOfLastViewedDistribution = value;
     }
+    get nameOfLastUsedDistributionInputMethod() {
+        return this._nameOfLastUsedDistributionInputMethod;
+    }
+    set nameOfLastUsedDistributionInputMethod(value) {
+        console.log("ℹ️ name of last used distribution input method is now:");
+        console.log(value);
+        this._nameOfLastUsedDistributionInputMethod = value;
+    }
 }
 export class ActiveSessionContainer {
     constructor(activeSession) {

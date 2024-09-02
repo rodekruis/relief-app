@@ -2,10 +2,11 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { BeneficiaryCodeInputMethodPost } from "../../Models/BeneficiaryCodeInputMethodPost.js";
 import { RouteEvents } from "../../RouteEvents.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { ResponseTools } from "../ResponseTools.js";
 
-export class SelectBenificiaryCodeInputMethodHandler implements FetchEventHandler {
+export class SelectBenificiaryCodeInputMethodHandler extends ActiveSessionContainer implements FetchEventHandler {
     canHandleEvent(event: FetchEvent): boolean {
       return event.request.url.endsWith(RouteEvents.selectBenificiaryCodeInputMethod);
     }
@@ -21,9 +22,12 @@ export class SelectBenificiaryCodeInputMethodHandler implements FetchEventHandle
     }
 
     private templatepageForInputMethod(inputMethod: string): string {
+      this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod
       if(inputMethod == "video") {
+        this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod
         return RouteEvents.codeInputUsingCamera
       } else if(inputMethod == "text") {
+        this.activeSession.nameOfLastUsedDistributionInputMethod = inputMethod
         return RouteEvents.codeinputUsingTextField
       } else {
         throw "Unexpected input method: " + inputMethod
