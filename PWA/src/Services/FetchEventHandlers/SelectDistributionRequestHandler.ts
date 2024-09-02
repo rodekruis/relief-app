@@ -5,7 +5,7 @@ import { SelectDistributionPost } from "../../Models/SelectDistributionPost.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
-import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 
 export class SelectDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
   benificiaryInfoService = new BenificiaryInfoService(this.activeSession.database)

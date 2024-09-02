@@ -1,6 +1,7 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { BeneficiaryEligilityService } from "../BeneficiaryEligilityService.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 /*
 @main.route('/entry', methods=['POST', 'GET'])
 @login_required
@@ -36,11 +37,6 @@ def beneficiary():
         return render_template('entry.html',
                                data=beneficiary_data)
 */
-export class ActiveSessionContainer {
-    constructor(activeSession) {
-        this.activeSession = activeSession;
-    }
-}
 export class BeneficiaryCodePostHandler extends ActiveSessionContainer {
     constructor() {
         super(...arguments);

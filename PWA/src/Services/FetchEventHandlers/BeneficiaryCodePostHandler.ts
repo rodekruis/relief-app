@@ -3,7 +3,8 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { BeneficiaryEligilityService } from "../BeneficiaryEligilityService.js";
-import { ActiveSession } from "../ActiveSession.js";
+import { ActiveSession, ActiveSessionContainer } from "../ActiveSession.js";
+
 
 /*
 @main.route('/entry', methods=['POST', 'GET'])
@@ -40,16 +41,6 @@ def beneficiary():
         return render_template('entry.html',
                                data=beneficiary_data)
 */
-
-
-
-export class ActiveSessionContainer {
-    activeSession: ActiveSession;
-    
-    constructor(activeSession: ActiveSession) {
-        this.activeSession = activeSession;
-    }
-}
 
 export class BeneficiaryCodePostHandler extends ActiveSessionContainer implements FetchEventHandler {
     eligebilityService = new BeneficiaryEligilityService(this.activeSession)

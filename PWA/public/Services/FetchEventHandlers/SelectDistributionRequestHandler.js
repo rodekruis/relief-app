@@ -2,7 +2,7 @@ import { RouteEvents } from "../../RouteEvents.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
-import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 export class SelectDistributionRequestHandler extends ActiveSessionContainer {
     constructor() {
         super(...arguments);

@@ -3,15 +3,7 @@ import { RouteEvents } from "../../RouteEvents.js";
 import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { ActiveSession } from "../ActiveSession.js";
-
-export class ActiveSessionContainer {
-    activeSession: ActiveSession;
-    
-    constructor(activeSession: ActiveSession) {
-        this.activeSession = activeSession;
-    }
-}
+import { ActiveSession, ActiveSessionContainer } from "../ActiveSession.js";
 
 export class MarkAsReceivedPostHandler extends ActiveSessionContainer implements FetchEventHandler {
 

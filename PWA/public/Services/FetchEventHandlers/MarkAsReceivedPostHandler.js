@@ -1,10 +1,6 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { ResponseTools } from "../ResponseTools.js";
-export class ActiveSessionContainer {
-    constructor(activeSession) {
-        this.activeSession = activeSession;
-    }
-}
+import { ActiveSessionContainer } from "../ActiveSession.js";
 export class MarkAsReceivedPostHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.includes(RouteEvents.received);

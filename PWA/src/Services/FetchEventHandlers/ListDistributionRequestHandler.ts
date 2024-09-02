@@ -3,7 +3,7 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { Distribution } from "../../Models/Distribution.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 
 export class ListDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
