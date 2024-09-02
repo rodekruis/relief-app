@@ -1,7 +1,7 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { Distribution } from "../../Models/Distribution.js";
 import { ResponseTools } from "../ResponseTools.js";
-import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 export class ListDistributionRequestHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         const url = event.request.url;

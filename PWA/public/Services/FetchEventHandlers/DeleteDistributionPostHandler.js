@@ -1,6 +1,6 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { DeserialisationService } from "../DeserialisationService.js";
-import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 export class DeleteDistributionPostHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postDeleteDistribution);

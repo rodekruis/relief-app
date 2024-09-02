@@ -3,7 +3,7 @@ import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { DeleteDistributionPost } from "../../Models/DeleteDistributionPost.js";
-import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 
 export class DeleteDistributionPostHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {

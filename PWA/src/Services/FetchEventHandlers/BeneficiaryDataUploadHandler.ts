@@ -2,9 +2,9 @@ import { RouteEvents } from "../../RouteEvents.js";
 import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { BeneficiaryDeserializationService } from "../BeneficiaryDeserializationService.js";
-import { ActiveSessionContainer } from "./BeneficiaryCodePostHandler.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
+import { ActiveSessionContainer } from "../ActiveSession.js";
 
 export class BeneficiaryDataUploadHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
