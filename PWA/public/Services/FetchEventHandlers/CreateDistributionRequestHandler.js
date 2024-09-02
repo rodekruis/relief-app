@@ -1,13 +1,13 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { ResponseTools } from "../ResponseTools.js";
 import { DeserialisationService } from "../DeserialisationService.js";
-import { BenificiaryInfoService } from "../BenificiaryInfoService.js";
+import { BeneficiaryInfoService } from "../BeneficiaryInfoService.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 import { DateService } from "../DateService.js";
 export class CreateDistributionRequestHandler extends ActiveSessionContainer {
     constructor() {
         super(...arguments);
-        this.benificiaryInfoService = new BenificiaryInfoService(this.activeSession.database);
+        this.benificiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
     }
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postCreateDistribution);
@@ -30,7 +30,7 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer {
                     "distrib_name": distribution.distrib_name,
                     "distrib_place": distribution.distrib_place,
                     "distrib_date": distribution.distrib_date,
-                    beneficiary_info: await this.benificiaryInfoService.benificiaryInfoTextFromDistribution(distribution)
+                    beneficiary_info: await this.benificiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
                 });
             }
             catch (error) {

@@ -46,7 +46,7 @@ export class BeneficiaryCodePostHandler extends ActiveSessionContainer implement
     eligebilityService = new BeneficiaryEligilityService(this.activeSession)
 
   canHandleEvent(event: FetchEvent): boolean {
-    return event.request.url.includes(RouteEvents.checkBenificiaryCodeInputMethod);
+    return event.request.url.includes(RouteEvents.checkBeneficiaryCodeInputMethod);
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
