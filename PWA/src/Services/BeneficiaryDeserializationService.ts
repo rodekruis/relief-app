@@ -41,7 +41,7 @@ export class BeneficiaryDeserializationService {
   private codeFromJsonRow(jsonRow: any): string {
     const code = jsonRow["code"]
     if(code) {
-      return code
+      return code.toString()
     } else {
       throw Error("Expected beneficiary code")
     }
