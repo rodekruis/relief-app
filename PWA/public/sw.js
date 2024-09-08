@@ -9,19 +9,36 @@ self.addEventListener("install", function (event) {
     console.log("ℹ️ Installing Service Worker ...", event);
     console.log(new CacheFilePathService().pathsOfFilesToCache());
     event.waitUntil(caches.open(CACHE_STATIC_NAME)
-        .then(function (cache) {
+        .then(async (cache) => {
         console.log("ℹ️ Precaching App Shell..");
-        cache.addAll([
+        const urlsToCache = [
             "/",
             "/favicon.ico",
             "/manifest.json",
             "/apple-touch-icon.png",
             "/apple-touch-icon-precomposed.png"
         ]
-            .concat(new CacheFilePathService().pathsOfFilesToCache()));
+            .concat(new CacheFilePathService().pathsOfFilesToCache());
+        for (const url of urlsToCache) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.error(`Failed to fetch ${url}: ${response.statusText}`);
+                }
+                else {
+                    await cache.put(url, response);
+                    console.log(`Cached: ${url}`);
+                }
+            }
+            catch (error) {
+                console.error(`Error fetching ${url}:`, error);
+            }
+        }
     })
         .then(() => {
         console.log("ℹ️ Serviceworker installed ✅");
+    }).catch((error) => {
+        console.error("Promise rejected with:", error);
     }));
 });
 self.addEventListener("activate", function (event) {
