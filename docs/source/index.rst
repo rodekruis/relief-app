@@ -2,10 +2,8 @@ ReliefBox documentation
 ===================================
 
 `ReliefBox <https://relief-system-webapp.azurewebsites.net>`_ is a tool for managing the **distribution of relief items** during humanitarian emergencies.
-Given a list of beneficiaries, ReliefBox tracks **who received aid and when**, and makes this information
-easily available before, during and after the distribution.
+Given a list of beneficiaries, ReliefBox helps you track **who received aid and when**, and makes this information available before, during and after the distribution. ReliefBox was designed to be **easy** to use and **fast** to set up.
 
-- **Easy** to use and **fast** to set up.
 - Works both **online** on multiple devices and **offline** on a single device.
 - Supports multiple, independent distributions at the same time.
 - Does **not** support deduplication of beneficiaries across distributions, i.e. does **not** check if a beneficiary in a given distribution is a recipient in another one.
