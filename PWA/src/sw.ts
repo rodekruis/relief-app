@@ -13,9 +13,9 @@ self.addEventListener("install", function (event: any) {
   console.log(new CacheFilePathService().pathsOfFilesToCache())
   event.waitUntil(
     caches.open(CACHE_STATIC_NAME)
-    .then(async (cache) => {
+    .then(function (cache) {
       console.log("ℹ️ Precaching App Shell..");
-      const urlsToCache = [
+      cache.addAll([
         "/",
         "/favicon.ico",
         "/manifest.json",
@@ -23,25 +23,10 @@ self.addEventListener("install", function (event: any) {
         "/apple-touch-icon-precomposed.png"
       ]
       .concat(new CacheFilePathService().pathsOfFilesToCache())
-
-      for (const url of urlsToCache) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                console.error(`Failed to fetch ${url}: ${response.statusText}`);
-            } else {
-                await cache.put(url, response);
-                console.log(`Cached: ${url}`);
-            }
-        } catch (error) {
-            console.error(`Error fetching ${url}:`, error);
-        }
-    }
+      );
     })
     .then(() => {
       console.log("ℹ️ Serviceworker installed ✅")
-    }).catch((error) => {
-      console.error("Promise rejected with:", error);
     })
   );
 });
@@ -58,9 +43,6 @@ self.addEventListener("activate", function (event: any) {
           }
         })
       );
-    })
-    .catch((error) => {
-      console.error("Promise rejected with:", error);
     })
   );
   return (self as any).clients.claim();
