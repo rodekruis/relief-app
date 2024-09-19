@@ -10,7 +10,7 @@ export class CheckWhosMissingPageHandler extends ActiveSessionContainer implemen
     canHandleEvent(event: FetchEvent): boolean {
       return event.request.url.endsWith(RouteEvents.checkWhosMissing);
     }
-  
+    
     async handleEvent(event: FetchEvent): Promise<Response> {
       const beneficiariesService = new BeneficiariesService(this.activeSession);
       const beneficiaries = await beneficiariesService.eligibleBeneficiariesForActiveDistribution();
