@@ -9,8 +9,7 @@ export class CheckWhosMissingPageHandler extends ActiveSessionContainer {
     async handleEvent(event) {
         const beneficiariesService = new BeneficiariesService(this.activeSession);
         const beneficiaries = await beneficiariesService.eligibleBeneficiariesForActiveDistribution();
-        console.log("Will display:");
-        console.log(beneficiaries);
+        console.log("Will display:", beneficiaries);
         if (beneficiaries.length > 0) {
             return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.viewData, {
                 columns: this.columnsFromBeneficiaries(beneficiaries),

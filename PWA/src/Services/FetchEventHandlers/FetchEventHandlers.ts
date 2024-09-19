@@ -13,7 +13,7 @@ import { SelectBeneficiaryCodeInputMethodHandler } from "./SelectBeneficiaryCode
 import { ViewDistributionDataHandler } from "./ViewDistributionDataHandler.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 import { BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
-import { CheckWhosMissingPageHandler } from "./CheckWhosMissingPagehandler.js";
+import { CheckWhosMissingPageHandler } from "./CheckWhosMissingPageHandler.js";
 import { MarkAsReceivedPostHandler } from "./MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./HomepageHandler.js";
 import { ContinueDistributionHandler } from "./ContinueDistributionHandler.js";

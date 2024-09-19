@@ -23,7 +23,7 @@ import { ActiveSession } from "./ActiveSession.js";
 import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 import { ViewDistributionDataHandler } from "./FetchEventHandlers/ViewDistributionDataHandler.js";
 import { BeneficiariesService } from "./BeneficiariesService.js";
-import { CheckWhosMissingPageHandler } from "./FetchEventHandlers/CheckWhosMissingPagehandler.js";
+import { CheckWhosMissingPageHandler } from "./FetchEventHandlers/CheckWhosMissingPageHandler.js";
 import { MarkAsReceivedPostHandler } from "./FetchEventHandlers/MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./FetchEventHandlers/HomepageHandler.js";
 import { DateService } from "./DateService.js";
