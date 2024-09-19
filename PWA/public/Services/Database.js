@@ -119,7 +119,7 @@ export class Database {
             return undefined;
         }
     }
-    async addBenificiary(beneficiary) {
+    async addBeneficiary(beneficiary) {
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
     }
     async setActiveDistribution(activeDistribution) {
@@ -147,7 +147,7 @@ export class Database {
         });
         const existingBeneficiary = await this.beneficiaryWithCode(beneficiary.code);
         if (!existingBeneficiary) {
-            this.addBenificiary(beneficiary);
+            this.addBeneficiary(beneficiary);
         }
         return this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiary.code, distribution.distrib_name));
     }
@@ -159,8 +159,8 @@ export class Database {
     async keyForDistributionBeneficiary(beneficiaryCode, distributionName) {
         const distributionBeneficiaries = await this.readDistributionBeneficiaries();
         for (let i = 0; i < distributionBeneficiaries.length; i++) {
-            const currentBenificiary = distributionBeneficiaries[i];
-            if (currentBenificiary.distributionName == distributionName && currentBenificiary.beneficiaryCode == beneficiaryCode) {
+            const currentBeneficiary = distributionBeneficiaries[i];
+            if (currentBeneficiary.distributionName == distributionName && currentBeneficiary.beneficiaryCode == beneficiaryCode) {
                 return i + 1;
             }
         }

@@ -55,7 +55,7 @@ describe("BeneficiaryEligilityService", () => {
     activeSession.nameOfLastViewedDistribution = activeDistribution.distrib_name;
     const sut = new BeneficiaryEligilityService(activeSession);
     expect(
-      await sut.isBenificiaryEligibleForCurrentDistribution(
+      await sut.isBeneficiaryEligibleForCurrentDistribution(
         inActiveEligibleBeneficiaryCode
       )
     ).toEqual(false);
@@ -66,7 +66,7 @@ describe("BeneficiaryEligilityService", () => {
     activeSession.nameOfLastViewedDistribution = activeDistribution.distrib_name;
     const sut = new BeneficiaryEligilityService(activeSession);
     expect(
-      await sut.isBenificiaryEligibleForCurrentDistribution(
+      await sut.isBeneficiaryEligibleForCurrentDistribution(
         activeEligibleBeneficiaryCode
       )
     ).toEqual(true);
@@ -77,7 +77,7 @@ describe("BeneficiaryEligilityService", () => {
     activeSession.nameOfLastViewedDistribution = undefined;
     const sut = new BeneficiaryEligilityService(activeSession);
     try {
-      const result = await sut.isBenificiaryEligibleForCurrentDistribution(
+      const result = await sut.isBeneficiaryEligibleForCurrentDistribution(
         "could have been any code"
       );
       fail("Expected error");

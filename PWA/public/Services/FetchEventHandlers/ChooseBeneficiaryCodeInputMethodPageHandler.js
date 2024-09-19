@@ -1,6 +1,6 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { ResponseTools } from "../ResponseTools.js";
-export class ChooseBenificiaryCodeInputMethodPageHandler {
+export class ChooseBeneficiaryCodeInputMethodPageHandler {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.chooseBeneficiaryCodeInputMethod);
     }

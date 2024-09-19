@@ -6,7 +6,7 @@ import { ActiveSessionContainer } from "../ActiveSession.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { ResponseTools } from "../ResponseTools.js";
 
-export class SelectBenificiaryCodeInputMethodHandler extends ActiveSessionContainer implements FetchEventHandler {
+export class SelectBeneficiaryCodeInputMethodHandler extends ActiveSessionContainer implements FetchEventHandler {
     canHandleEvent(event: FetchEvent): boolean {
       return event.request.url.endsWith(RouteEvents.selectBeneficiaryCodeInputMethod);
     }

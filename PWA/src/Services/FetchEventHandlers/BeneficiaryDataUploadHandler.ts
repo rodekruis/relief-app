@@ -19,16 +19,16 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer impleme
       if(distributionName) {
         const distribution = await database.distributionWithName(distributionName)
       if(distribution) {
-        await beneficiaries.forEach(async (beneficiary) => await database.addBenificiary(beneficiary))
+        await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiary(beneficiary))
         await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiaryToDistribution(beneficiary, distribution))
         this.activeSession.nameOfLastViewedDistribution = distributionName
-        const benificiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
+        const beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
 
         return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
           "distrib_name": distribution.distrib_name,
           "distrib_place": distribution.distrib_place,
           "distrib_date": distribution.distrib_date,
-          beneficiary_info: await benificiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
+          beneficiary_info: await beneficiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
       });
       } else {
         throw "Expeced distribution named " + distributionName

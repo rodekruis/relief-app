@@ -8,7 +8,7 @@ import { BeneficiaryInfoService } from "../BeneficiaryInfoService.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 
 export class SelectDistributionRequestHandler extends ActiveSessionContainer implements FetchEventHandler {
-  benificiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
+  beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
 
   canHandleEvent(event: FetchEvent): boolean {
     return event.request.url.endsWith(RouteEvents.postSelectDistribution);
@@ -25,7 +25,7 @@ export class SelectDistributionRequestHandler extends ActiveSessionContainer imp
           "distrib_name": selectedDistribution.distrib_name,
           "distrib_place": selectedDistribution.distrib_place,
           "distrib_date": selectedDistribution.distrib_date,
-          beneficiary_info: await this.benificiaryInfoService.beneficiaryInfoTextFromDistribution(selectedDistribution)
+          beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(selectedDistribution)
         }
       )
     } else {

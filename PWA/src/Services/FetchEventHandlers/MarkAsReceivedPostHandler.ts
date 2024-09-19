@@ -27,7 +27,7 @@ export class MarkAsReceivedPostHandler extends ActiveSessionContainer implements
         return Promise.reject(new Error("Expected active distribution"))
       }
     } else {
-      return Promise.reject(new Error("Expected benificiarycode"))
+      return Promise.reject(new Error("Expected beneficiarycode"))
     }
 
     if(this.activeSession.nameOfLastUsedDistributionInputMethod) {

@@ -26,20 +26,20 @@ describe("BeneficiaryEligilityService", () => {
         const activeSession = await new ActiveSession(await setupDatabase());
         activeSession.nameOfLastViewedDistribution = activeDistribution.distrib_name;
         const sut = new BeneficiaryEligilityService(activeSession);
-        expect(await sut.isBenificiaryEligibleForCurrentDistribution(inActiveEligibleBeneficiaryCode)).toEqual(false);
+        expect(await sut.isBeneficiaryEligibleForCurrentDistribution(inActiveEligibleBeneficiaryCode)).toEqual(false);
     });
     test("When checking elible code from active distribution during active distrubtion Then eligible", async () => {
         const activeSession = await new ActiveSession(await setupDatabase());
         activeSession.nameOfLastViewedDistribution = activeDistribution.distrib_name;
         const sut = new BeneficiaryEligilityService(activeSession);
-        expect(await sut.isBenificiaryEligibleForCurrentDistribution(activeEligibleBeneficiaryCode)).toEqual(true);
+        expect(await sut.isBeneficiaryEligibleForCurrentDistribution(activeEligibleBeneficiaryCode)).toEqual(true);
     });
     test("When checking code from any distribution during inactive distrubtion Then error is thrown", async () => {
         const activeSession = await new ActiveSession(await setupDatabase());
         activeSession.nameOfLastViewedDistribution = undefined;
         const sut = new BeneficiaryEligilityService(activeSession);
         try {
-            const result = await sut.isBenificiaryEligibleForCurrentDistribution("could have been any code");
+            const result = await sut.isBeneficiaryEligibleForCurrentDistribution("could have been any code");
             fail("Expected error");
         }
         catch (error) {

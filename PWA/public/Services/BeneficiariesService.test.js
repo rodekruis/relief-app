@@ -52,8 +52,8 @@ describe('BeneficiariesService', () => {
         const distributions = await database.readDistributions();
         console.log(distributions);
         await database.addDistribution(existingDistribution);
-        await database.addBenificiary(beneficiary1);
-        await database.addBenificiary(beneficiary2);
+        await database.addBeneficiary(beneficiary1);
+        await database.addBeneficiary(beneficiary2);
         await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution);
         await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution);
         const beneficiaries = await sut.beneficiariesForActiveDistribution();
@@ -66,8 +66,8 @@ describe('BeneficiariesService', () => {
         const distributions = await database.readDistributions();
         console.log(distributions);
         await database.addDistribution(existingDistribution);
-        await database.addBenificiary(beneficiary1);
-        await database.addBenificiary(beneficiary2);
+        await database.addBeneficiary(beneficiary1);
+        await database.addBeneficiary(beneficiary2);
         await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution);
         await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution);
         const eligibleBeneficiaries = await sut.eligibleBeneficiariesForActiveDistribution();
@@ -78,8 +78,8 @@ describe('BeneficiariesService', () => {
         const distributions = await database.readDistributions();
         console.log(distributions);
         await database.addDistribution(existingDistribution);
-        await database.addBenificiary(beneficiary1);
-        await database.addBenificiary(beneficiary2);
+        await database.addBeneficiary(beneficiary1);
+        await database.addBeneficiary(beneficiary2);
         await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution);
         await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution);
         await database.markBeneficiaryAsReceived(beneficiary1.code, existingDistributionName);

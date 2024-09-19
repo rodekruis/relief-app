@@ -35,7 +35,7 @@ describe('Database', () => {
     })
 
     test("When adding a beneficiary, it can be retrieved", async () => {
-        await sut.addBenificiary(beneficiary)
+        await sut.addBeneficiary(beneficiary)
         const receivedBeneficiary: any = await sut.beneficiaryWithCode(beneficiaryCode)
         expect(
             receivedBeneficiary.code

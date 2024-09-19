@@ -8,7 +8,7 @@ export class BeneficiaryEligilityService {
         this.activeSession = activeSession
     }
 
-    async isBenificiaryEligibleForCurrentDistribution(beneficiaryCode: string | undefined): Promise<boolean> {
+    async isBeneficiaryEligibleForCurrentDistribution(beneficiaryCode: string | undefined): Promise<boolean> {
         const nameOfActiveDistribution = this.activeSession.nameOfLastViewedDistribution
         if(nameOfActiveDistribution) {
             const distribution = await this.activeSession.database.distributionWithName(nameOfActiveDistribution)

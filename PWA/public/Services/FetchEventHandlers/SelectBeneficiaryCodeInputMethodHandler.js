@@ -2,7 +2,7 @@ import { RouteEvents } from "../../RouteEvents.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { ResponseTools } from "../ResponseTools.js";
-export class SelectBenificiaryCodeInputMethodHandler extends ActiveSessionContainer {
+export class SelectBeneficiaryCodeInputMethodHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.selectBeneficiaryCodeInputMethod);
     }
