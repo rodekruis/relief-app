@@ -2,7 +2,7 @@ export class BeneficiaryEligilityService {
     constructor(activeSession) {
         this.activeSession = activeSession;
     }
-    async isBenificiaryEligibleForCurrentDistribution(beneficiaryCode) {
+    async isBeneficiaryEligibleForCurrentDistribution(beneficiaryCode) {
         const nameOfActiveDistribution = this.activeSession.nameOfLastViewedDistribution;
         if (nameOfActiveDistribution) {
             const distribution = await this.activeSession.database.distributionWithName(nameOfActiveDistribution);

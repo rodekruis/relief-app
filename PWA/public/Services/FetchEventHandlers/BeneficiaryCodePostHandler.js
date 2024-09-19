@@ -51,7 +51,7 @@ export class BeneficiaryCodePostHandler extends ActiveSessionContainer {
             const beneficiary = await this.activeSession.database.beneficiaryWithCode(beneficiaryCode);
             if (beneficiary) {
                 return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.codeInputFound, {
-                    eligibility_info_box_id: await this.eligebilityService.isBenificiaryEligibleForCurrentDistribution(beneficiaryCode) ? "eligible" : "noteligible",
+                    eligibility_info_box_id: await this.eligebilityService.isBeneficiaryEligibleForCurrentDistribution(beneficiaryCode) ? "eligible" : "noteligible",
                     eligibility_info_name: beneficiary.code,
                     eligibility_info_values: beneficiary.values,
                 });

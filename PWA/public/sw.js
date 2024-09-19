@@ -50,6 +50,9 @@ self.addEventListener("activate", function (event) {
                 return caches.delete(key);
             }
         }));
+    })
+        .catch((error) => {
+        console.error("Promise rejected with:", error);
     }));
     return self.clients.claim();
 });

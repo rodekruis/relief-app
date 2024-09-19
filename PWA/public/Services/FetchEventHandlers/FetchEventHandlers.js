@@ -6,8 +6,8 @@ import { DeleteDistributionRequestHandler } from "./DeleteDistributionRequestHan
 import { UploadDataHandler } from "./UploadDataHandler.js";
 import { BeneficiaryDataUploadHandler } from "./BeneficiaryDataUploadHandler.js";
 import { DeleteDistributionPostHandler } from "./DeleteDistributionPostHandler.js";
-import { ChooseBenificiaryCodeInputMethodPageHandler } from "./ChooseBenificiaryCodeInputMethodPageHandler.js";
-import { SelectBenificiaryCodeInputMethodHandler } from "./SelectBenificiaryCodeInputMethodHandler.js";
+import { ChooseBeneficiaryCodeInputMethodPageHandler } from "./ChooseBeneficiaryCodeInputMethodPageHandler.js";
+import { SelectBeneficiaryCodeInputMethodHandler } from "./SelectBeneficiaryCodeInputMethodHandler.js";
 import { ViewDistributionDataHandler } from "./ViewDistributionDataHandler.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 import { BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
@@ -28,8 +28,8 @@ export class FetchEventHandlers extends ActiveSessionContainer {
             new DeleteDistributionPostHandler(this.activeSession),
             new UploadDataHandler(),
             new BeneficiaryDataUploadHandler(this.activeSession),
-            new ChooseBenificiaryCodeInputMethodPageHandler(),
-            new SelectBenificiaryCodeInputMethodHandler(this.activeSession),
+            new ChooseBeneficiaryCodeInputMethodPageHandler(),
+            new SelectBeneficiaryCodeInputMethodHandler(this.activeSession),
             new BeneficiaryCodePostHandler(this.activeSession),
             new ViewDistributionDataHandler(this.activeSession),
             new CheckWhosMissingPageHandler(this.activeSession),

@@ -156,7 +156,7 @@ export class Database {
     }
   }
 
-  async addBenificiary(beneficiary: Beneficiary): Promise<void> {
+  async addBeneficiary(beneficiary: Beneficiary): Promise<void> {
     return this.addElement(ObjectStoreName.beneficiary, beneficiary);
   }
 
@@ -195,7 +195,7 @@ export class Database {
       beneficiary.code
     );
     if (!existingBeneficiary) {
-      this.addBenificiary(beneficiary);
+      this.addBeneficiary(beneficiary);
     }
 
     return this.addElement(
@@ -214,8 +214,8 @@ export class Database {
   private async keyForDistributionBeneficiary(beneficiaryCode: string, distributionName: string): Promise<IDBValidKey> {
     const distributionBeneficiaries = await this.readDistributionBeneficiaries();
     for (let i = 0; i < distributionBeneficiaries.length; i++) {
-      const currentBenificiary = distributionBeneficiaries[i]
-      if (currentBenificiary.distributionName == distributionName && currentBenificiary.beneficiaryCode == beneficiaryCode) {
+      const currentBeneficiary = distributionBeneficiaries[i]
+      if (currentBeneficiary.distributionName == distributionName && currentBeneficiary.beneficiaryCode == beneficiaryCode) {
         return i + 1;
       }
     }

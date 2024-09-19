@@ -7,7 +7,7 @@ import { DateService } from "../DateService.js";
 export class CreateDistributionRequestHandler extends ActiveSessionContainer {
     constructor() {
         super(...arguments);
-        this.benificiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
+        this.beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
     }
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postCreateDistribution);
@@ -30,7 +30,7 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer {
                     "distrib_name": distribution.distrib_name,
                     "distrib_place": distribution.distrib_place,
                     "distrib_date": distribution.distrib_date,
-                    beneficiary_info: await this.benificiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
+                    beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
                 });
             }
             catch (error) {

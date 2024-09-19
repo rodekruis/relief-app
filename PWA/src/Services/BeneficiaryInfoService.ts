@@ -11,10 +11,10 @@ export class BeneficiaryInfoService {
     }
 
     async beneficiaryInfoTextFromDistribution(distribution: Distribution): Promise<string> {
-      const benificiaries: DistributionBeneficiary[] = await this.database.benificiariesForDistribution(distribution)
-      const numberOfServedBenificiaries = benificiaries.filter(benificiary => benificiary.hasBeenMarkedAsReceived).length
-      if(benificiaries.length > 0) {
-         return "Beneficiaries served: " + numberOfServedBenificiaries +" / " + benificiaries.length 
+      const beneficiaries: DistributionBeneficiary[] = await this.database.benificiariesForDistribution(distribution)
+      const numberOfServedBeneficiaries = beneficiaries.filter(beneficiary => beneficiary.hasBeenMarkedAsReceived).length
+      if(beneficiaries.length > 0) {
+         return "Beneficiaries served: " + numberOfServedBeneficiaries +" / " + beneficiaries.length 
       } else {
         return "No beneficiary data found"
       }

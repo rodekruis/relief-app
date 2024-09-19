@@ -1,11 +1,11 @@
 import { BeneficiaryDataUploadHandler } from "./FetchEventHandlers/BeneficiaryDataUploadHandler.js";
-import { ChooseBenificiaryCodeInputMethodPageHandler } from "./FetchEventHandlers/ChooseBenificiaryCodeInputMethodPageHandler.js";
+import { ChooseBeneficiaryCodeInputMethodPageHandler } from "./FetchEventHandlers/ChooseBeneficiaryCodeInputMethodPageHandler.js";
 import { CreateDistributionRequestHandler } from "./FetchEventHandlers/CreateDistributionRequestHandler.js";
 import { DeleteDistributionPostHandler } from "./FetchEventHandlers/DeleteDistributionPostHandler.js";
 import { FetchEventHandlers } from "./FetchEventHandlers/FetchEventHandlers.js";
 import { ListDistributionRequestHandler } from "./FetchEventHandlers/ListDistributionRequestHandler.js";
 import { NameDistributionRequestHandler } from "./FetchEventHandlers/NameDistributionRequestHandler.js";
-import { SelectBenificiaryCodeInputMethodHandler } from "./FetchEventHandlers/SelectBenificiaryCodeInputMethodHandler.js";
+import { SelectBeneficiaryCodeInputMethodHandler } from "./FetchEventHandlers/SelectBeneficiaryCodeInputMethodHandler.js";
 import { SelectDistributionRequestHandler } from "./FetchEventHandlers/SelectDistributionRequestHandler.js";
 import { UploadDataHandler } from "./FetchEventHandlers/UploadDataHandler.js";
 import { Beneficiary } from "../Models/Beneficiary.js";
@@ -124,8 +124,8 @@ export class CacheFilePathService {
             NameDistributionRequestHandler.name,
             SelectDistributionRequestHandler.name,
             UploadDataHandler.name,
-            ChooseBenificiaryCodeInputMethodPageHandler.name,
-            SelectBenificiaryCodeInputMethodHandler.name,
+            ChooseBeneficiaryCodeInputMethodPageHandler.name,
+            SelectBeneficiaryCodeInputMethodHandler.name,
             BeneficiaryCodePostHandler.name,
             ViewDistributionDataHandler.name,
             CheckWhosMissingPageHandler.name,

@@ -23,7 +23,7 @@ export class MarkAsReceivedPostHandler extends ActiveSessionContainer {
             }
         }
         else {
-            return Promise.reject(new Error("Expected benificiarycode"));
+            return Promise.reject(new Error("Expected beneficiarycode"));
         }
         if (this.activeSession.nameOfLastUsedDistributionInputMethod) {
             return ResponseTools.wrapInHtmlTemplate(this.templatepageForInputMethod(this.activeSession.nameOfLastUsedDistributionInputMethod));

@@ -6,7 +6,7 @@ import { ActiveSessionContainer } from "../ActiveSession.js";
 export class SelectDistributionRequestHandler extends ActiveSessionContainer {
     constructor() {
         super(...arguments);
-        this.benificiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
+        this.beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
     }
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postSelectDistribution);
@@ -20,7 +20,7 @@ export class SelectDistributionRequestHandler extends ActiveSessionContainer {
                 "distrib_name": selectedDistribution.distrib_name,
                 "distrib_place": selectedDistribution.distrib_place,
                 "distrib_date": selectedDistribution.distrib_date,
-                beneficiary_info: await this.benificiaryInfoService.beneficiaryInfoTextFromDistribution(selectedDistribution)
+                beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(selectedDistribution)
             });
         }
         else {
