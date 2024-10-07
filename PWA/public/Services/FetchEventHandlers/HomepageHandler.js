@@ -4,6 +4,6 @@ export class HomepageHandler {
         return event.request.url.includes(RouteEvents.home);
     }
     async handleEvent(event) {
-        return fetch(RouteEvents.home);
+        return fetch(RouteEvents.codeInputNotFound);
     }
 }
