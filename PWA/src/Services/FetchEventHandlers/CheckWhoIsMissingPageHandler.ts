@@ -6,7 +6,7 @@ import { ActiveSessionContainer } from "../ActiveSession.js";
 import { BeneficiariesService } from "../BeneficiariesService.js";
 import { ResponseTools } from "../ResponseTools.js";
 
-export class CheckWhosMissingPageHandler extends ActiveSessionContainer implements FetchEventHandler {
+export class CheckWhoIsMissingPageHandler extends ActiveSessionContainer implements FetchEventHandler {
     canHandleEvent(event: FetchEvent): boolean {
       return event.request.url.endsWith(RouteEvents.checkWhosMissing);
     }

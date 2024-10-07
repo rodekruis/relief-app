@@ -13,7 +13,7 @@ import { SelectBeneficiaryCodeInputMethodHandler } from "./SelectBeneficiaryCode
 import { ViewDistributionDataHandler } from "./ViewDistributionDataHandler.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 import { BeneficiaryCodePostHandler } from "./BeneficiaryCodePostHandler.js";
-import { CheckWhosMissingPageHandler } from "./CheckWhosMissingPageHandler.js";
+import { CheckWhoIsMissingPageHandler } from "./CheckWhoIsMissingPageHandler.js";
 import { MarkAsReceivedPostHandler } from "./MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./HomepageHandler.js";
 import { ContinueDistributionHandler } from "./ContinueDistributionHandler.js";
@@ -33,7 +33,7 @@ export class FetchEventHandlers extends ActiveSessionContainer implements FetchE
     new SelectBeneficiaryCodeInputMethodHandler(this.activeSession),
     new BeneficiaryCodePostHandler(this.activeSession),
     new ViewDistributionDataHandler(this.activeSession),
-    new CheckWhosMissingPageHandler(this.activeSession),
+    new CheckWhoIsMissingPageHandler(this.activeSession),
     new MarkAsReceivedPostHandler(this.activeSession),
     new HomepageHandler(),
     new ContinueDistributionHandler(this.activeSession),
