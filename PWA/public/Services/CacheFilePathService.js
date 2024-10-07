@@ -23,7 +23,7 @@ import { ActiveSession } from "./ActiveSession.js";
 import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 import { ViewDistributionDataHandler } from "./FetchEventHandlers/ViewDistributionDataHandler.js";
 import { BeneficiariesService } from "./BeneficiariesService.js";
-import { CheckWhosMissingPageHandler } from "./FetchEventHandlers/CheckWhosMissingPageHandler.js";
+import { CheckWhoIsMissingPageHandler } from "./FetchEventHandlers/CheckWhoIsMissingPageHandler.js";
 import { MarkAsReceivedPostHandler } from "./FetchEventHandlers/MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./FetchEventHandlers/HomepageHandler.js";
 import { DateService } from "./DateService.js";
@@ -128,7 +128,7 @@ export class CacheFilePathService {
             SelectBeneficiaryCodeInputMethodHandler.name,
             BeneficiaryCodePostHandler.name,
             ViewDistributionDataHandler.name,
-            CheckWhosMissingPageHandler.name,
+            CheckWhoIsMissingPageHandler.name,
             MarkAsReceivedPostHandler.name,
             HomepageHandler.name,
             ContinueDistributionHandler.name,

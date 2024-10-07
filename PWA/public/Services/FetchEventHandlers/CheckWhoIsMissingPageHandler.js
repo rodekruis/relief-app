@@ -2,7 +2,7 @@ import { RouteEvents } from "../../RouteEvents.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
 import { BeneficiariesService } from "../BeneficiariesService.js";
 import { ResponseTools } from "../ResponseTools.js";
-export class CheckWhosMissingPageHandler extends ActiveSessionContainer {
+export class CheckWhoIsMissingPageHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.checkWhosMissing);
     }
