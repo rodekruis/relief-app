@@ -8,6 +8,6 @@ export class HomepageHandler implements FetchEventHandler {
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
-    return fetch(RouteEvents.codeInputNotFound)
+    return fetch(RouteEvents.home)
   }
 }
