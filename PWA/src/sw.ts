@@ -31,6 +31,9 @@ self.addEventListener("install", function (event: any) {
     .then(() => {
       console.log("ℹ️ Serviceworker installed ✅")
     })
+    .catch((error) => {
+      console.error('Failed to install service worker:', error)
+    })
   );
 });
 

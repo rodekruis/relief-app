@@ -16,12 +16,18 @@ self.addEventListener("install", function (event) {
             "/favicon.ico",
             "/manifest.json",
             "/apple-touch-icon.png",
-            "/apple-touch-icon-precomposed.png"
+            "/apple-touch-icon-precomposed.png",
+            "/images/icons/app-icon-192x192.png",
+            "/apple-touch-icon-120x120.png",
+            "/apple-touch-icon-120x120-precomposed.png"
         ]
             .concat(new CacheFilePathService().pathsOfFilesToCache()));
     })
         .then(() => {
         console.log("ℹ️ Serviceworker installed ✅");
+    })
+        .catch((error) => {
+        console.error('Failed to install service worker:', error);
     }));
 });
 self.addEventListener("activate", function (event) {
@@ -33,9 +39,6 @@ self.addEventListener("activate", function (event) {
                 return caches.delete(key);
             }
         }));
-    })
-        .catch((error) => {
-        console.error("Promise rejected with:", error);
     }));
     return self.clients.claim();
 });
