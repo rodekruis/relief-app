@@ -18,7 +18,7 @@ export class ListDistributionRequestHandler extends ActiveSessionContainer imple
 
       if(distributions.length > 0) {
         return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(
-          await fetch(RouteEvents.listDistributions), { 
+          RouteEvents.listDistributions, { 
           columns: Distribution.colums,
           rows: distributions
         })
