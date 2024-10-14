@@ -10,13 +10,11 @@ export enum ObjectStoreName {
   distribution = "Distributions",
   beneficiary = "Beneficiaries",
   distributionBeneficiaries = "DistributionBeneficiary",
-  activeDistribution = "activeDistribution",
 }
 const allObjectStoreNames = [
   ObjectStoreName.beneficiary,
   ObjectStoreName.distribution,
   ObjectStoreName.distributionBeneficiaries,
-  ObjectStoreName.activeDistribution,
 ];
 
 type DatabaseColumn = {
@@ -45,13 +43,6 @@ function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
         { name: "beneficiaryCode", isUnique: false },
         { name: "hasBeenMarkedAsReceived", isUnique: false },
         { name: "dateReceived", isUnique: false }
-      ];
-    case ObjectStoreName.activeDistribution:
-      return [
-        { name: "distrib_name", isUnique: false },
-        { name: "distrib_place", isUnique: false },
-        { name: "distrib_date", isUnique: false },
-        { name: "distrib_items", isUnique: false },
       ];
   }
 }
@@ -158,23 +149,6 @@ export class Database {
 
   async addBeneficiary(beneficiary: Beneficiary): Promise<void> {
     return this.addElement(ObjectStoreName.beneficiary, beneficiary);
-  }
-
-  async setActiveDistribution(activeDistribution: Distribution): Promise<void> {
-    return this.addElement(ObjectStoreName.activeDistribution, activeDistribution);
-  }
-
-  async getActiveDistributions(): Promise<Distribution[]> {
-    return this.getElement(ObjectStoreName.activeDistribution)
-  }
-
-  async getActiveDistribution(): Promise<Distribution> {
-    const distributions = await this.getActiveDistributions()
-    if(distributions.length > 0) {
-      return distributions[distributions.length - 1]
-    } else {
-      throw Error("No active distribution found")
-    }
   }
 
   async addBeneficiaryToDistribution(

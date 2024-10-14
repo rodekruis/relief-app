@@ -5,13 +5,11 @@ export var ObjectStoreName;
     ObjectStoreName["distribution"] = "Distributions";
     ObjectStoreName["beneficiary"] = "Beneficiaries";
     ObjectStoreName["distributionBeneficiaries"] = "DistributionBeneficiary";
-    ObjectStoreName["activeDistribution"] = "activeDistribution";
 })(ObjectStoreName || (ObjectStoreName = {}));
 const allObjectStoreNames = [
     ObjectStoreName.beneficiary,
     ObjectStoreName.distribution,
     ObjectStoreName.distributionBeneficiaries,
-    ObjectStoreName.activeDistribution,
 ];
 function columnsForObjectStore(objectStore) {
     switch (objectStore) {
@@ -34,13 +32,6 @@ function columnsForObjectStore(objectStore) {
                 { name: "beneficiaryCode", isUnique: false },
                 { name: "hasBeenMarkedAsReceived", isUnique: false },
                 { name: "dateReceived", isUnique: false }
-            ];
-        case ObjectStoreName.activeDistribution:
-            return [
-                { name: "distrib_name", isUnique: false },
-                { name: "distrib_place", isUnique: false },
-                { name: "distrib_date", isUnique: false },
-                { name: "distrib_items", isUnique: false },
             ];
     }
 }
@@ -121,21 +112,6 @@ export class Database {
     }
     async addBeneficiary(beneficiary) {
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
-    }
-    async setActiveDistribution(activeDistribution) {
-        return this.addElement(ObjectStoreName.activeDistribution, activeDistribution);
-    }
-    async getActiveDistributions() {
-        return this.getElement(ObjectStoreName.activeDistribution);
-    }
-    async getActiveDistribution() {
-        const distributions = await this.getActiveDistributions();
-        if (distributions.length > 0) {
-            return distributions[distributions.length - 1];
-        }
-        else {
-            throw Error("No active distribution found");
-        }
     }
     async addBeneficiaryToDistribution(beneficiary, distribution) {
         const existing = await this.readDistributionBeneficiaries();

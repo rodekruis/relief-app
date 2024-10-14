@@ -1,10 +1,9 @@
-import {describe, test, expect, it} from '@jest/globals'
+import {describe, test, expect } from '@jest/globals'
 import { Database } from "./Database";
 import { Distribution } from '../Models/Distribution';
 import { indexedDB } from "fake-indexeddb"
 import { Beneficiary } from '../Models/Beneficiary';
 import { DistributionBeneficiary } from '../Models/DistributionBeneficiary';
-import { beforeEach } from 'node:test';
 
 describe('Database', () => {
     const sut = new Database(indexedDB)
@@ -98,28 +97,5 @@ describe('Database', () => {
         expect(
             receivedBeneficiaries[1].hasBeenMarkedAsReceived
         ).toEqual(true)
-    })
-
-    test("When setting an active distribution, they can be retrieved", async () => {
-        const distribution = new Distribution("12", "123", "Arnhem", "Name")
-        try {
-            await sut.setActiveDistribution(distribution)
-            const result = await sut.getActiveDistributions()
-            expect(result[0].distrib_name).toBe(distribution.distrib_name)
-            expect(result.length).toBe(1)
-        } catch(error: any) {
-            expect(error.message).toBe("Empty")
-        }
-    })
-
-    test("When setting an active distribution, it can be retrieved", async () => {
-        const distribution = new Distribution("12", "123", "Arnhem", "Name")
-        try {
-            await sut.setActiveDistribution(distribution)
-            const result = await sut.getActiveDistribution()
-            expect(result.distrib_name).toBe(distribution.distrib_name)
-        } catch(error: any) {
-            expect(error.message).toBe("Empty")
-        }
     })
  });

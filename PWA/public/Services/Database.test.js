@@ -61,27 +61,4 @@ describe('Database', () => {
         expect(receivedBeneficiaries[0].hasBeenMarkedAsReceived).toEqual(true);
         expect(receivedBeneficiaries[1].hasBeenMarkedAsReceived).toEqual(true);
     });
-    test("When setting an active distribution, they can be retrieved", async () => {
-        const distribution = new Distribution("12", "123", "Arnhem", "Name");
-        try {
-            await sut.setActiveDistribution(distribution);
-            const result = await sut.getActiveDistributions();
-            expect(result[0].distrib_name).toBe(distribution.distrib_name);
-            expect(result.length).toBe(1);
-        }
-        catch (error) {
-            expect(error.message).toBe("Empty");
-        }
-    });
-    test("When setting an active distribution, it can be retrieved", async () => {
-        const distribution = new Distribution("12", "123", "Arnhem", "Name");
-        try {
-            await sut.setActiveDistribution(distribution);
-            const result = await sut.getActiveDistribution();
-            expect(result.distrib_name).toBe(distribution.distrib_name);
-        }
-        catch (error) {
-            expect(error.message).toBe("Empty");
-        }
-    });
 });
