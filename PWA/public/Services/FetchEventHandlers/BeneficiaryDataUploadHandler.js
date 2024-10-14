@@ -19,11 +19,11 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
                     await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiaryToDistribution(beneficiary, distribution));
                     this.activeSession.nameOfLastViewedDistribution = distributionName;
                     const beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
-                    return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
+                    return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.distributionsHome, {
                         "distrib_name": distribution.distrib_name,
                         "distrib_place": distribution.distrib_place,
                         "distrib_date": distribution.distrib_date,
-                        beneficiary_info: await beneficiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
+                        beneficiary_info: await beneficiaryInfoService.beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(beneficiaries.length, 0)
                     });
                 }
                 else {

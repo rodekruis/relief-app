@@ -5,8 +5,11 @@ export class BeneficiaryInfoService {
     async beneficiaryInfoTextFromDistribution(distribution) {
         const beneficiaries = await this.database.benificiariesForDistribution(distribution);
         const numberOfServedBeneficiaries = beneficiaries.filter(beneficiary => beneficiary.hasBeenMarkedAsReceived).length;
-        if (beneficiaries.length > 0) {
-            return "Beneficiaries served: " + numberOfServedBeneficiaries + " / " + beneficiaries.length;
+        return this.beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(beneficiaries.length, numberOfServedBeneficiaries);
+    }
+    beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(numberOfBeneficiaries, numberOfServedBeneficiaries) {
+        if (numberOfBeneficiaries > 0) {
+            return "Beneficiaries served: " + numberOfServedBeneficiaries + " / " + numberOfBeneficiaries;
         }
         else {
             return "No beneficiary data found";
