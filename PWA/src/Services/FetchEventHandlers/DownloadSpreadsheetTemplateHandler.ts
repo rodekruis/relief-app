@@ -11,20 +11,21 @@ export class DownloadSpreadsheetTemplateHandler extends ActiveSessionContainer i
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
-    const fileName = "data_template.xlsx"
-    const templateResponse = await caches.match(fileName)
-    if (templateResponse) {
-      const updatedResponse = new Response(templateResponse.body, {
-        status: templateResponse.status,
-        statusText: templateResponse.statusText,
+    try {
+      const templateJson = [
+        { "code": 4680490, "first name": "Aric", "last name": "Norwood" },
+        { "code": 4535835, "first name": "Lira", "last name": "Calloway" },
+        { "code": 9155570, "first name": "Daven", "last name": "Morrell" },
+      ]
+
+      return new Response(await SpreadSheetService.fileFromJson(templateJson), {
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           'Content-Disposition': 'attachment; filename="data_processed.xlsx"'
-        },
+        }
       });
-      return updatedResponse
-    } else {
-      return Promise.reject(Error("Expected cached file named " + fileName));
+    } catch(error) {
+      return Promise.reject(error);
     }
   }
 }
