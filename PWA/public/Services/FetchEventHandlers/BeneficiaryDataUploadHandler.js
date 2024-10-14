@@ -36,7 +36,7 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
         }
         catch (error) {
             console.error(error);
-            return fetch(RouteEvents.home);
+            return ResponseTools.wrapInHtmlTemplate(RouteEvents.uploadDataError);
         }
     }
 }
