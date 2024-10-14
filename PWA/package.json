@@ -1,6 +1,6 @@
 {
   "name": "ReliefBox",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "A tool for managing the distribution of relief items during humanitarian emergencies.",
   "main": "index.js",
   "scripts": {

@@ -12,7 +12,7 @@ export class ListDistributionRequestHandler extends ActiveSessionContainer {
             const distributions = await this.activeSession.database.readDistributions();
             console.log(distributions);
             if (distributions.length > 0) {
-                return ResponseTools.replaceTemplateKeysWithValues(await fetch(RouteEvents.listDistributions), {
+                return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(await fetch(RouteEvents.listDistributions), {
                     columns: Distribution.colums,
                     rows: distributions
                 });
