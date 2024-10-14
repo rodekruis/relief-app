@@ -24,7 +24,6 @@ self.addEventListener("install", function (event: any) {
         "/images/icons/app-icon-192x192.png",
         "/apple-touch-icon-120x120.png",
         "/apple-touch-icon-120x120-precomposed.png",
-        "/data_template.xlsx"
       ]
       .concat(new CacheFilePathService().pathsOfFilesToCache())
       );
