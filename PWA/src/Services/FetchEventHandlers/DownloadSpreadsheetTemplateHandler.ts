@@ -1,11 +1,9 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
-import { ActiveSessionContainer } from "../ActiveSession.js";
 import { SpreadSheetService } from "../SpreadSheetService.js";
-import { BeneficiaryStatusService } from "../BeneficiaryStatusService.js";
 
-export class DownloadSpreadsheetTemplateHandler extends ActiveSessionContainer implements FetchEventHandler {
+export class DownloadSpreadsheetTemplateHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
     return event.request.url.includes(RouteEvents.downloadSpreadsheetTemplate);
   }

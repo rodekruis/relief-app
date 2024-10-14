@@ -18,6 +18,7 @@ import { MarkAsReceivedPostHandler } from "./MarkAsReceivedPostHandler.js";
 import { HomepageHandler } from "./HomepageHandler.js";
 import { ContinueDistributionHandler } from "./ContinueDistributionHandler.js";
 import { DownloadDataHandler } from "./DownloadDataHandler.js";
+import { DownloadSpreadsheetTemplateHandler } from "./DownloadSpreadsheetTemplateHandler.js";
 
 export class FetchEventHandlers extends ActiveSessionContainer implements FetchEventHandler {
   all: FetchEventHandler[] = [
@@ -37,7 +38,8 @@ export class FetchEventHandlers extends ActiveSessionContainer implements FetchE
     new MarkAsReceivedPostHandler(this.activeSession),
     new HomepageHandler(),
     new ContinueDistributionHandler(this.activeSession),
-    new DownloadDataHandler(this.activeSession)
+    new DownloadDataHandler(this.activeSession),
+    new DownloadSpreadsheetTemplateHandler()
   ];
 
   handlersForEvent(event: FetchEvent): FetchEventHandler[] {

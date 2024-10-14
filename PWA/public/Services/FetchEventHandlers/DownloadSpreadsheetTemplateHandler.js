@@ -1,7 +1,6 @@
 import { RouteEvents } from "../../RouteEvents.js";
-import { ActiveSessionContainer } from "../ActiveSession.js";
 import { SpreadSheetService } from "../SpreadSheetService.js";
-export class DownloadSpreadsheetTemplateHandler extends ActiveSessionContainer {
+export class DownloadSpreadsheetTemplateHandler {
     canHandleEvent(event) {
         return event.request.url.includes(RouteEvents.downloadSpreadsheetTemplate);
     }
