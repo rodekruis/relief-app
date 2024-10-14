@@ -28,4 +28,5 @@ export class RouteEvents {
     static received = "/received"
     static continueDistribution = "/continueDistribution"
     static downloadData = "/download_data"
+    static downloadSpreadsheetTemplate = "/download_template"
   }

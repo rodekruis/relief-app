@@ -30,6 +30,7 @@ import { DateService } from "./DateService.js";
 import { ContinueDistributionHandler } from "./FetchEventHandlers/ContinueDistributionHandler.js";
 import { DownloadDataHandler } from "./FetchEventHandlers/DownloadDataHandler.js";
 import { BeneficiaryStatusService } from "./BeneficiaryStatusService.js";
+import { DownloadSpreadsheetTemplateHandler } from "./FetchEventHandlers/DownloadSpreadsheetTemplateHandler.js";
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
     pathsOfFilesToCache() {
@@ -132,7 +133,8 @@ export class CacheFilePathService {
             MarkAsReceivedPostHandler.name,
             HomepageHandler.name,
             ContinueDistributionHandler.name,
-            DownloadDataHandler.name
+            DownloadDataHandler.name,
+            DownloadSpreadsheetTemplateHandler.name
         ]);
     }
     interfacesPaths() {
