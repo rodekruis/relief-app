@@ -31,6 +31,7 @@ import { ContinueDistributionHandler } from "./FetchEventHandlers/ContinueDistri
 import { DownloadDataHandler } from "./FetchEventHandlers/DownloadDataHandler.js";
 import { BeneficiaryStatusService } from "./BeneficiaryStatusService.js";
 import { DownloadSpreadsheetTemplateHandler } from "./FetchEventHandlers/DownloadSpreadsheetTemplateHandler.js";
+import { DeleteDistributionsConfirmHandler } from "./FetchEventHandlers/DeleteDistributionsConfirmHandler.js";
 
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
@@ -66,7 +67,8 @@ export class CacheFilePathService {
       RouteEvents.codeInputFound,
       RouteEvents.codeInputNotFound,
       RouteEvents.viewData,
-      RouteEvents.noBeneficiariesFound
+      RouteEvents.noBeneficiariesFound,
+      RouteEvents.confirmDistributionDeletion
     ];
   }
 
@@ -147,7 +149,8 @@ export class CacheFilePathService {
       HomepageHandler.name,
       ContinueDistributionHandler.name,
       DownloadDataHandler.name,
-      DownloadSpreadsheetTemplateHandler.name
+      DownloadSpreadsheetTemplateHandler.name,
+      DeleteDistributionsConfirmHandler.name
     ]);
   }
 

@@ -6,6 +6,7 @@ RouteEvents.nameDistribution = "/name_distrib.html";
 RouteEvents.listDistributions = "/list_distrib.html";
 RouteEvents.listDistributionsEmptyState = "no_distrib.html";
 RouteEvents.deleteDistribution = "/list_distrib_delete.html";
+RouteEvents.confirmDistributionDeletion = "/delete_distrib_confirm.html";
 RouteEvents.uploadData = "/upload_data.html";
 RouteEvents.viewData = "/view_data.html";
 RouteEvents.noBeneficiariesFound = "no_data.html";
@@ -19,7 +20,7 @@ RouteEvents.codeInputFound = "/entry.html";
 //Non page route events
 RouteEvents.postCreateDistribution = "/create_distrib";
 RouteEvents.postSelectDistribution = "/select_distrib";
-RouteEvents.postDeleteDistribution = "/delete_distrib_confirm";
+RouteEvents.postDeleteDistribution = "/delete_distrib";
 RouteEvents.listDistributionsFormAction = "/distrib?";
 RouteEvents.chooseBeneficiaryCodeInputMethod = "/choose_input_method?";
 RouteEvents.selectBeneficiaryCodeInputMethod = "/save_input_method";

@@ -5,6 +5,7 @@ export class RouteEvents {
     static listDistributions = "/list_distrib.html"
     static listDistributionsEmptyState = "no_distrib.html"
     static deleteDistribution = "/list_distrib_delete.html"
+    static confirmDistributionDeletion = "/delete_distrib_confirm.html"
     static uploadData = "/upload_data.html"
     static viewData = "/view_data.html"
     static noBeneficiariesFound = "no_data.html"
@@ -19,7 +20,7 @@ export class RouteEvents {
     //Non page route events
     static postCreateDistribution = "/create_distrib"
     static postSelectDistribution = "/select_distrib"
-    static postDeleteDistribution = "/delete_distrib_confirm"
+    static postDeleteDistribution = "/delete_distrib"
     static listDistributionsFormAction = "/distrib?"
     static chooseBeneficiaryCodeInputMethod = "/choose_input_method?"
     static selectBeneficiaryCodeInputMethod = "/save_input_method"

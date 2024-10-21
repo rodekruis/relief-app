@@ -19,6 +19,7 @@ import { HomepageHandler } from "./HomepageHandler.js";
 import { ContinueDistributionHandler } from "./ContinueDistributionHandler.js";
 import { DownloadDataHandler } from "./DownloadDataHandler.js";
 import { DownloadSpreadsheetTemplateHandler } from "./DownloadSpreadsheetTemplateHandler.js";
+import { DeleteDistributionsConfirmHandler } from "./DeleteDistributionsConfirmHandler.js";
 
 export class FetchEventHandlers extends ActiveSessionContainer implements FetchEventHandler {
   all: FetchEventHandler[] = [
@@ -39,7 +40,8 @@ export class FetchEventHandlers extends ActiveSessionContainer implements FetchE
     new HomepageHandler(),
     new ContinueDistributionHandler(this.activeSession),
     new DownloadDataHandler(this.activeSession),
-    new DownloadSpreadsheetTemplateHandler()
+    new DownloadSpreadsheetTemplateHandler(),
+    new DeleteDistributionsConfirmHandler()
   ];
 
   handlersForEvent(event: FetchEvent): FetchEventHandler[] {
