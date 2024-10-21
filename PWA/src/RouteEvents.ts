@@ -21,6 +21,7 @@ export class RouteEvents {
     static postCreateDistribution = "/create_distrib"
     static postSelectDistribution = "/select_distrib"
     static postDeleteDistribution = "/delete_distrib"
+    static postDeleteDistributionConfirm = "/delete_distrib_confirm"
     static listDistributionsFormAction = "/distrib?"
     static chooseBeneficiaryCodeInputMethod = "/choose_input_method?"
     static selectBeneficiaryCodeInputMethod = "/save_input_method"

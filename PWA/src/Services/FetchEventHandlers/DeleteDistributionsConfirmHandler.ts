@@ -5,7 +5,7 @@ import { ResponseTools } from "../ResponseTools.js";
 
 export class DeleteDistributionsConfirmHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
-    return event.request.url.endsWith(RouteEvents.confirmDistributionDeletion);
+    return event.request.url.endsWith(RouteEvents.postDeleteDistributionConfirm);
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {

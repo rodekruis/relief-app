@@ -21,6 +21,7 @@ RouteEvents.codeInputFound = "/entry.html";
 RouteEvents.postCreateDistribution = "/create_distrib";
 RouteEvents.postSelectDistribution = "/select_distrib";
 RouteEvents.postDeleteDistribution = "/delete_distrib";
+RouteEvents.postDeleteDistributionConfirm = "/delete_distrib_confirm";
 RouteEvents.listDistributionsFormAction = "/distrib?";
 RouteEvents.chooseBeneficiaryCodeInputMethod = "/choose_input_method?";
 RouteEvents.selectBeneficiaryCodeInputMethod = "/save_input_method";
