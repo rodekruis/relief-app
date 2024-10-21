@@ -10,10 +10,10 @@ export class HomepageHandler implements FetchEventHandler {
   async handleEvent(event: FetchEvent): Promise<Response> {
     const responseFromCache = await caches.match(event.request)
     if(responseFromCache) {
-      console.log("Retrieved index from cache 🎉")
+      console.log("Retrieved index from cache")
       return responseFromCache
     } else {
-      console.log("Failed to retrief index from cache :(")
+      console.log("Failed to retrief index from cache")
       return fetch(RouteEvents.home)
     }
   }
