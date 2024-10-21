@@ -12,12 +12,18 @@ export class DeleteDistributionRequestHandler extends ActiveSessionContainer imp
 
   async handleEvent(event: FetchEvent): Promise<Response> {
     try {
-      const distributions: Distribution[] = await this.activeSession.database.readDistributions()      
-      return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(
-        RouteEvents.deleteDistribution, { 
-        columns: Distribution.colums,
-        rows: distributions
-      })
+      const distributions: Distribution[] = await this.activeSession.database.readDistributions()
+      if(distributions.length > 0) {
+        return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(
+          RouteEvents.deleteDistribution, { 
+          columns: Distribution.colums,
+          rows: distributions
+        })
+      } else {
+        return ResponseTools.wrapInHtmlTemplate(
+          RouteEvents.listDistributionsEmptyState
+        )
+      }      
     } catch (error) {
       console.error(error)
     }

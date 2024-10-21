@@ -9,10 +9,15 @@ export class DeleteDistributionRequestHandler extends ActiveSessionContainer {
     async handleEvent(event) {
         try {
             const distributions = await this.activeSession.database.readDistributions();
-            return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.deleteDistribution, {
-                columns: Distribution.colums,
-                rows: distributions
-            });
+            if (distributions.length > 0) {
+                return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.deleteDistribution, {
+                    columns: Distribution.colums,
+                    rows: distributions
+                });
+            }
+            else {
+                return ResponseTools.wrapInHtmlTemplate(RouteEvents.listDistributionsEmptyState);
+            }
         }
         catch (error) {
             console.error(error);
