@@ -24,6 +24,6 @@ export class ListDistributionRequestHandler extends ActiveSessionContainer {
         catch {
             console.log("something went wrong");
         }
-        return fetch(RouteEvents.home);
+        return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home);
     }
 }

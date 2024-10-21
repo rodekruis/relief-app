@@ -1,6 +1,7 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
+import { ResponseTools } from "../ResponseTools.js";
 export class DeleteDistributionPostHandler extends ActiveSessionContainer {
     canHandleEvent(event) {
         return event.request.url.endsWith(RouteEvents.postDeleteDistribution);
@@ -11,6 +12,6 @@ export class DeleteDistributionPostHandler extends ActiveSessionContainer {
         if (distributionToDelete) {
             await this.activeSession.database.deleteDistributionWithName(distributionToDelete.distrib_name);
         }
-        return fetch(RouteEvents.home);
+        return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home);
     }
 }

@@ -33,6 +33,17 @@ export class ResponseTools {
     })
   }
 
+  static async fetchFromCacheWithRemoteAsFallBack(file: string): Promise<Response> {
+    const responseFromCache = await caches.match(file)
+    if(responseFromCache) {
+      console.log("Retrieved index from cache")
+      return responseFromCache
+    } else {
+      console.log("Failed to retrief index from cache")
+      return fetch(RouteEvents.home)
+    }
+  }
+
   private static async changeResponseText(
     oldResponse: Response,
     responseTextChanger: (text: string) => string

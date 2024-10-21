@@ -44,7 +44,7 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer imp
         )
       } catch(error) {
         console.error(error)
-        return fetch(RouteEvents.home) 
+        return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home)
       }
     }
   }

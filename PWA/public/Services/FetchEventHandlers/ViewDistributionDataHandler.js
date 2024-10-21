@@ -25,7 +25,7 @@ export class ViewDistributionDataHandler extends ActiveSessionContainer {
         catch (error) {
             console.error(error);
         }
-        return fetch(RouteEvents.home);
+        return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home);
     }
     columnsFromBeneficiaries(beneficiaries) {
         if (beneficiaries.length > 0) {

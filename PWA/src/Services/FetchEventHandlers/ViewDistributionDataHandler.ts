@@ -38,7 +38,7 @@ export class ViewDistributionDataHandler
     } catch (error) {
       console.error(error);
     }
-    return fetch(RouteEvents.home);
+    return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home)
   }
 
   private columnsFromBeneficiaries(beneficiaries: Beneficiary[]): string[] {

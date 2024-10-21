@@ -4,6 +4,7 @@ import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { DeserialisationService } from "../DeserialisationService.js";
 import { DeleteDistributionPost } from "../../Models/DeleteDistributionPost.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
+import { ResponseTools } from "../ResponseTools.js";
 
 export class DeleteDistributionPostHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
@@ -17,6 +18,6 @@ export class DeleteDistributionPostHandler extends ActiveSessionContainer implem
       await this.activeSession.database.deleteDistributionWithName(distributionToDelete.distrib_name)
     }
     
-    return fetch(RouteEvents.home)
+    return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home)
   }
 }

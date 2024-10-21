@@ -17,7 +17,7 @@ export class SelectBeneficiaryCodeInputMethodHandler extends ActiveSessionContai
         return ResponseTools.wrapInHtmlTemplate(this.templatepageForInputMethod(post.input_method))
       } catch(error) {
         console.error(error)
-        return fetch(RouteEvents.home)
+        return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home)
       } 
     }
 

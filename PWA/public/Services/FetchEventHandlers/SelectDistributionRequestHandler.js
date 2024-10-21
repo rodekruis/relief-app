@@ -25,7 +25,7 @@ export class SelectDistributionRequestHandler extends ActiveSessionContainer {
         }
         else {
             console.error("Expected distribution named " + post.distrib_name + " to exist in database");
-            return fetch(RouteEvents.home);
+            return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home);
         }
     }
     isFilled(field) {

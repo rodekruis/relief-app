@@ -1,6 +1,7 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
+import { ResponseTools } from "../ResponseTools.js";
 
 export class HomepageHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
@@ -8,13 +9,6 @@ export class HomepageHandler implements FetchEventHandler {
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
-    const responseFromCache = await caches.match(event.request)
-    if(responseFromCache) {
-      console.log("Retrieved index from cache")
-      return responseFromCache
-    } else {
-      console.log("Failed to retrief index from cache")
-      return fetch(RouteEvents.home)
-    }
+    return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home)
   }
 }
