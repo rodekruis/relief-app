@@ -2,6 +2,8 @@ import { RouteEvents } from "../../RouteEvents.js";
 import { FetchEvent } from "../../Interfaces/FetchEvent.js";
 import { FetchEventHandler } from "../../Interfaces/FetchEventHandler.js";
 import { ResponseTools } from "../ResponseTools.js";
+import { DeleteDistributionPost } from "../../Models/DeleteDistributionPost.js";
+import { DeserialisationService } from "../DeserialisationService.js";
 
 export class DeleteDistributionsConfirmHandler implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
@@ -9,6 +11,11 @@ export class DeleteDistributionsConfirmHandler implements FetchEventHandler {
   }
 
   async handleEvent(event: FetchEvent): Promise<Response> {
-    return await ResponseTools.wrapInHtmlTemplate(RouteEvents.confirmDistributionDeletion)
+    const post: DeleteDistributionPost = await DeserialisationService.deserializeFormDataFromRequest(event.request)
+    
+    return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(
+      RouteEvents.confirmDistributionDeletion, 
+      {"distrib_id": post.distrib_id}
+    )
   }
 }
