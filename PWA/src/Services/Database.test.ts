@@ -74,6 +74,9 @@ describe('Database', () => {
         ).toEqual(2)
 
         expect(
+            receivedBeneficiaries[0].hasBeenMarkedAsReceived
+        ).toEqual(false)
+        expect(
             receivedBeneficiaries[1].hasBeenMarkedAsReceived
         ).toEqual(false)
 

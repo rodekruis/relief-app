@@ -50,6 +50,7 @@ describe('Database', () => {
         await sut.addBeneficiaryToDistribution(beneficiary2, distribution);
         var receivedBeneficiaries = await sut.benificiariesForDistribution(distribution);
         expect(receivedBeneficiaries.length).toEqual(2);
+        expect(receivedBeneficiaries[0].hasBeenMarkedAsReceived).toEqual(false);
         expect(receivedBeneficiaries[1].hasBeenMarkedAsReceived).toEqual(false);
         await sut.markBeneficiaryAsReceived(beneficiary2.code, distribution.distrib_name);
         var receivedBeneficiaries = await sut.benificiariesForDistribution(distribution);

@@ -181,8 +181,16 @@ export class Database {
   async markBeneficiaryAsReceived(beneficiaryCode: string, distributionName: string): Promise<void> {
     const key = await this.keyForDistributionBeneficiary(beneficiaryCode, distributionName)
 
-    await this.removeElement(ObjectStoreName.distributionBeneficiaries, key)
-    await this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiaryCode, distributionName, true, (new Date()).toUTCString()))
+    this.updatElementIf(
+      ObjectStoreName.distributionBeneficiaries,
+       (beneficiary: DistributionBeneficiary) => {
+        return beneficiary.beneficiaryCode == beneficiaryCode && beneficiary.distributionName == distributionName
+       }, (beneficiary: DistributionBeneficiary) => {
+          beneficiary.hasBeenMarkedAsReceived = true
+          beneficiary.dateReceived = (new Date()).toUTCString()
+          return beneficiary
+       }
+      )
   }
 
   private async keyForDistributionBeneficiary(beneficiaryCode: string, distributionName: string): Promise<IDBValidKey> {
@@ -260,55 +268,94 @@ export class Database {
     );
   }
 
+  private async updatElementIf<T>(
+    storeName: ObjectStoreName,
+    requirementCheck: (item: T) => boolean,
+    updateFunction: (item: T) => T
+  ): Promise<void> {
+      const objectStore = await this.objectStore(storeName, "readwrite")
+
+      // Open a cursor to iterate over the store
+      const cursorRequest = objectStore.openCursor();
+  
+      cursorRequest.onerror = (event) => {
+        console.error('Error opening cursor', event);
+        throw Error('Error opening cursor')
+      };
+
+      cursorRequest.onsuccess = (event) => {
+        const cursor = cursorRequest.result;
+
+        if (cursor) {
+          const currentValue = cursor.value;
+
+          // Check if the item meets the requirement
+          if (requirementCheck(currentValue)) {
+            // Apply the update function
+            const updatedValue = updateFunction(currentValue);
+
+            // Update the record at the current cursor position
+            const updateRequest = cursor.update(updatedValue);
+
+            updateRequest.onerror = (event) => {
+              console.error('Error updating the object with cursor', event);
+              throw Error('Error updating the object with cursor')
+            };
+
+            updateRequest.onsuccess = () => {
+              console.log('Record updated successfully');
+            };
+          }
+
+          // Move to the next cursor position
+          cursor.continue();
+        }
+      };
+  }
+  
+
   private performRequestForObjectStoreNamed<T>(
     storeName: string,
     transactionMode: IDBTransactionMode,
     makeRequest: (store: IDBObjectStore) => IDBRequest
   ): Promise<T> {
-    const open = this.databaseFactory.open("data");
+    const open = this.openDatabaseRequest()
     return new Promise<T>((resolve, reject) => {
       open.onsuccess = () => {
-        db = open.result;
-        if ([...db.objectStoreNames].find((name) => name === storeName)) {
-          const transaction = db.transaction(storeName, transactionMode);
-          const objectStore = transaction.objectStore(storeName);
-          const request = makeRequest(objectStore);
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => resolve(request.result);
-          transaction.oncomplete = () => db.close();
-        } else {
-          this.databaseFactory.deleteDatabase("data");
-        }
+        this.objectStore(storeName, transactionMode)
+          .then((objectStore: IDBObjectStore) => {
+            const request = makeRequest(objectStore)
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve(request.result);
+          })
+          .catch((error) => {
+            reject(error)
+          })
       };
     });
   }
 
-  private editElement<T>(
-    store: ObjectStoreName,
-    key: IDBValidKey | IDBKeyRange,
-    payload: object
-  ): Promise<T> {
-    const open = this.databaseFactory.open("data");
-    return new Promise<T>((resolve, reject) => {
+  private objectStore(storeName: string, transactionMode: IDBTransactionMode,): Promise<IDBObjectStore> {
+    const open = this.openDatabaseRequest()
+    return new Promise<IDBObjectStore>((resolve, reject) => {
       open.onsuccess = () => {
-        let request: IDBRequest;
         db = open.result;
-        if ([...db.objectStoreNames].find((name) => name === store)) {
-          const transaction = db.transaction(store, "readwrite");
-          const objectStore = transaction.objectStore(store);
-          if (key === "all") request = objectStore.getAll();
-          else request = objectStore.get(key);
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => {
-            const serialized = JSON.parse(JSON.stringify(payload));
-            const updateRequest = objectStore.put(serialized);
-            updateRequest.onsuccess = () => resolve(request.result);
-          };
-          transaction.oncomplete = () => db.close();
-        } else {
-          this.databaseFactory.deleteDatabase("data");
-        }
+        const transaction = db.transaction(storeName, transactionMode);
+        const objectStore = transaction.objectStore(storeName);
+        transaction.oncomplete = () => db.close();
+        resolve(objectStore)
       };
-    });
+    })
+  }
+
+  private openDatabaseRequest(): IDBOpenDBRequest {
+    const request = this.databaseFactory.open("data");
+
+    request.onerror = (event) => {
+      console.error('Error opening IndexedDB', event);
+      throw Error('Error opening IndexedDB')
+    };
+
+    return request
   }
 }
