@@ -23,19 +23,28 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer {
             });
         }
         else {
-            try {
-                await this.activeSession.database.addDistribution(distribution);
-                this.activeSession.nameOfLastViewedDistribution = distribution.distrib_name;
-                return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
-                    "distrib_name": distribution.distrib_name,
-                    "distrib_place": distribution.distrib_place,
-                    "distrib_date": distribution.distrib_date,
-                    beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
+            const existingDistribution = await this.activeSession.database.distributionWithName(distribution.distrib_name);
+            if (existingDistribution) {
+                return ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.nameDistribution, {
+                    errorMessages: ["Distribution " + distribution.distrib_name + " already exists."],
+                    todaysDateString: DateService.todaysDateString()
                 });
             }
-            catch (error) {
-                console.error(error);
-                return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home);
+            else {
+                try {
+                    await this.activeSession.database.addDistribution(distribution);
+                    this.activeSession.nameOfLastViewedDistribution = distribution.distrib_name;
+                    return await ResponseTools.replaceTemplateKeysWithValues(await ResponseTools.wrapInHtmlTemplate(RouteEvents.distributionsHome), {
+                        "distrib_name": distribution.distrib_name,
+                        "distrib_place": distribution.distrib_place,
+                        "distrib_date": distribution.distrib_date,
+                        beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
+                    });
+                }
+                catch (error) {
+                    console.error(error);
+                    return await ResponseTools.fetchFromCacheWithRemoteAsFallBack(RouteEvents.home);
+                }
             }
         }
     }
