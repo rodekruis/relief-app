@@ -37,7 +37,7 @@ export class FetchEventHandlers extends ActiveSessionContainer implements FetchE
     new ViewDistributionDataHandler(this.activeSession),
     new CheckWhoIsMissingPageHandler(this.activeSession),
     new MarkAsReceivedPostHandler(this.activeSession),
-    new HomepageHandler(),
+    new HomepageHandler(this.activeSession),
     new ContinueDistributionHandler(this.activeSession),
     new DownloadDataHandler(this.activeSession),
     new DownloadSpreadsheetTemplateHandler(),
