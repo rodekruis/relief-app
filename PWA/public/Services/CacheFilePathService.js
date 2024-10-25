@@ -33,6 +33,7 @@ import { BeneficiaryStatusService } from "./BeneficiaryStatusService.js";
 import { DownloadSpreadsheetTemplateHandler } from "./FetchEventHandlers/DownloadSpreadsheetTemplateHandler.js";
 import { DeleteDistributionsConfirmHandler } from "./FetchEventHandlers/DeleteDistributionsConfirmHandler.js";
 import { DistributionResponseProvider } from "./DistributionResponseProvider.js";
+import { DistributionsHandler } from "./FetchEventHandlers/DistributionsHandler.js";
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
     pathsOfFilesToCache() {
@@ -139,7 +140,8 @@ export class CacheFilePathService {
             ContinueDistributionHandler.name,
             DownloadDataHandler.name,
             DownloadSpreadsheetTemplateHandler.name,
-            DeleteDistributionsConfirmHandler.name
+            DeleteDistributionsConfirmHandler.name,
+            DistributionsHandler.name
         ]);
     }
     interfacesPaths() {

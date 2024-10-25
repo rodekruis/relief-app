@@ -18,6 +18,7 @@ import { ContinueDistributionHandler } from "./ContinueDistributionHandler.js";
 import { DownloadDataHandler } from "./DownloadDataHandler.js";
 import { DownloadSpreadsheetTemplateHandler } from "./DownloadSpreadsheetTemplateHandler.js";
 import { DeleteDistributionsConfirmHandler } from "./DeleteDistributionsConfirmHandler.js";
+import { DistributionsHandler } from "./DistributionsHandler.js";
 export class FetchEventHandlers extends ActiveSessionContainer {
     constructor() {
         super(...arguments);
@@ -40,7 +41,8 @@ export class FetchEventHandlers extends ActiveSessionContainer {
             new ContinueDistributionHandler(this.activeSession),
             new DownloadDataHandler(this.activeSession),
             new DownloadSpreadsheetTemplateHandler(),
-            new DeleteDistributionsConfirmHandler()
+            new DeleteDistributionsConfirmHandler(),
+            new DistributionsHandler()
         ];
     }
     handlersForEvent(event) {

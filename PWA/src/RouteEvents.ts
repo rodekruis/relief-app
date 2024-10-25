@@ -31,4 +31,5 @@ export class RouteEvents {
     static continueDistribution = "/continueDistribution"
     static downloadData = "/download_data"
     static downloadSpreadsheetTemplate = "/download_template"
+    static distributions = "/distributions"
   }
