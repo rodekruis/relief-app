@@ -16,6 +16,7 @@ export class RouteEvents {
     static codeinputUsingTextField = "/input.html"
     static codeInputNotFound = "/entry_not_found.html"
     static codeInputFound = "/entry.html"
+    static documentation = "/documentation.html"
 
     //Non page route events
     static postCreateDistribution = "/create_distrib"

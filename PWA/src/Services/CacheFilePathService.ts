@@ -33,6 +33,7 @@ import { DownloadSpreadsheetTemplateHandler } from "./FetchEventHandlers/Downloa
 import { DeleteDistributionsConfirmHandler } from "./FetchEventHandlers/DeleteDistributionsConfirmHandler.js";
 import { DistributionResponseProvider } from "./DistributionResponseProvider.js";
 import { DistributionsHandler } from "./FetchEventHandlers/DistributionsHandler.js";
+import { DocumentationPageHandler } from "./FetchEventHandlers/DocumentationPagehandler.js";
 
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {
@@ -69,7 +70,8 @@ export class CacheFilePathService {
       RouteEvents.codeInputNotFound,
       RouteEvents.viewData,
       RouteEvents.noBeneficiariesFound,
-      RouteEvents.confirmDistributionDeletion
+      RouteEvents.confirmDistributionDeletion,
+      RouteEvents.documentation
     ];
   }
 
@@ -152,7 +154,8 @@ export class CacheFilePathService {
       DownloadDataHandler.name,
       DownloadSpreadsheetTemplateHandler.name,
       DeleteDistributionsConfirmHandler.name,
-      DistributionsHandler.name
+      DistributionsHandler.name,
+      DocumentationPageHandler.name
     ]);
   }
 

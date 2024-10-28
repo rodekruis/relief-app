@@ -17,6 +17,7 @@ RouteEvents.codeInputUsingCamera = "/input_video.html";
 RouteEvents.codeinputUsingTextField = "/input.html";
 RouteEvents.codeInputNotFound = "/entry_not_found.html";
 RouteEvents.codeInputFound = "/entry.html";
+RouteEvents.documentation = "/documentation.html";
 //Non page route events
 RouteEvents.postCreateDistribution = "/create_distrib";
 RouteEvents.postSelectDistribution = "/select_distrib";
