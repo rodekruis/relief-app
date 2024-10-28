@@ -1,20 +1,15 @@
-import { error } from "console";
 import { Beneficiary } from "../Models/Beneficiary.js";
 import { Distribution } from "../Models/Distribution.js";
-import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js";
-import { cursorTo } from "readline";
 
 let db: IDBDatabase;
 
 export enum ObjectStoreName {
   distribution = "Distributions",
-  beneficiary = "Beneficiaries",
-  distributionBeneficiaries = "DistributionBeneficiary",
+  beneficiary = "Beneficiaries"
 }
 const allObjectStoreNames = [
   ObjectStoreName.beneficiary,
-  ObjectStoreName.distribution,
-  ObjectStoreName.distributionBeneficiaries,
+  ObjectStoreName.distribution
 ];
 
 type DatabaseColumn = {
@@ -33,14 +28,10 @@ function columnsForObjectStore(objectStore: ObjectStoreName): DatabaseColumn[] {
       ];
     case ObjectStoreName.beneficiary:
       return [
-        { name: "code", isUnique: true },
+        { name: "code", isUnique: false },
         { name: "columns", isUnique: false },
         { name: "values", isUnique: false },
-      ];
-    case ObjectStoreName.distributionBeneficiaries:
-      return [
         { name: "distributionName", isUnique: false },
-        { name: "beneficiaryCode", isUnique: false },
         { name: "hasBeenMarkedAsReceived", isUnique: false },
         { name: "dateReceived", isUnique: false }
       ];
@@ -82,10 +73,6 @@ export class Database {
     return this.getElement(ObjectStoreName.beneficiary);
   }
 
-  async readDistributionBeneficiaries(): Promise<DistributionBeneficiary[]> {
-    return this.getElement(ObjectStoreName.distributionBeneficiaries);
-  }
-
   async distributionWithName(name: string): Promise<Distribution | undefined> {
     const distributions = await this.readDistributions();
     console.log("known distributions:");
@@ -100,10 +87,10 @@ export class Database {
     }
   }
 
-  async beneficiaryWithCode(code: string): Promise<Beneficiary | undefined> {
+  async beneficiaryWithCode(code: string, distributionName: string): Promise<Beneficiary | undefined> {
     const beneficiaries = await this.readBeneficiaries();
     const foundBeneficiaries = beneficiaries.filter(
-      (beneficiary) => beneficiary.code == code
+      (beneficiary) => beneficiary.code == code && beneficiary.distributionName == distributionName
     );
     if (foundBeneficiaries.length > 0) {
       return foundBeneficiaries[0];
@@ -123,86 +110,34 @@ export class Database {
     ) as Promise<void>;
   }
 
-  async benificiariesForDistribution(
-    distribution: Distribution
-  ): Promise<DistributionBeneficiary[]> {
-    const distributionBeneficiaries =
-      await this.readDistributionBeneficiaries();
+  async beneficiariesForDistributionNamed(
+    distributionName: string
+  ): Promise<Beneficiary[]> {
+    const beneficiaries =
+      await this.readBeneficiaries();
     console.log("distribution benefeciaries:");
-    console.log(distributionBeneficiaries);
-    return distributionBeneficiaries.filter(
-      (distributionBeneficiary) =>
-        distributionBeneficiary.distributionName == distribution.distrib_name
+    console.log(beneficiaries);
+    return beneficiaries.filter(
+      (beneficiary) =>
+        beneficiary.distributionName == distributionName
     );
-  }
-
-  async distributionBeneficiary(distribution: Distribution, beneficiary: Beneficiary): Promise<DistributionBeneficiary | undefined> {
-    let distributionBeneficiaries = await this.benificiariesForDistribution(distribution)
-    let filteredDistributionBeneficiaries = distributionBeneficiaries
-      .filter((distributionBeneficiary) => distributionBeneficiary.beneficiaryCode == beneficiary.code)
-    if(filteredDistributionBeneficiaries.length > 0) {
-      return filteredDistributionBeneficiaries[0]
-    } else {
-      return undefined
-    }
   }
 
   async addBeneficiary(beneficiary: Beneficiary): Promise<void> {
     return this.addElement(ObjectStoreName.beneficiary, beneficiary);
   }
 
-  async addBeneficiaryToDistribution(
-    beneficiary: Beneficiary,
-    distribution: Distribution
-  ): Promise<void> {
-    const existing = await this.readDistributionBeneficiaries();
-    existing.forEach((curent) => {
-      if (
-        curent.beneficiaryCode === beneficiary.code &&
-        curent.distributionName === distribution.distrib_name
-      ) {
-        throw Error("Beneficiary with code " + curent.beneficiaryCode + " was already added to distribution named " + curent.distributionName);
-      }
-    });
-
-    const existingBeneficiary = await this.beneficiaryWithCode(
-      beneficiary.code
-    );
-    if (!existingBeneficiary) {
-      this.addBeneficiary(beneficiary);
-    }
-
-    return this.addElement(
-      ObjectStoreName.distributionBeneficiaries,
-      new DistributionBeneficiary(beneficiary.code, distribution.distrib_name)
-    );
-  }
-
   async markBeneficiaryAsReceived(beneficiaryCode: string, distributionName: string): Promise<void> {
-    const key = await this.keyForDistributionBeneficiary(beneficiaryCode, distributionName)
-
     this.updatElementIf(
-      ObjectStoreName.distributionBeneficiaries,
-       (beneficiary: DistributionBeneficiary) => {
-        return beneficiary.beneficiaryCode == beneficiaryCode && beneficiary.distributionName == distributionName
-       }, (beneficiary: DistributionBeneficiary) => {
+      ObjectStoreName.beneficiary,
+       (beneficiary: Beneficiary) => {
+        return beneficiary.code == beneficiaryCode && beneficiary.distributionName == distributionName
+       }, (beneficiary: Beneficiary) => {
           beneficiary.hasBeenMarkedAsReceived = true
           beneficiary.dateReceived = (new Date()).toUTCString()
           return beneficiary
        }
       )
-  }
-
-  private async keyForDistributionBeneficiary(beneficiaryCode: string, distributionName: string): Promise<IDBValidKey> {
-    const distributionBeneficiaries = await this.readDistributionBeneficiaries();
-    for (let i = 0; i < distributionBeneficiaries.length; i++) {
-      const currentBeneficiary = distributionBeneficiaries[i]
-      if (currentBeneficiary.distributionName == distributionName && currentBeneficiary.beneficiaryCode == beneficiaryCode) {
-        return i + 1;
-      }
-    }
-
-    throw Error("Not found")
   }
 
   private async keyForDistributionWithName(name: string): Promise<IDBValidKey> {

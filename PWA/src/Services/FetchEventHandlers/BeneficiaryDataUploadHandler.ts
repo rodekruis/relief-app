@@ -13,30 +13,29 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer impleme
 
   async handleEvent(event: FetchEvent): Promise<Response> {
     try {
-      const beneficiaries = await new BeneficiaryDeserializationService().deserializeFormDataFromRequest(event.request)
       const database = this.activeSession.database
       const distributionName = this.activeSession.nameOfLastViewedDistribution
-      if(distributionName) {
+      if (distributionName) {
         const distribution = await database.distributionWithName(distributionName)
-      if(distribution) {
-        await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiary(beneficiary))
-        await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiaryToDistribution(beneficiary, distribution))
-        this.activeSession.nameOfLastViewedDistribution = distributionName
-        const beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
+        if (distribution) {
+          const beneficiaries = await new BeneficiaryDeserializationService().deserializeFormDataFromRequest(event.request, distributionName)
+          await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiary(beneficiary))
+          this.activeSession.nameOfLastViewedDistribution = distributionName
+          const beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
 
-        return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.distributionsHome, {
-          "distrib_name": distribution.distrib_name,
-          "distrib_place": distribution.distrib_place,
-          "distrib_date": distribution.distrib_date,
-          beneficiary_info: await beneficiaryInfoService.beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(beneficiaries.length, 0)
-      });
-      } else {
-        throw "Expeced distribution named " + distributionName
-      }
+          return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.distributionsHome, {
+            "distrib_name": distribution.distrib_name,
+            "distrib_place": distribution.distrib_place,
+            "distrib_date": distribution.distrib_date,
+            beneficiary_info: await beneficiaryInfoService.beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(beneficiaries.length, 0)
+          });
+        } else {
+          throw "Expeced distribution named " + distributionName
+        }
       } else {
         throw "Expected active distribution"
       }
-    } catch(error) {
+    } catch (error) {
       console.error(error)
       return ResponseTools.wrapInHtmlTemplate(RouteEvents.uploadDataError)
     }

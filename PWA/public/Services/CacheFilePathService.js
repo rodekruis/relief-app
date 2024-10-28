@@ -20,7 +20,6 @@ import { FormParser } from "./FormParser.js";
 import { BeneficiaryCodePostHandler } from "./FetchEventHandlers/BeneficiaryCodePostHandler.js";
 import { BeneficiaryCodeInputMethodPost } from "../Models/BeneficiaryCodeInputMethodPost.js";
 import { ActiveSession } from "./ActiveSession.js";
-import { BeneficiaryEligilityService } from "./BeneficiaryEligilityService.js";
 import { ViewDistributionDataHandler } from "./FetchEventHandlers/ViewDistributionDataHandler.js";
 import { BeneficiariesService } from "./BeneficiariesService.js";
 import { CheckWhoIsMissingPageHandler } from "./FetchEventHandlers/CheckWhoIsMissingPageHandler.js";
@@ -112,7 +111,6 @@ export class CacheFilePathService {
             Database.name,
             DeserialisationService.name,
             FormParser.name,
-            BeneficiaryEligilityService.name,
             ActiveSession.name,
             BeneficiariesService.name,
             DateService.name,

@@ -1,15 +1,12 @@
-import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js";
 let db;
 export var ObjectStoreName;
 (function (ObjectStoreName) {
     ObjectStoreName["distribution"] = "Distributions";
     ObjectStoreName["beneficiary"] = "Beneficiaries";
-    ObjectStoreName["distributionBeneficiaries"] = "DistributionBeneficiary";
 })(ObjectStoreName || (ObjectStoreName = {}));
 const allObjectStoreNames = [
     ObjectStoreName.beneficiary,
-    ObjectStoreName.distribution,
-    ObjectStoreName.distributionBeneficiaries,
+    ObjectStoreName.distribution
 ];
 function columnsForObjectStore(objectStore) {
     switch (objectStore) {
@@ -22,14 +19,10 @@ function columnsForObjectStore(objectStore) {
             ];
         case ObjectStoreName.beneficiary:
             return [
-                { name: "code", isUnique: true },
+                { name: "code", isUnique: false },
                 { name: "columns", isUnique: false },
                 { name: "values", isUnique: false },
-            ];
-        case ObjectStoreName.distributionBeneficiaries:
-            return [
                 { name: "distributionName", isUnique: false },
-                { name: "beneficiaryCode", isUnique: false },
                 { name: "hasBeenMarkedAsReceived", isUnique: false },
                 { name: "dateReceived", isUnique: false }
             ];
@@ -62,9 +55,6 @@ export class Database {
     async readBeneficiaries() {
         return this.getElement(ObjectStoreName.beneficiary);
     }
-    async readDistributionBeneficiaries() {
-        return this.getElement(ObjectStoreName.distributionBeneficiaries);
-    }
     async distributionWithName(name) {
         const distributions = await this.readDistributions();
         console.log("known distributions:");
@@ -77,9 +67,9 @@ export class Database {
             return undefined;
         }
     }
-    async beneficiaryWithCode(code) {
+    async beneficiaryWithCode(code, distributionName) {
         const beneficiaries = await this.readBeneficiaries();
-        const foundBeneficiaries = beneficiaries.filter((beneficiary) => beneficiary.code == code);
+        const foundBeneficiaries = beneficiaries.filter((beneficiary) => beneficiary.code == code && beneficiary.distributionName == distributionName);
         if (foundBeneficiaries.length > 0) {
             return foundBeneficiaries[0];
         }
@@ -93,59 +83,23 @@ export class Database {
     async deleteDistributionWithName(name) {
         return this.removeElement(ObjectStoreName.distribution, await this.keyForDistributionWithName(name));
     }
-    async benificiariesForDistribution(distribution) {
-        const distributionBeneficiaries = await this.readDistributionBeneficiaries();
+    async beneficiariesForDistributionNamed(distributionName) {
+        const beneficiaries = await this.readBeneficiaries();
         console.log("distribution benefeciaries:");
-        console.log(distributionBeneficiaries);
-        return distributionBeneficiaries.filter((distributionBeneficiary) => distributionBeneficiary.distributionName == distribution.distrib_name);
-    }
-    async distributionBeneficiary(distribution, beneficiary) {
-        let distributionBeneficiaries = await this.benificiariesForDistribution(distribution);
-        let filteredDistributionBeneficiaries = distributionBeneficiaries
-            .filter((distributionBeneficiary) => distributionBeneficiary.beneficiaryCode == beneficiary.code);
-        if (filteredDistributionBeneficiaries.length > 0) {
-            return filteredDistributionBeneficiaries[0];
-        }
-        else {
-            return undefined;
-        }
+        console.log(beneficiaries);
+        return beneficiaries.filter((beneficiary) => beneficiary.distributionName == distributionName);
     }
     async addBeneficiary(beneficiary) {
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
     }
-    async addBeneficiaryToDistribution(beneficiary, distribution) {
-        const existing = await this.readDistributionBeneficiaries();
-        existing.forEach((curent) => {
-            if (curent.beneficiaryCode === beneficiary.code &&
-                curent.distributionName === distribution.distrib_name) {
-                throw Error("Beneficiary with code " + curent.beneficiaryCode + " was already added to distribution named " + curent.distributionName);
-            }
-        });
-        const existingBeneficiary = await this.beneficiaryWithCode(beneficiary.code);
-        if (!existingBeneficiary) {
-            this.addBeneficiary(beneficiary);
-        }
-        return this.addElement(ObjectStoreName.distributionBeneficiaries, new DistributionBeneficiary(beneficiary.code, distribution.distrib_name));
-    }
     async markBeneficiaryAsReceived(beneficiaryCode, distributionName) {
-        const key = await this.keyForDistributionBeneficiary(beneficiaryCode, distributionName);
-        this.updatElementIf(ObjectStoreName.distributionBeneficiaries, (beneficiary) => {
-            return beneficiary.beneficiaryCode == beneficiaryCode && beneficiary.distributionName == distributionName;
+        this.updatElementIf(ObjectStoreName.beneficiary, (beneficiary) => {
+            return beneficiary.code == beneficiaryCode && beneficiary.distributionName == distributionName;
         }, (beneficiary) => {
             beneficiary.hasBeenMarkedAsReceived = true;
             beneficiary.dateReceived = (new Date()).toUTCString();
             return beneficiary;
         });
-    }
-    async keyForDistributionBeneficiary(beneficiaryCode, distributionName) {
-        const distributionBeneficiaries = await this.readDistributionBeneficiaries();
-        for (let i = 0; i < distributionBeneficiaries.length; i++) {
-            const currentBeneficiary = distributionBeneficiaries[i];
-            if (currentBeneficiary.distributionName == distributionName && currentBeneficiary.beneficiaryCode == beneficiaryCode) {
-                return i + 1;
-            }
-        }
-        throw Error("Not found");
     }
     async keyForDistributionWithName(name) {
         const distributions = await this.readDistributions();

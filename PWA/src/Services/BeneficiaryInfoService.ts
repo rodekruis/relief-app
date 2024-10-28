@@ -1,6 +1,5 @@
 import { Beneficiary } from "../Models/Beneficiary.js"
 import { Distribution } from "../Models/Distribution.js"
-import { DistributionBeneficiary } from "../Models/DistributionBeneficiary.js"
 import { Database } from "./Database.js"
 
 export class BeneficiaryInfoService {
@@ -11,7 +10,7 @@ export class BeneficiaryInfoService {
     }
 
     async beneficiaryInfoTextFromDistribution(distribution: Distribution): Promise<string> {
-      const beneficiaries: DistributionBeneficiary[] = await this.database.benificiariesForDistribution(distribution)
+      const beneficiaries: Beneficiary[] = await this.database.beneficiariesForDistributionNamed(distribution.distrib_name)
       const numberOfServedBeneficiaries = beneficiaries.filter(beneficiary => beneficiary.hasBeenMarkedAsReceived).length
       return this.beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(beneficiaries.length, numberOfServedBeneficiaries)
     }

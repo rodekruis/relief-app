@@ -12,8 +12,8 @@ describe('BeneficiariesService', () => {
     const beneficiaryCode1 = "code1"
     const beneficiaryCode2 = "code2"
     const existingDistribution = new Distribution("", "", "", existingDistributionName)
-    const beneficiary1 = new Beneficiary(beneficiaryCode1, [], [])
-    const beneficiary2 = new Beneficiary(beneficiaryCode2, [], [])
+    const beneficiary1 = new Beneficiary(beneficiaryCode1, [], [], existingDistributionName)
+    const beneficiary2 = new Beneficiary(beneficiaryCode2, [], [], existingDistributionName)
     var database = new Database(new IDBFactory())
     var activeSesion = new ActiveSession(database)
     var sut = new BeneficiariesService(activeSesion)
@@ -59,8 +59,6 @@ describe('BeneficiariesService', () => {
         await database.addDistribution(existingDistribution)
         await database.addBeneficiary(beneficiary1)
         await database.addBeneficiary(beneficiary2)
-        await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution)
-        await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution)
         const beneficiaries = await sut.beneficiariesForActiveDistribution()
         expect(beneficiaries.length).toEqual(2)
         expect(beneficiaries[0].code).toEqual(beneficiaryCode1)
@@ -74,8 +72,6 @@ describe('BeneficiariesService', () => {
         await database.addDistribution(existingDistribution)
         await database.addBeneficiary(beneficiary1)
         await database.addBeneficiary(beneficiary2)
-        await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution)
-        await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution)
         const eligibleBeneficiaries = await sut.eligibleBeneficiariesForActiveDistribution()
         
         expect(eligibleBeneficiaries.length).toEqual(2)
@@ -88,8 +84,6 @@ describe('BeneficiariesService', () => {
         await database.addDistribution(existingDistribution)
         await database.addBeneficiary(beneficiary1)
         await database.addBeneficiary(beneficiary2)
-        await database.addBeneficiaryToDistribution(beneficiary1, existingDistribution)
-        await database.addBeneficiaryToDistribution(beneficiary2, existingDistribution)
 
         await database.markBeneficiaryAsReceived(beneficiary1.code, existingDistributionName)
 

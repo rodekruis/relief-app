@@ -4,7 +4,8 @@ import { SpreadSheetService } from "./SpreadSheetService.js";
 
 export class BeneficiaryDeserializationService {
   async deserializeFormDataFromRequest(
-    request: Request
+    request: Request,
+    distributionName: string
   ): Promise<Beneficiary[]> {
     return new Promise<Beneficiary[]>(async (resolve, reject) => {
         const possibleFile = FormParser.firstFileFromFormData(await request.formData());
@@ -13,7 +14,7 @@ export class BeneficiaryDeserializationService {
               possibleFile
             );
             try {
-              return resolve(this.deserializeJson(json))
+              return resolve(this.deserializeJson(json, distributionName))
             } catch(error) {
               return reject(error);
             }
@@ -23,13 +24,14 @@ export class BeneficiaryDeserializationService {
     });
   }
 
-  deserializeJson(json: any): Beneficiary[] {
+  deserializeJson(json: any, distributionName: string): Beneficiary[] {
     return this.rowsFromJson(json)
                 .map((row: any) => {
                     return new Beneficiary(
                       this.codeFromJsonRow(row),
                       this.columnsFromJsonRow(row),
-                      this.valuesFromJsonRow(row)
+                      this.valuesFromJsonRow(row),
+                      distributionName
                       )
                 })
   }

@@ -9,14 +9,13 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
     }
     async handleEvent(event) {
         try {
-            const beneficiaries = await new BeneficiaryDeserializationService().deserializeFormDataFromRequest(event.request);
             const database = this.activeSession.database;
             const distributionName = this.activeSession.nameOfLastViewedDistribution;
             if (distributionName) {
                 const distribution = await database.distributionWithName(distributionName);
                 if (distribution) {
+                    const beneficiaries = await new BeneficiaryDeserializationService().deserializeFormDataFromRequest(event.request, distributionName);
                     await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiary(beneficiary));
-                    await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiaryToDistribution(beneficiary, distribution));
                     this.activeSession.nameOfLastViewedDistribution = distributionName;
                     const beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
                     return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.distributionsHome, {
