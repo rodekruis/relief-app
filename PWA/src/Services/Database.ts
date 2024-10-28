@@ -124,6 +124,10 @@ export class Database {
   }
 
   async addBeneficiary(beneficiary: Beneficiary): Promise<void> {
+    if(await this.beneficiaryWithCode(beneficiary.code, beneficiary.distributionName)) {
+      throw "There's already a distribution with code " + beneficiary.code + " in distribution " + beneficiary.distributionName
+    }
+
     return this.addElement(ObjectStoreName.beneficiary, beneficiary);
   }
 

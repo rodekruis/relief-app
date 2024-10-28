@@ -15,7 +15,12 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
                 const distribution = await database.distributionWithName(distributionName);
                 if (distribution) {
                     const beneficiaries = await new BeneficiaryDeserializationService().deserializeFormDataFromRequest(event.request, distributionName);
-                    await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiary(beneficiary));
+                    if (!this.areAllCodesUnique(beneficiaries)) {
+                        throw "All beneficiary codes should be unique";
+                    }
+                    for (const beneficiary of beneficiaries) {
+                        await database.addBeneficiary(beneficiary);
+                    }
                     this.activeSession.nameOfLastViewedDistribution = distributionName;
                     const beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database);
                     return await ResponseTools.wrapInHTPLTemplateAndReplaceKeysWithValues(RouteEvents.distributionsHome, {
@@ -37,5 +42,15 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
             console.error(error);
             return ResponseTools.wrapInHtmlTemplate(RouteEvents.uploadDataError);
         }
+    }
+    areAllCodesUnique(beneficiaries) {
+        const codes = new Set();
+        for (const beneficiary of beneficiaries) {
+            if (codes.has(beneficiary.code)) {
+                return false;
+            }
+            codes.add(beneficiary.code);
+        }
+        return true;
     }
 }

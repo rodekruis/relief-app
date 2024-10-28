@@ -5,6 +5,7 @@ import { BeneficiaryDeserializationService } from "../BeneficiaryDeserialization
 import { ResponseTools } from "../ResponseTools.js";
 import { BeneficiaryInfoService } from "../BeneficiaryInfoService.js";
 import { ActiveSessionContainer } from "../ActiveSession.js";
+import { Beneficiary } from "../../Models/Beneficiary.js";
 
 export class BeneficiaryDataUploadHandler extends ActiveSessionContainer implements FetchEventHandler {
   canHandleEvent(event: FetchEvent): boolean {
@@ -19,7 +20,12 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer impleme
         const distribution = await database.distributionWithName(distributionName)
         if (distribution) {
           const beneficiaries = await new BeneficiaryDeserializationService().deserializeFormDataFromRequest(event.request, distributionName)
-          await beneficiaries.forEach(async (beneficiary) => await database.addBeneficiary(beneficiary))
+          if(!this.areAllCodesUnique(beneficiaries)) {
+            throw "All beneficiary codes should be unique" 
+          }
+          for (const beneficiary of beneficiaries) {
+            await database.addBeneficiary(beneficiary);
+          }
           this.activeSession.nameOfLastViewedDistribution = distributionName
           const beneficiaryInfoService = new BeneficiaryInfoService(this.activeSession.database)
 
@@ -39,5 +45,18 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer impleme
       console.error(error)
       return ResponseTools.wrapInHtmlTemplate(RouteEvents.uploadDataError)
     }
+  }
+
+  private areAllCodesUnique(beneficiaries: Beneficiary[]): boolean {
+    const codes = new Set<string>()
+    
+    for (const beneficiary of beneficiaries) {
+      if (codes.has(beneficiary.code)) {
+        return false
+      }
+      codes.add(beneficiary.code);
+    }
+    
+    return true
   }
 }

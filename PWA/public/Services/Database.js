@@ -90,6 +90,9 @@ export class Database {
         return beneficiaries.filter((beneficiary) => beneficiary.distributionName == distributionName);
     }
     async addBeneficiary(beneficiary) {
+        if (await this.beneficiaryWithCode(beneficiary.code, beneficiary.distributionName)) {
+            throw "There's already a distribution with code " + beneficiary.code + " in distribution " + beneficiary.distributionName;
+        }
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
     }
     async markBeneficiaryAsReceived(beneficiaryCode, distributionName) {
