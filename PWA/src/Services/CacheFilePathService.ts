@@ -33,7 +33,7 @@ import { DownloadSpreadsheetTemplateHandler } from "./FetchEventHandlers/Downloa
 import { DeleteDistributionsConfirmHandler } from "./FetchEventHandlers/DeleteDistributionsConfirmHandler.js";
 import { DistributionResponseProvider } from "./DistributionResponseProvider.js";
 import { DistributionsHandler } from "./FetchEventHandlers/DistributionsHandler.js";
-import { DocumentationPageHandler } from "./FetchEventHandlers/DocumentationPagehandler.js";
+import { DocumentationPageHandler } from "./FetchEventHandlers/DocumentationPageHandler.js";
 
 // Provides all the files that have to be cached for offline use
 export class CacheFilePathService {

@@ -21,7 +21,7 @@ import { DownloadDataHandler } from "./DownloadDataHandler.js";
 import { DownloadSpreadsheetTemplateHandler } from "./DownloadSpreadsheetTemplateHandler.js";
 import { DeleteDistributionsConfirmHandler } from "./DeleteDistributionsConfirmHandler.js";
 import { DistributionsHandler } from "./DistributionsHandler.js";
-import { DocumentationPageHandler } from "./DocumentationPagehandler.js";
+import { DocumentationPageHandler } from "./DocumentationPageHandler.js";
 
 export class FetchEventHandlers extends ActiveSessionContainer implements FetchEventHandler {
   all: FetchEventHandler[] = [
