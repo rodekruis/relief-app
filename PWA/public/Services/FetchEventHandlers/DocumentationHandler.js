@@ -1,6 +1,6 @@
 import { RouteEvents } from "../../RouteEvents.js";
 import { ResponseTools } from "../ResponseTools.js";
-export class DocumentationPageHandler {
+export class DocumentationHandler {
     canHandleEvent(event) {
         return event.request.url.includes(RouteEvents.documentation);
     }

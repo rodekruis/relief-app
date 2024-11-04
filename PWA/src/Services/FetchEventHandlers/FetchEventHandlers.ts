@@ -21,7 +21,7 @@ import { DownloadDataHandler } from "./DownloadDataHandler.js";
 import { DownloadSpreadsheetTemplateHandler } from "./DownloadSpreadsheetTemplateHandler.js";
 import { DeleteDistributionsConfirmHandler } from "./DeleteDistributionsConfirmHandler.js";
 import { DistributionsHandler } from "./DistributionsHandler.js";
-import { DocumentationPageHandler } from "./DocumentationPageHandler.js";
+import { DocumentationHandler } from "./DocumentationHandler.js";
 
 export class FetchEventHandlers extends ActiveSessionContainer implements FetchEventHandler {
   all: FetchEventHandler[] = [
@@ -45,7 +45,7 @@ export class FetchEventHandlers extends ActiveSessionContainer implements FetchE
     new DownloadSpreadsheetTemplateHandler(),
     new DeleteDistributionsConfirmHandler(),
     new DistributionsHandler(),
-    new DocumentationPageHandler()
+    new DocumentationHandler()
   ];
 
   handlersForEvent(event: FetchEvent): FetchEventHandler[] {
