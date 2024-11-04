@@ -36,48 +36,54 @@
     let selectedDeviceId;
     const codeReader = new ZXing.BrowserMultiFormatReader();
     console.log("ZXing code reader initialized");
+
     codeReader
-      .listVideoInputDevices()
-      .then((videoInputDevices) => {
-        const sourceSelect = document.getElementById("sourceSelect");
-        selectedDeviceId = videoInputDevices[0].deviceId;
-        if (videoInputDevices.length >= 1) {
-          videoInputDevices.forEach((element) => {
-            const sourceOption = document.createElement("option");
-            sourceOption.text = element.label;
-            sourceOption.value = element.deviceId;
-            sourceSelect.appendChild(sourceOption);
-          });
+        .listVideoInputDevices()
+        .then((videoInputDevices) => {
+            const sourceSelect = document.getElementById("sourceSelect");
+            selectedDeviceId = videoInputDevices[0].deviceId;
 
-          sourceSelect.onchange = () => {
-            selectedDeviceId = sourceSelect.value;
-          };
+            // Populate the source select dropdown
+            if (videoInputDevices.length >= 1) {
+                videoInputDevices.forEach((element) => {
+                    const sourceOption = document.createElement("option");
+                    sourceOption.text = element.label || `Camera ${sourceSelect.length + 1}`;
+                    sourceOption.value = element.deviceId;
+                    sourceSelect.appendChild(sourceOption);
+                });
 
-          const sourceSelectPanel =
-            document.getElementById("sourceSelectPanel");
-          sourceSelectPanel.style.display = "block";
-        }
+                const sourceSelectPanel = document.getElementById("sourceSelectPanel");
+                sourceSelectPanel.style.display = "block";
 
-        codeReader.decodeFromVideoDevice(
-          selectedDeviceId,
-          "video",
-          (result, err) => {
-            if (result) {
-              console.log(result);
-              document.getElementById("result").textContent = result.text;
-              window.location =
-                "/entry?code=" +
-                result.text;
+                // Listen for changes in the dropdown
+                sourceSelect.onchange = () => {
+                    selectedDeviceId = sourceSelect.value;
+                    // Restart the scanner with the new device
+                    codeReader.reset(); // Stop the current stream
+                    startScanner(); // Start a new stream with the selected device
+                };
             }
-            if (err && !(err instanceof ZXing.NotFoundException)) {
-              console.error(err);
-              document.getElementById("result").textContent = err;
+
+            // Start the scanner with the default device
+            startScanner();
+
+            function startScanner() {
+                codeReader.decodeFromVideoDevice(selectedDeviceId, "video", (result, err) => {
+                    if (result) {
+                        console.log(result);
+                        document.getElementById("result").textContent = result.text;
+                        window.location = "/entry?code=" + result.text;
+                    }
+                    if (err && !(err instanceof ZXing.NotFoundException)) {
+                        console.error(err);
+                        document.getElementById("result").textContent = err;
+                    }
+                });
             }
-          }
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
+
 </script>
