@@ -38,6 +38,7 @@ import { DocumentationHandler } from "./FetchEventHandlers/DocumentationHandler.
 export class CacheFilePathService {
     pathsOfFilesToCache() {
         return [
+            this.miscellaneousPaths(),
             this.imagesPaths(),
             this.pagePaths(),
             this.modelPaths(),
@@ -49,6 +50,18 @@ export class CacheFilePathService {
         ].reduce((previousArray, currentValue) => {
             return previousArray.concat(currentValue);
         }, []);
+    }
+    miscellaneousPaths() {
+        return [
+            "/",
+            "/favicon.ico",
+            "/manifest.json",
+            "/apple-touch-icon.png",
+            "/apple-touch-icon-precomposed.png",
+            "/images/icons/app-icon-192x192.png",
+            "/apple-touch-icon-120x120.png",
+            "/apple-touch-icon-120x120-precomposed.png",
+        ];
     }
     pagePaths() {
         return [
