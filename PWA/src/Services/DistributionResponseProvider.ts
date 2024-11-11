@@ -16,7 +16,8 @@ export class DistributionResponseProvider extends ActiveSessionContainer {
         "distrib_name": selectedDistribution.distrib_name,
         "distrib_place": selectedDistribution.distrib_place,
         "distrib_date": selectedDistribution.distrib_date,
-        beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(selectedDistribution)
+        beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(selectedDistribution),
+        "isBeneficiaryListEmpty": (await this.activeSession.database.beneficiariesForDistributionNamed(selectedDistribution.distrib_name)).length == 0
       }
       );
     } else {

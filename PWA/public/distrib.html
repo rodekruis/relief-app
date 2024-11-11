@@ -5,10 +5,12 @@
     <label class="label is-small" style="font-size:100%">Date: {{ distrib_date }}</label>
     <label class="label is-small" style="font-size:100%">{{ beneficiary_info }}</label>
     <br>
+    {{#isBeneficiaryListEmpty}}
     <form action="/upload_data" method="GET">
       <button class="button is-block is-info is-medium is-fullwidth">Add beneficiary data</button>
     </form>
     <br>
+    {{/isBeneficiaryListEmpty}}
     <form action="/view_data" method="POST">
       <button class="button is-block is-info is-medium is-fullwidth">View beneficiary data</button>
     </form>

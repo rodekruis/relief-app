@@ -27,7 +27,8 @@ export class BeneficiaryDataUploadHandler extends ActiveSessionContainer {
                         "distrib_name": distribution.distrib_name,
                         "distrib_place": distribution.distrib_place,
                         "distrib_date": distribution.distrib_date,
-                        beneficiary_info: await beneficiaryInfoService.beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(beneficiaries.length, 0)
+                        beneficiary_info: await beneficiaryInfoService.beneficiaryInfoTextFromNumberOfBeneficiariesAndNumberServed(beneficiaries.length, 0),
+                        "isBeneficiaryListEmpty": beneficiaries.length == 0
                     });
                 }
                 else {

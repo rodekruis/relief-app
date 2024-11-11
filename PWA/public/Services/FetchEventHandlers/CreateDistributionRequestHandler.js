@@ -38,7 +38,8 @@ export class CreateDistributionRequestHandler extends ActiveSessionContainer {
                         "distrib_name": distribution.distrib_name,
                         "distrib_place": distribution.distrib_place,
                         "distrib_date": distribution.distrib_date,
-                        beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(distribution)
+                        beneficiary_info: await this.beneficiaryInfoService.beneficiaryInfoTextFromDistribution(distribution),
+                        "isBeneficiaryListEmpty": true
                     });
                 }
                 catch (error) {
