@@ -96,7 +96,7 @@ export class Database {
         return this.addElement(ObjectStoreName.beneficiary, beneficiary);
     }
     async markBeneficiaryAsReceived(beneficiaryCode, distributionName) {
-        this.updatElementIf(ObjectStoreName.beneficiary, (beneficiary) => {
+        this.updateElementIf(ObjectStoreName.beneficiary, (beneficiary) => {
             return beneficiary.code == beneficiaryCode && beneficiary.distributionName == distributionName;
         }, (beneficiary) => {
             beneficiary.hasBeenMarkedAsReceived = true;
@@ -137,7 +137,7 @@ export class Database {
             return key === "all" ? store.clear() : store.delete(key);
         });
     }
-    async updatElementIf(storeName, requirementCheck, updateFunction) {
+    async updateElementIf(storeName, requirementCheck, updateFunction) {
         const objectStore = await this.objectStore(storeName, "readwrite");
         // Open a cursor to iterate over the store
         const cursorRequest = objectStore.openCursor();

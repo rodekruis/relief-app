@@ -132,7 +132,7 @@ export class Database {
   }
 
   async markBeneficiaryAsReceived(beneficiaryCode: string, distributionName: string): Promise<void> {
-    this.updatElementIf(
+    this.updateElementIf(
       ObjectStoreName.beneficiary,
        (beneficiary: Beneficiary) => {
         return beneficiary.code == beneficiaryCode && beneficiary.distributionName == distributionName
@@ -207,7 +207,7 @@ export class Database {
     );
   }
 
-  private async updatElementIf<T>(
+  private async updateElementIf<T>(
     storeName: ObjectStoreName,
     requirementCheck: (item: T) => boolean,
     updateFunction: (item: T) => T
