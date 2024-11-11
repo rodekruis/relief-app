@@ -55,95 +55,83 @@ All pages exept index.html are rendered using template.html. The reason this isn
 
 ### Test scripts
 
-Given the app is first installed
-  When launched
-    Then main menu is shown
+Features & verifications:
+* Creating a distribution
+  * Verify that:
+    * Distribution with same name can't be added twice
+    * Distribution can't have date in the past
+    * All fields need to be entered
+* Listing a distribution
+  * Verify that:
+    * Distribution name is shown
+    * Distribution data is shown
+    * When no beneficary data is added yet:
+      * No beneficiary data found message is shown
+    * When beneficiary data is added
+      * It shows the amount of served beneficaries
+    * Beneficiary data can be addded
+    * Distribution can be started / resumed
+    * Missing beneficiaries can be checked
+    * Downloading beneficiary data
+* Adding beneficary data to a distribution
+  * Verify that:
+    * When adding a non supported file, a spreadsheat without a "code" column or a spreadsheat with duplicate codes
+      * "Data" in wrong format screen is displayed
+      * Data template can be downloaded
+    * When adding a supported spreadsheet
+      * It navigates to distribution page
+* Viewing beneficiary data
+  * Verify that:
+    * All rows and columns from uploaded spreadsheet are displayed
+    * Go back to main menu button results in navigation to distribution
+* Starting / resuming a distribution
+  * Verify that:
+     * Tapping "Using camera" button results in scanning input screen
+     * Tapping "By typing" button results in text input screen
+* Checking code using camera
+  * Verify that
+    * Camera can be selected when there's multiple options available
+    * Pointing at a code results in navigating to code verification result page
+* Checking code by typing
+ * Verify that:  
+    * Code can be submitted
+* Viewing code verification result page
+  * Verify that
+    * When code doesn't exist, it mentions that beneficary is not found
+    * When code is known and isn't scanned before
+      * Green beneficiary data is reveiled using green box
+      * Can be marked as recipient
+        * Results in code input using last used input method
+      * Can be ignored by pressing continue distribution
+      * Can be ignored by pressing go back to main menu
+        * Distribution is listed again
+    * When code is already scanned
+* Checking missing beneficiaries
+  * Verify that:
+    * When there's still beneficiaries left
+      * Only the non served beneficiaries are shown
+    * When all beneficiaries have been served
+      * No beneficiaries found message is shown
+* Download data template
+  * Verify that it can be downloaded
+  * Verify that it can be used in a distribution
+* Downloading beneficiary data
+  * Verify that:
+    * This results in a spreadsheet with all rows and columns from uploaded spreadsheet, but with two added columns that describe if and when the beneficiary has been marked as a recepient.
+* Changing distribution
+  * Verify that
+    * When there's not distributions
+      * "No distributions found!" is shown
+    * When there are distributions
+      * They can be changed to
+* Deleting a distribution
+  * Verify that:
+    * When there's no distributions
+      * "No distributions found!" is shown
+    * When there are distributions
+      * Distributions are listed and can be deleted upon confirmation and deletion can be canceled upon canceling
 
-Given main menu is shown
-  When create new distribution button is tapped
-    Then create distribution screen is shown
-  
-  And no distributions have been added yet
-    When tapping select distribution button
-      Then "No distributions found!" message is shown
-        When tapping "create new distribution button"
-          Then create new distribution page is shown
-  
-  And one or more distributions have been added
-    When tapping select distribution button
-      Then all added distributions are listed
-        When tapping the name of a distribution
-          Then the distribution page is shown
 
-Given create new distribution page is shown
-  When all fields are filled in
-  and Distribution name doesn't exist yet
-  and selected date is in the future
-  and Create button is tapped
-    Then distribution page is shown
-
-  When all fields are filled in
-  and Distribution name already exists
-  and selected date is in the future
-  and Create button is tapped
-    Then red box appears with message "Distribution <name> already exists"
-
-  When all fields are filled in
-  and Distribution name doesn't exist yet
-  and selected date is in the past
-  and Create button is tapped
-  and device is iOS
-    Then message appears above date field: "Value must be greater than or equal to <current date>"
-
-Given distribution page is shown
-  Then distribution name is listed
-  and distibution location is listed
-
-  and no beneficiaries have been added (yet)
-    Then "No beneficiary data found" message is shown
-    and "Add beneficiary button" is visible
-
-  and <numberOfBeneficiaries> beneficiaries have been added
-    Then "beneficiaries served: (0 / <numberOfBeneficiaries>)" is shown
-    and "Add beneficiary button" is hidden
-
-    When distribution is started or resumed
-      using typing or scanner
-        When scanning code for eligle beneficary
-          Then green box appears showing beneficiary details
-            When marking as receipient
-              and going back to distribution page
-                Then "beneficiaries served: (1 / <numberOfBeneficiaries>)" is shown
-            When continuing distribution
-              and going back to distribution page
-                Then "beneficiaries served: (0 / <numberOfBeneficiaries>)" is shown
-            When going back to main menu
-              Then "beneficiaries served: (0 / <numberOfBeneficiaries>)" is shown
-
-        When scanning code for ineligible beneficiary
-          Then red box appears showing beneficiary details
-            When pressing Mark as recepient
-
-        When scanning unknown code
-      using camera 
-
-Given no distributions are known (yet)
-  When tapping home button
-    Then main menu is shown
-
-Given one or more distributions are known
-  When tapping home button
-    Then distribution page of last viewed distribution is shown
-
-#### High demanding scenarios
-
-Scenario: Correct beneficiaries served message
-Given a distribution has been created and beneficiaries have been added
-  When each beneficiary has individually been mark
-
-Scenario: correct cleanup of previous distribution
-Given a distribution is added
-  And beneficiaries are added to that distribution
-  And distribution is deleted
-    When new distribution with same name as previous distribution is added
-      Then it new distribution has no beneficiaries
+For extra endurance testing:
+* Make sure all of the above works with multiple distributions
+* Make sure all of the above works with both different and the same distribution lists
