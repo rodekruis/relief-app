@@ -103,9 +103,29 @@ Given distribution page is shown
     Then "No beneficiary data found" message is shown
     and "Add beneficiary button" is visible
 
-  and beneficiaries have been added
-    Then "beneficiaries served: (n / n)" is shown
-    and "Add beneficiary button" is hidden 🐞
+  and <numberOfBeneficiaries> beneficiaries have been added
+    Then "beneficiaries served: (0 / <numberOfBeneficiaries>)" is shown
+    and "Add beneficiary button" is hidden
+
+    When distribution is started or resumed
+      using typing or scanner
+        When scanning code for eligle beneficary
+          Then green box appears showing beneficiary details
+            When marking as receipient
+              and going back to distribution page
+                Then "beneficiaries served: (1 / <numberOfBeneficiaries>)" is shown
+            When continuing distribution
+              and going back to distribution page
+                Then "beneficiaries served: (0 / <numberOfBeneficiaries>)" is shown
+            When going back to main menu
+              Then "beneficiaries served: (0 / <numberOfBeneficiaries>)" is shown
+
+        When scanning code for ineligible beneficiary
+          Then red box appears showing beneficiary details
+            When pressing Mark as recepient
+
+        When scanning unknown code
+      using camera 
 
 Given no distributions are known (yet)
   When tapping home button
@@ -114,5 +134,16 @@ Given no distributions are known (yet)
 Given one or more distributions are known
   When tapping home button
     Then distribution page of last viewed distribution is shown
-    
 
+#### High demanding scenarios
+
+Scenario: Correct beneficiaries served message
+Given a distribution has been created and beneficiaries have been added
+  When each beneficiary has individually been mark
+
+Scenario: correct cleanup of previous distribution
+Given a distribution is added
+  And beneficiaries are added to that distribution
+  And distribution is deleted
+    When new distribution with same name as previous distribution is added
+      Then it new distribution has no beneficiaries

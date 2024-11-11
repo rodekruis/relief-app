@@ -104,10 +104,16 @@ export class Database {
   }
 
   async deleteDistributionWithName(name: string): Promise<void> {
-    return this.removeElement(
+    await this.removeElement(
       ObjectStoreName.distribution,
       await this.keyForDistributionWithName(name)
-    ) as Promise<void>;
+    )
+
+    return this.deleteElementIf(
+      ObjectStoreName.beneficiary,
+      (beneficiary: Beneficiary) => {
+        return beneficiary.distributionName == name
+    })
   }
 
   async beneficiariesForDistributionNamed(
@@ -207,12 +213,12 @@ export class Database {
     );
   }
 
-  private async updateElementIf<T>(
+  private async performCursorActionIf<T>(
     storeName: ObjectStoreName,
     requirementCheck: (item: T) => boolean,
-    updateFunction: (item: T) => T
+    action: (cursor: IDBCursorWithValue) => IDBRequest
   ): Promise<void> {
-      const objectStore = await this.objectStore(storeName, "readwrite")
+    const objectStore = await this.objectStore(storeName, "readwrite")
 
       // Open a cursor to iterate over the store
       const cursorRequest = objectStore.openCursor();
@@ -230,18 +236,15 @@ export class Database {
 
           // Check if the item meets the requirement
           if (requirementCheck(currentValue)) {
-            // Apply the update function
-            const updatedValue = updateFunction(currentValue);
-
             // Update the record at the current cursor position
-            const updateRequest = cursor.update(updatedValue);
+            const cursorRequest = action(cursor)
 
-            updateRequest.onerror = (event) => {
-              console.error('Error updating the object with cursor', event);
-              throw Error('Error updating the object with cursor')
+            cursorRequest.onerror = (event) => {
+              console.error('Error performing action with cursor', event);
+              throw Error('Error performing action with cursor')
             };
 
-            updateRequest.onsuccess = () => {
+            cursorRequest.onsuccess = () => {
               console.log('Record updated successfully');
             };
           }
@@ -251,8 +254,27 @@ export class Database {
         }
       };
   }
-  
 
+  private async updateElementIf<T>(
+    storeName: ObjectStoreName,
+    requirementCheck: (item: T) => boolean,
+    updateFunction: (item: T) => T
+  ): Promise<void> {
+      this.performCursorActionIf(storeName, requirementCheck, (cursor) => {
+        const updatedValue = updateFunction(cursor.value);
+        return cursor.update(updatedValue);
+      })
+  }
+
+  private async deleteElementIf<T>(
+    storeName: ObjectStoreName,
+    requirementCheck: (item: T) => boolean
+  ): Promise<void> {
+      this.performCursorActionIf(storeName, requirementCheck, (cursor) => {
+        return cursor.delete();
+      })
+  }
+  
   private performRequestForObjectStoreNamed<T>(
     storeName: string,
     transactionMode: IDBTransactionMode,

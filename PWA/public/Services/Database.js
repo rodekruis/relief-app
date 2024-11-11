@@ -81,7 +81,10 @@ export class Database {
         return this.addElement(ObjectStoreName.distribution, distribution);
     }
     async deleteDistributionWithName(name) {
-        return this.removeElement(ObjectStoreName.distribution, await this.keyForDistributionWithName(name));
+        await this.removeElement(ObjectStoreName.distribution, await this.keyForDistributionWithName(name));
+        return this.deleteElementIf(ObjectStoreName.beneficiary, (beneficiary) => {
+            return beneficiary.distributionName == name;
+        });
     }
     async beneficiariesForDistributionNamed(distributionName) {
         const beneficiaries = await this.readBeneficiaries();
@@ -137,7 +140,7 @@ export class Database {
             return key === "all" ? store.clear() : store.delete(key);
         });
     }
-    async updateElementIf(storeName, requirementCheck, updateFunction) {
+    async performCursorActionIf(storeName, requirementCheck, action) {
         const objectStore = await this.objectStore(storeName, "readwrite");
         // Open a cursor to iterate over the store
         const cursorRequest = objectStore.openCursor();
@@ -151,15 +154,13 @@ export class Database {
                 const currentValue = cursor.value;
                 // Check if the item meets the requirement
                 if (requirementCheck(currentValue)) {
-                    // Apply the update function
-                    const updatedValue = updateFunction(currentValue);
                     // Update the record at the current cursor position
-                    const updateRequest = cursor.update(updatedValue);
-                    updateRequest.onerror = (event) => {
-                        console.error('Error updating the object with cursor', event);
-                        throw Error('Error updating the object with cursor');
+                    const cursorRequest = action(cursor);
+                    cursorRequest.onerror = (event) => {
+                        console.error('Error performing action with cursor', event);
+                        throw Error('Error performing action with cursor');
                     };
-                    updateRequest.onsuccess = () => {
+                    cursorRequest.onsuccess = () => {
                         console.log('Record updated successfully');
                     };
                 }
@@ -167,6 +168,17 @@ export class Database {
                 cursor.continue();
             }
         };
+    }
+    async updateElementIf(storeName, requirementCheck, updateFunction) {
+        this.performCursorActionIf(storeName, requirementCheck, (cursor) => {
+            const updatedValue = updateFunction(cursor.value);
+            return cursor.update(updatedValue);
+        });
+    }
+    async deleteElementIf(storeName, requirementCheck) {
+        this.performCursorActionIf(storeName, requirementCheck, (cursor) => {
+            return cursor.delete();
+        });
     }
     performRequestForObjectStoreNamed(storeName, transactionMode, makeRequest) {
         const open = this.openDatabaseRequest();
