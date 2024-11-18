@@ -3,11 +3,12 @@ name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
+      - main
       - develop
-      - feature/#5-app-should-work-offline
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
+      - main
       - develop
 
 jobs:
