@@ -51,3 +51,5 @@ $ sudo systemctl unmask hostapd
 $ sudo systemctl enable hostapd
 $ sudo systemctl start hostapd
 ```
+
+This project is tested with BrowserStack.
