@@ -7,9 +7,9 @@ export class DownloadSpreadsheetTemplateHandler {
     async handleEvent(event) {
         try {
             const templateJson = [
-                { "code": 4680490, "first name": "Aric", "last name": "Norwood", "your column": "your value" },
-                { "code": 4535835, "first name": "Lira", "last name": "Calloway", "your column": "your value" },
-                { "code": 9155570, "first name": "Daven", "last name": "Morrell", "your column": "your value" },
+                { "code": 1, "first name": "Aric", "last name": "Norwood", "your column": "your value" },
+                { "code": 2, "first name": "Lira", "last name": "Calloway", "your column": "your value" },
+                { "code": 3, "first name": "Daven", "last name": "Morrell", "your column": "your value" },
             ];
             return new Response(await SpreadSheetService.fileFromJson(templateJson), {
                 headers: {

@@ -56,9 +56,9 @@ All pages exept index.html are rendered using template.html. The reason this isn
 ### Test scripts
 
 Codes in template:
-4680490 Aric Norwood
-4535835 Lira Calloway
-9155570 Daven Morrell
+1 Aric Norwood
+2 Lira Calloway
+3 Daven Morrell
 Features & verifications:
 * Creating a distribution
   * Verify that:
