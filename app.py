@@ -191,7 +191,7 @@ def create_distrib():
             return redirect(url_for("name_distrib"))
         if (
             datetime.strptime(request.form["distrib_date"], "%Y-%m-%d").date()
-            > datetime.now().date()
+            < datetime.now().date()
         ):
             flash("Date of the distribution cannot be in the past.")
             return redirect(url_for("name_distrib"))
@@ -240,9 +240,8 @@ def get_list_distrib():
         distrib_features["Date"] = distrib_.date
         distrib_features["Items distributed"] = distrib_.items
         distrib_features["Donor"] = distrib_.donor
-        distrib_list.loc[len(distrib_list), distrib_features.keys()] = (
-            distrib_features.values()
-        )
+        df_dictionary = pd.DataFrame([distrib_features])
+        distrib_list = pd.concat([distrib_list, df_dictionary], ignore_index=True)
     return distrib_list
 
 
