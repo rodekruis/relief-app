@@ -7,6 +7,7 @@ import secrets
 import pandas as pd
 from utils import delete_beneficiary_data, pandas_to_html
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 from flask import Flask, render_template, request, redirect, url_for, session, flash
@@ -138,13 +139,25 @@ def signup_post():
     if email == "" or name == "" or password == "":
         flash("Insert your email, name and password")
         return redirect(url_for("signup"))
+    if (
+        len(password) < 8
+        or not any(not c.isalnum() for c in password)
+        or not any(c.isupper() for c in password)
+    ):
+        flash(
+            "Password must be at least 8 characters long and contain at least one special character and one uppercase letter"
+        )
+        return redirect(url_for("signup"))
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        flash("Use a valid email address")
+        return redirect(url_for("signup"))
 
     user = check_login(email=email)
 
     if (
         user
     ):  # if a user is found, we want to redirect back to signup page so user can try again
-        flash("Email address already exists, go to login page")
+        flash("This email address is already associated with a ReliefBox account")
         return redirect(url_for("signup"))
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
