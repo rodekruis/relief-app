@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+  <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+</div>
+
+<div class="column is-4 is-offset-4">
+  <div class="box">
+
+    <div id="sourceSelectPanel" style="display:none">
+      <label for="sourceSelect" class="label is-small">Change video source:</label>
+      <select id="sourceSelect" style="max-width:400px">
+      </select>
+    </div>
+    <br>
+    <label class="label is-small">Barcode and QR code formats supported: UPC-A and UPC-E, EAN-8 and EAN-13,
+      Code 39-93-128, ITF, Codabar, RSS-14 (all variants), RSS Expanded (most variants), Data Matrix,
+      Aztec ('beta' quality), PDF 417 ('alpha' quality), MaxiCode.</label>
+
+  </div>
+</div>
+<label hidden>Result:</label>
+<pre hidden><code id="result"></code></pre>
+
+<script type="text/javascript" src=/ExternalLibraries/zxing.js"></script>
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+      let selectedDeviceId;
+      const codeReader = new ZXing.BrowserMultiFormatReader()
+      console.log('ZXing code reader initialized')
+      codeReader.listVideoInputDevices()
+        .then((videoInputDevices) => {
+          const sourceSelect = document.getElementById('sourceSelect')
+          selectedDeviceId = videoInputDevices[0].deviceId
+          if (videoInputDevices.length >= 1) {
+            videoInputDevices.forEach((element) => {
+              const sourceOption = document.createElement('option')
+              sourceOption.text = element.label
+              sourceOption.value = element.deviceId
+              sourceSelect.appendChild(sourceOption)
+            })
+
+            sourceSelect.onchange = () => {
+              selectedDeviceId = sourceSelect.value;
+            };
+
+            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+            sourceSelectPanel.style.display = 'block'
+          }
+
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                console.log(result)
+                document.getElementById('result').textContent = result.text
+                window.location = "https://relief-system-webapp.azurewebsites.net/entry?code="+result.text;
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err)
+                document.getElementById('result').textContent = err
+              }
+            })
+
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    })
+  </script>
+
+{% endblock %}

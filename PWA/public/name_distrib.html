@@ -1,0 +1,44 @@
+<div class="column is-4 is-offset-4">
+  <div class="box">
+    {{#errorMessages }}
+    <div class="notification is-danger">
+      {{ . }}
+    </div>
+    {{/errorMessages }}
+    <form action="/create_distrib" method="POST">
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_name" placeholder="Distribution name" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_place" placeholder="Location" autofocus="">
+        </div>
+      </div>
+      <div class="columns is-mobile is-centered is-vcentered">
+        <div class="column is-one-fifth">
+          <div class="content is-medium" style="color:rgba(54,54,54,.3)">Date</div>
+        </div>
+        <div class="column is-four-fifths">
+          <div class="field">
+            <div class="control">
+              <input class="input is-medium" type="date" min="{{todaysDateString}}" name="distrib_date" placeholder="Date" autofocus="">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_items" placeholder="Items distributed" autofocus="">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input is-medium" type="text" name="distrib_donor" placeholder="Donor" autofocus="">
+        </div>
+      </div>
+      <button class="button is-block is-info is-medium is-fullwidth">Create</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{
+  "name": "ReliefBox",
+  "short_name": "ReliefBox",
+  "icons": [
+    {
+      "src": "/images/icons/app-icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icons/app-icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "scope": ".",
+  "display": "fullscreen",
+  "orientation": "portrait-primary",
+  "background_color": "#00d1b2",
+  "theme_color": "#00d1b2",
+  "description": "A tool for managing the distribution of relief items during humanitarian emergencies.",
+  "dir": "ltr",
+  "lang": "en-US"
+}

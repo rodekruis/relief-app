@@ -1,0 +1,36 @@
+<div class="column is-4 is-offset-4">
+  <div class="box">
+    <label class="label is-medium">Distribution: {{ distrib_name }}</label>
+    <label class="label is-small" style="font-size:100%">Location: {{ distrib_place }}</label>
+    <label class="label is-small" style="font-size:100%">Date: {{ distrib_date }}</label>
+    <label class="label is-small" style="font-size:100%">{{ beneficiary_info }}</label>
+    <br>
+    {{#isBeneficiaryListEmpty}}
+    <form action="/upload_data" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Add beneficiary data</button>
+    </form>
+    <br>
+    {{/isBeneficiaryListEmpty}}
+    <form action="/view_data" method="POST">
+      <button class="button is-block is-info is-medium is-fullwidth">View beneficiary data</button>
+    </form>
+    <br>
+    <form action="/choose_input_method" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Start or resume distribution</button>
+    </form>
+    <br>
+    <form action="/missing" method="POST">
+      <button class="button is-block is-info is-medium is-fullwidth">Check who is missing</button>
+    </form>
+    <br>
+    <form action="/download_data" method="POST">
+      <button class="button is-block is-info is-medium is-fullwidth">Download beneficiary data</button>
+    </form>
+  </div>
+
+  <div class="box">
+    <form action="/distrib" method="GET">
+      <button class="button is-block is-info is-medium is-fullwidth">Change distribution</button>
+    </form>
+  </div>
+</div>
