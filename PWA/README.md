@@ -65,6 +65,8 @@ Test devices
   * iOS 18.1.1
 * Alcatel 1B
   * Android (Alcatel UI) v9L3D(11-14)
+* Huawei P30 (Serverstack)
+  * Android
 
 Test result legend
 ✅ Working as intended on tested device
@@ -74,10 +76,12 @@ Test result legend
 Installing
   * App can be installed and launched from homescreen
     ✅ iPhone 15 (0.24.4)
-    🟠 Alcatel 1B
+    ✅ Huawei P30 (0.26.0)
+    🟠 Alcatel 1B (0.24.4)
       Add to homepage stopped working on this device. It says open reliefbox instead.
       Currently best known workaround: launching the app from the app launcher. Since this doesn't seem to happen on other
       android devices, it may be device specific thing, where PWA data isn't removed properly.
+     
 Features & verifications:
 * Creating a distribution
   * Verify that:
