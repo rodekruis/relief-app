@@ -42,13 +42,12 @@ jobs:
         run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment jobs
-        working-directory: './POC'
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
-            release.zip
-            !venv/
+            POC/release.zip
+            !POC/venv/
 
   deploy:
     runs-on: ubuntu-latest
