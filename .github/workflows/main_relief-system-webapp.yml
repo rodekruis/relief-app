@@ -8,6 +8,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/main_relief-system-webapp.yml'
+      - 'POC/**'
   workflow_dispatch:
 
 jobs:
